@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### [1.0.1](https://github.com/mokkapps/changelog-generator-demo/compare/v1.0.0...v1.0.1) (2023-08-23)
 
+
+### Refactoring
+
+* **styling:** editing project for styling guide of an app ([d851439](https://github.com/mokkapps/changelog-generator-demo/commits/d85143973ee4b32b186713e6633cd977adae84c9))
+
 ### 1.0.0 (2023-08-23)
 
 
