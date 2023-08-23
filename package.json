@@ -1,6 +1,6 @@
 {
   "name": "unitade-obsidian",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Effortlessly treat any file extension as note, organize diverse file formats in your vault.",
   "main": "main.ts",
   "scripts": {
