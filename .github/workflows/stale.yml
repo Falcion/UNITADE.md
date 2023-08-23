@@ -1,0 +1,26 @@
+name: Stale issues and PRs
+
+on:
+  schedule:
+    - cron: "0 0 * * *"  # Runs every day at midnight UTC
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Mark stale issues and pull requests
+        uses: actions/stale@v3
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          stale-issue-message: |
+            This issue is currently marked as **stale** due to inactivity.
+            If you believe it is still relevant, please provide an update or comment on this issue.
+          stale-pr-message: |
+            This pull request is currently marked as **stale** due to inactivity.
+            If you believe it is still relevant, please provide an update or comment on this pull request.
+          days-before-stale: 30
+          days-before-close: 7
