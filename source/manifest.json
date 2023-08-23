@@ -3,9 +3,8 @@
     "name": "Unitade",
     "version": "1.0.0",
     "minAppVersion": "1.0.0",
-    "description": "A plugin for note-taking app Obsidian™ which allows you to treat any file extension as markdown note-file",
+    "description": "Effortlessly treat any file extension as note, organize diverse file formats in your vault.",
     "author": "Falcion",
     "authorUrl": "https://github.com/Falcion/UnitadeOBSIDIAN",
-    "fundingUrl": "",
     "isDesktopOnly": true
   }

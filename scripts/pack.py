@@ -1,7 +1,7 @@
 import os
 import zipfile
 
-index_js_path = 'out/index.js'
+index_js_path = 'out/main.js'
 manifest_path = 'source/manifest.json'
 output_zip_path = 'out/plugins-output.zip'
 
@@ -18,7 +18,7 @@ os.makedirs(os.path.dirname(output_zip_path), exist_ok=True)
 
 # Create a new ZIP archive
 with zipfile.ZipFile(output_zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
-    zipf.write(index_js_path, arcname='index.js')
+    zipf.write(index_js_path, arcname='main.js')
     zipf.write(manifest_path, arcname='manifest.json')
 
 print(f"ZIP archive created at {output_zip_path}")
