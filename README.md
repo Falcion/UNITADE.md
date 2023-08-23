@@ -78,7 +78,7 @@ Before downloading the source code or using this project ensure you met the foll
 If you want to use this plugin, there are two ways to download-and-use this plugin: official and direct, so, let's start from official path:
 
 1. Go to your vault's settings, and go to "Settings → Community plugins" and go to the second step;
-2. Disable restricted mode, and use "Community plugins → Browse" to find this plugin: type the name of the project or just write “any as markdown”;
+2. Disable restricted mode, and use "Community plugins → Browse" to find this plugin: type the name of the project or just write “any as note”;
 3. Use plugin, type any extension in plugin's settings, edit anything you want.
 
 Guidelines for direct-installation way:
