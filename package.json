@@ -4,7 +4,7 @@
   "description": "Effortlessly treat any file extension as note, organize diverse file formats in your vault.",
   "main": "main.ts",
   "scripts": {
-    "build": "tsc -noEmit -skipLibCheck source/main.ts && node esbuild.config.mjs production",
+    "build": "tsc -noEmit -skipLibCheck main.ts && node esbuild.config.mjs production",
     "pack": "python scripts/pack.py",
     "prepare:husky": "husky install",
     "prepare:python": "cd scripts && py -m venv venv",

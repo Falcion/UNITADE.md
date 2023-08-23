@@ -2,7 +2,7 @@ import os
 import zipfile
 
 index_js_path = 'out/main.js'
-manifest_path = 'source/manifest.json'
+manifest_path = 'manifest.json'
 output_zip_path = 'out/plugins-output.zip'
 
 # Check if the required files exist
