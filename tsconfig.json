@@ -1,0 +1,20 @@
+{
+	"compilerOptions": {
+		"module": "commonjs",
+		"declaration": false,
+		"removeComments": false,
+		"resolveJsonModule": true,
+		"allowSyntheticDefaultImports": true,
+		"skipLibCheck": true,
+		"target": "es6",
+		"outDir": "out",
+		"baseUrl": "./",
+		"incremental": true,
+		"moduleResolution": "node",
+		"esModuleInterop": true,
+		"strict": true,
+		"sourceMap": false
+	},
+	"exclude": ["node_modules", "out"],
+	"include": ["**/*.ts"]
+}

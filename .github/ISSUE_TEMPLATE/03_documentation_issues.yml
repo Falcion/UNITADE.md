@@ -1,0 +1,47 @@
+name: Issue about the documentation
+description: Use this form to report any issues or inconsistencies you encounter in the project's documentation
+title: "[DOCS]: "
+labels: ["Documentation"]
+projects: [""]
+assignees: [""]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this documentation issue, your contribution is invaluable in helping us improve the quality and reliability of repository.
+  - type: markdown
+    attributes:
+      value: |
+        Before you begin, please make sure you've checked if the issue has already been asked, if you find a similar issue, feel free to add any additional information or context that may help us resolve it more effectively.
+  - type: input
+    id: contact
+    attributes:
+      label: Contact details
+      description: If possible, write down the contact information if you need additional communication, if you want contact via “github”, write it down.
+      placeholder: example@domain.com
+    validations:
+      required: false
+  - type: input
+    id: where-issue
+    attributes:
+      label: Where is the essence of the bug
+      description: Write the file name and the line of the bugs you've encountered, like “README:L#53”.
+      placeholder: 'ISSUE_POLICY:L#1'
+    validations:
+      required: true
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of conduct
+      description: By submitting this issue, you agree to follow our code of conduct — [reference is provided.](./../CODE_OF_CONDUCT.md).
+      options:
+        - label: I agree to follow this project's code of conduct
+          required: true
+  - type: checkboxes
+    id: issue-policy
+    attributes:
+      label: Issue policy
+      description: By submitting this issue, you agree to follow our issue policy — [reference is provided.](./../../docs/github/ISSUE_POLICY.md).
+      options:
+        - label: I agree to follow this project's issue policy
+          required: true

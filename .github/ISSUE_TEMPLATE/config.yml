@@ -1,0 +1,35 @@
+mentions_enabled: true
+auto_assign_enabled: true
+
+notification_settings:
+  issues:
+    comments: true
+    status_changes: true
+    assignee_changes: true
+  pull_requests:
+    comments: true
+    status_changes: true
+    assignee_changes: true
+
+branch_protection:
+  main:
+    enforce_admins: true
+    required_status_checks:
+      - "continuous-integration"
+      - "code-review"
+    required_pull_request_reviews:
+      required_approving_review_count: 1
+      dismiss_stale_reviews: true
+  development:
+    enforce_admins: false
+    required_status_checks:
+    required_pull_request_reviews:
+      required_approving_review_count: 0
+      dismiss_stale_reviews: false
+  development-ref:
+    enforce_admins: false
+    required_status_checks:
+    required_pull_request_reviews:
+      required_approving_review_count: 0
+      dismiss_stale_reviews: false
+  
