@@ -1,0 +1,239 @@
+# Aliases for GIT config and its commands
+[alias]
+    addremove = !git r && git add . --all
+    # Display every of aliases inside the git config
+    aliases = !git config --list | grep 'alias\\.' | sed 's/alias\\.\\([^=]*\\)=\\(.*\\)/\\1\\ \t => \\2/' | sort
+    # Edit ref of the repository
+    bc = rev-parse --abbrev-ref HEAD
+    bu = !git rev-parse --abbrev-ref --symbolic-full-name "@{u}"
+    # Set upstream
+    up-stream = !git branch --set-upstream-to=$(git bu)
+    # Delete given branch
+    delete-branch = branch -D
+    # Display every branch in current repository
+    display-branch = !git branch
+    display-branches = !git branch -a 
+    # Display list of files
+    ls = ls-files
+    # Checkout repository
+    co = checkout
+    co-branch = checkout -b
+    # Push changes made in the branch
+    cm = !git commit -m
+    cm-add = !git add -A && git cm
+    cm-edit = commit -a --amend
+    amend = !git commit --amend --no-edit
+    amend-all = !git add -A && git amend
+    # Reword the commit
+    reword = commit --amend
+    # Unstage changes
+    uncommit = reset --soft HEAD~1
+    # Fetch commits
+    read = !git fetch -p
+    read-all = !git fetch -a -p
+    # Update branches
+    up = !git pull --rebase --prune $@
+    update = !git read && git rebase origin/master
+    update-master = !git pull origin master
+    update-branch = !git pull origin $(git bc)
+    # Force-push of commit without lease
+    push-lease = push --force-with-lease
+    # Enable and update submodules ref
+    cm-sm = !git cm "SUBMODULE REFERENCE UPDATED"
+    update-sm = !git pull --recurse-submodules && git submodule update --init --recursive
+    # Waypoint any changes in unsaved stage
+    wp-commit = commit -am "WIPPOINT"
+    sp-commit = !git add -A && git commit -m 'SAVEPOINT'
+    # Rebase each other commit
+    rebase = rebase -x 'git reset --soft HEAD~1 && git commit -C HEAD@{1}'
+    # Reset changes
+    undo = reset HEAD~1 --mixed
+    unstage = reset
+    uncommit = reset --soft HEAD^
+    reset-head = reset HEAD --hard
+    reset-branch = reset --hard $(git bu)
+    wipe = !git add -A && git commit -qm 'WIPE SAVEPOINT' && git reset HEAD~1 --hard
+    # Merge branch with origin
+    mg = !git merge
+    mg-nf = !git merge --no-ff
+    # Logs inside the git config
+    log-lite = log --oneline --decorate
+    log-last = log --abbrev-commit --decorate --format=format:'%C(bold red)%h%C(reset) - %C(bold blue)%aD%C(reset) %C(bold green)(%ar)%C(reset) %C(bold yellow)%d%C(reset) %n''%C(dim yellow)%H%C(reset) - %C(white)%s%C(reset) %n''%C(green)-(Committer: %cn <%ce>)%C(reset) %C(dim white)-(Author: %an <%ae>)%C(reset)' -1 HEAD --stat
+    log-branch = log --graph --abbrev-commit --decorate --format=format:'%C(bold red)%h%C(reset) - %C(bold blue)%aD%C(reset) %C(bold green)(%ar)%C(reset) %C(bold yellow)%d%C(reset) %n''%C(dim yellow)%H%C(reset) - %C(white)%s%C(reset) %n''%C(green)-(Committer: %cn <%ce>)%C(reset) %C(dim white)-(Author: %an <%ae>)%C(reset)' HEAD --stat
+    log-repos = log --graph --abbrev-commit --decorate --format=format:'%C(bold red)%h%C(reset) - %C(bold blue)%aD%C(reset) %C(bold green)(%ar)%C(reset) %C(bold yellow)%d%C(reset) %n''%C(dim yellow)%H%C(reset) - %C(white)%s%C(reset) %n''%C(green)-(Committer: %cn <%ce>)%C(reset) %C(dim white)-(Author: %an <%ae>)%C(reset)' --all --stat
+    log-current = "!myname=$(git config --get user.name);myemail=$(git config --get user.email); git log --graph --abbrev-commit --decorate --author $myemail " HEAD --stat
+    # Which files are receiving the most "love"
+    churn = !git log --all -M -C --name-only --format='format:' "$@" | sort | grep -v '^$' | uniq -c | sort | awk 'BEGIN {print "count,file"} {print $1 "," $2}'
+    # View the log and diff for a commit (previous if no SHA1 provided)
+    details = log -n1 -p --format=fuller
+    # Save a repo as a tarball
+    export = archive -o latest.tar.gz -9 --prefix=latest/
+    # View a pretty git log with branch tree
+    g = !git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+    # Return a list of commit SHA1s
+    l = "!f() { git log $* | grep '^commit ' | cut -f 2 -d ' '; }; f"
+    # Remove deleted files
+    r = !git ls-files -z --deleted | xargs -0 git rm
+    # Return the repository's root directory (usefull for shell prompts)
+    root = rev-parse --show-toplevel
+    # Start a new local repository and perform initial commit
+    this = !git init && git add . && git commmit -m \"Initial commit.\"
+    # Thin out older metadata within the repository, reduceses filesystem footprint
+    trim = !git reflog expire --expire=now --all && git gc --prune=now
+
+[core]
+    # Disable paginating system
+    pager = cat
+    # Edit the default IGNORE file
+    # excludesfile = ~/.gitignore
+    excludesfile = ~/../.gitignore
+    # Declare mode of commands with output
+    quotepath = false
+    # Edit endings preferences in repository
+    autocrlf = input
+    safecrlf = warn
+    # Launch an editor with specified values
+    # editor = emacsclient -t -a emacs
+    editor = code --wait
+    # Enable long paths for repository
+    longpaths = true
+    # Indicate compression for current repository
+    compression = 9
+    # Don't trust file modes
+    filemode = false
+
+# URL-shorteners
+[url "https://github.com/"]
+    insteadOf = gh:
+
+[url "https://gitlab.com/"]
+    insteadOf = gl:
+
+[url "https://gist.github.com/"]
+    insteadOf = gist:
+
+[url "https://bitbucket.org/"]
+    insteadOf = bb:
+
+# Colore different outputs in git bash
+[color]
+    ui = true
+    pager = true
+    interactive = auto
+    grep = always
+    decorate = always
+    showbranch = always
+
+[color "branch"]
+    current = green bold
+    local = magenta
+    remote = cyan
+
+[color "diff"]
+    old = red
+    new = green
+    meta = cyan
+    frag = magenta
+    whitespace = yellow reverse
+
+[color "status"]
+    added = green
+    branch = green bold
+    changed = cyan
+    deleted = red dim
+    untracked = magenta
+
+# Edit setup for branches
+[branch]
+    autosetuprebase = always
+
+[diff]
+    # Declare default editor in differences.
+    tool = code
+    # Enable showing up renames
+    renames = true
+    # Assume differences between specified regex
+    wordRegex = .
+    # Display information about current modules
+    submodule = log
+    # Enable better and descriptive initials
+    mnemonicPrefix = true
+
+[difftool "vscode"]
+    cmd = code --wait --diff $LOCAL $REMOTE
+
+[fetch]
+    recurseSubmodules = on-demand
+
+[grep]
+    # Set up highlight matches
+    break = true
+    heading = true
+    lineNumber = true
+    # Consider most of regex
+    extendedRegexp = true
+
+[log]
+    # Sutomatically follow single path
+    follow = true
+    # Disable decorating in reference audit
+    decorate = false
+    # Use abbreviate SHA of commits
+    abbrevCommit = true
+
+[credential]
+    # External helping module of credentials
+    helper = osxkeychain
+    # Acquire credential as component of HTTP
+    useHttpPath = true
+
+[merge]
+    ff = false
+
+[mergetool]
+    # Clean up backup files created by editor
+    keepBackup = false
+    # Clean up the temp
+    keepTemporaries = false
+    # Dedicated directory for temp
+    writeToTemp = true
+    # Accept any files prompts in case of merging modules
+    prompt = false
+
+[page]
+    show = diff-so-fancy | less --tabs=4 -RFX
+
+[pull]
+    rebase = merges
+
+[push]
+    # Default push should upload current branch to the target
+    default = upstream
+    # Push tags with commits in reachable upstream
+    followTags = true
+
+[rebase]
+    # Rebase advanced usage
+    autoSquash = true
+    autoStash = true
+
+[rerere]
+    enabled = true
+    autoupdate = true
+
+[status]
+    # Display module referencing change summaries in status
+    submoduleSummary = true
+    # Recursively traverse untracked directories to display context
+    showUntrackedFiles = all
+
+[tag]
+    sort = version:refname
+
+[versionsort]
+    prereleaseSuffix = -pre
+    prereleaseSuffix = .pre
+    prereleaseSuffix = -beta
+    prereleaseSuffix = .beta
+    prereleaseSuffix = -rc
+    prereleaseSuffix = .rc

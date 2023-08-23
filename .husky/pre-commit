@@ -1,0 +1,17 @@
+#!/bin/sh
+
+forbidden_files=("config.json" ".env")
+
+# Check if any forbidden files are staged
+for file in $(git diff --name-only --cached); do
+  for forbidden in "${forbidden_files[@]}"; do
+    if [[ $file == *"$forbidden"* ]]; then
+      echo "Error: The following forbidden file is staged and cannot be committed: $file"
+      exit 1
+    fi
+  done
+done
+
+. "$(dirname -- "$0")/_/husky.sh"
+
+exit 0
