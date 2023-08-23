@@ -135,6 +135,9 @@ web_modules/
 .cache
 .parcel-cache
 
+# Python venv
+venv/
+
 # Next.js build output
 .next
 out
