@@ -1,6 +1,6 @@
 {
   "name": "unitade-obsidian",
-  "version": "1.0.0",
+  "version": "0.9.10",
   "description": "A plugin for note-taking app Obsidian™ which allows you to treat any file extension as markdown note-file",
   "main": "index.ts",
   "scripts": {
