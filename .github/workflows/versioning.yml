@@ -1,0 +1,38 @@
+name: Checker of release tags
+
+on:
+  release:
+    types:
+      - created
+
+jobs:
+  check-release-tag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check tag prefixes
+        run: |
+          # Extract the tag name from the event payload
+          TAG_NAME=$(jq -r '.release.tag_name' "$GITHUB_EVENT_PATH")
+
+          # Check if the tag starts with "v"
+          if [[ "$TAG_NAME" == v* ]]; then
+            TAG_NAME_NO_V="${TAG_NAME#v}"  # Remove "v" prefix
+            if git rev-parse --quiet --verify "refs/tags/$TAG_NAME_NO_V"; then
+              echo "Tag without 'v' already exists: $TAG_NAME_NO_V"
+            else
+              echo "Creating tag without 'v': $TAG_NAME_NO_V"
+              git tag "$TAG_NAME_NO_V" "$GITHUB_SHA"
+              git push origin "$TAG_NAME_NO_V"
+            fi
+          else
+            TAG_NAME_WITH_V="v$TAG_NAME"  # Add "v" prefix
+            if git rev-parse --quiet --verify "refs/tags/$TAG_NAME_WITH_V"; then
+              echo "Tag with 'v' already exists: $TAG_NAME_WITH_V"
+            else
+              echo "Creating tag with 'v': $TAG_NAME_WITH_V"
+              git tag "$TAG_NAME_WITH_V" "$GITHUB_SHA"
+              git push origin "$TAG_NAME_WITH_V"
+            fi
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
