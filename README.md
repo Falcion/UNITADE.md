@@ -4,6 +4,8 @@
     <a href="https://github.com/Falcion/UnitadeOBSIDIAN/forks"><img src="https://img.shields.io/github/forks/Falcion/UnitadeOBSIDIAN" alt="forks"/></a>
     <a href="https://github.com/Falcion/UnitadeOBSIDIAN/issues"><img src="https://img.shields.io/github/issues/Falcion/UnitadeOBSIDIAN" alt="issues"/></a>
     <a href="https://github.com/Falcion/UnitadeOBSIDIAN/commits"><img src="https://img.shields.io/github/last-commit/Falcion/UnitadeOBSIDIAN" alt="commit-activity"/></a>
+    <a href="https://obsidian.md/plugins?search=unitade"><img src="https://img.shields.io/github/downloads/Falcion/UnitadeOBSIDIAN/total" alt="downloads"/></a>
+    <a href="https://github.com/Falcion/UnitadeOBSDIAIN/releases"><img src="https://img.shields.io/github/manifest-json/v/Falcion/UnitadeOBSIDIAN" alt="version"/></a>
 </div>
 <br/>
 <div align="center">
