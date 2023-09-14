@@ -3,7 +3,7 @@ import zipfile
 
 <<<<<<< Updated upstream
 index_js_path = 'out/main.js'
-manifest_path = 'source/manifest.json'
+manifest_path = 'manifest.json'
 output_zip_path = 'out/plugins-output.zip'
 =======
 index_js_path = "out/main.js"

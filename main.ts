@@ -1,11 +1,11 @@
-import { App, Plugin, PluginSettingTab, Setting } from "obsidian";
+import { App, Plugin, PluginSettingTab, Setting } from 'obsidian';
 
 interface UnitadeSettings {
   extensions: string;
 }
 
 const DEFAULT_SETTINGS: UnitadeSettings = {
-  extensions: "txt",
+  extensions: 'txt',
 };
 
 export default class UnitadePlugin extends Plugin {
@@ -33,9 +33,9 @@ export default class UnitadePlugin extends Plugin {
 
   registerOnLoadExtensions() {
     const extensions = this.settings.extensions
-      .split(",")
+      .split(',')
       .map((ext) => ext.trim())
-      .filter((ext) => ext !== "");
+      .filter((ext) => ext !== '');
 
     this.registerExtensions(extensions, "markdown");
   }
@@ -53,15 +53,10 @@ class UnitadeSettingsTab extends PluginSettingTab {
     let { containerEl } = this;
 
     containerEl.empty();
-<<<<<<< Updated upstream
-
-    containerEl.createEl('h2', { text: 'Unitade\'s Plugin Settings' });
-=======
     
->>>>>>> Stashed changes
     new Setting(containerEl)
-      .setName("Extensions")
-      .setDesc("Enter file extensions to be treated as Markdown, separated by commas.")
+      .setName('Extensions')
+      .setDesc('Enter file extensions to be treated as Markdown, separated by commas.')
       .addText((text) =>
         text
           .setValue(this.plugin.settings.extensions)
