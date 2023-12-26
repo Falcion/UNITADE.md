@@ -1,0 +1,48 @@
+name: Question
+description: Ask the question or seek for clarification
+title: "[QUESTION]: "
+labels: ["Question"]
+projects: [""]
+assignees: [""]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this question, your interest is invaluable in helping us improve the quality and reliability of repository.
+  - type: markdown
+    attributes:
+      value: |
+        Before you begin, please make sure you've checked if the question has already been asked, if you find a similar question, feel free to add any additional information or context that may help us resolve it more effectively.
+  - type: input
+    id: contact
+    attributes:
+      label: Contact details
+      description: If possible, write down the contact information if you need additional communication, if you want contact via “github”, write it down.
+      placeholder: example@domain.com
+    validations:
+      required: false
+  - type: textarea
+    id: what-asked
+    attributes:
+      label: What the essence of your question
+      description: And tell the maintainers any additional context which may advance your question in other eyes.
+      placeholder: Write that form, tell us what you ask!
+      value: ...
+    validations:
+      required: true
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of conduct
+      description: By submitting this issue, you agree to follow our code of conduct — [reference is provided.](./../CODE_OF_CONDUCT.md).
+      options:
+        - label: I agree to follow this project's code of conduct
+          required: true
+  - type: checkboxes
+    id: issue-policy
+    attributes:
+      label: Issue policy
+      description: By submitting this issue, you agree to follow our issue policy — [reference is provided.](./../../docs/github/ISSUE_POLICY.md).
+      options:
+        - label: I agree to follow this project's issue policy
+          required: true

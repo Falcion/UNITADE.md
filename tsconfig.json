@@ -1,0 +1,26 @@
+{
+	"compilerOptions": {
+		//"module": "ES6",
+		"module": "commonjs",
+		"declaration": false,
+		"removeComments": false,
+		"resolveJsonModule": true,
+		"allowSyntheticDefaultImports": true,
+		"skipLibCheck": true,
+		"target": "es6",
+        "lib": [
+            "es2022",
+            "dom",
+            "dom.iterable"
+        ],
+		"outDir": "out",
+		"baseUrl": "./",
+		"incremental": true,
+		"moduleResolution": "node",
+		"esModuleInterop": true,
+		"strict": true,
+		"sourceMap": false
+	},
+	"exclude": ["node_modules", "out", "git", "venv"],
+	"include": ["**/*.ts"]
+}
