@@ -20,8 +20,6 @@ All notable changes to this project will be documented in this file. See [standa
 
 * **publish:** prefinal version of this plugin ([3937096](https://github.com/mokkapps/changelog-generator-demo/commits/393709632e03ee8d5a09de7c95cdd9c7d91bf963))
 
-### [1.1.1](https://github.com/mokkapps/changelog-generator-demo/compare/v1.1.0...v1.1.1) (2024-01-10)
-
 ## [1.1.0](https://github.com/mokkapps/changelog-generator-demo/compare/v1.0.2...v1.1.0) (2024-01-10)
 
 
