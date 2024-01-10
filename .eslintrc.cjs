@@ -10,6 +10,7 @@ module.exports = {
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-non-null-assertion": "off",
       "no-case-declarations": "off",
+      "@typescript-eslint/no-var-requires": "off",
     },
-    "ignorePatterns": [".eslintrc.cjs", "**/database/**/*.js", "**/database/**/*.ts"]
+    "ignorePatterns": [".eslintrc.cjs", "**/database/**/*.js", "**/database/**/*.ts", "*.cjs"],
 };

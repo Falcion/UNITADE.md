@@ -10,7 +10,7 @@ def confirm_copy():
             print("Invalid input. Please enter 'y' or 'n'.")
 
 # Define the source and destination paths
-source_dir = "."  # Root directory
+source_dir = "./../../"  # Root directory
 destination_dir = "source"  # Destination folder
 
 # List of files to copy

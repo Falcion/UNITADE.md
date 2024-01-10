@@ -146,5 +146,9 @@ Following documents can help you sort out issues with accounts and multiple e-ma
 - https://help.github.com/articles/about-commit-email-addresses/
 - https://help.github.com/articles/blocking-command-line-pushes-that-expose-your-personal-email-address/
 
+### Signing the “Developer certificate of origin” (DCO)
+
+In case of contributioning, it can appear, that every commit needs to be signed with “Developer certificate of origin” (DCO) before making any changes, the setting for it appears on "Settings 
+
 
 [^1]: [“Commit's messages convention”](./../docs/github/COMMIT_CONVENTION.md)

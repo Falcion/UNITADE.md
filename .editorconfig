@@ -1,0 +1,225 @@
+
+# EditorConfig is awesome: http://EditorConfig.org
+
+# top-most EditorConfig file
+root = true
+
+# Unix-style newlines with a newline ending every file
+[*]
+end_of_line = lf
+insert_final_newline = true
+
+# Matches multiple files with brace expansion notation
+# Set default charset
+[*.{js,jsx,ts,tsx}]
+charset = utf-8
+
+# 2 space indentation
+[*.js]
+indent_style = space
+indent_size = 2
+
+[*.jsx]
+indent_style = space
+indent_size = 2
+
+[*.ts]
+indent_style = space
+indent_size = 2
+
+[*.tsx]
+indent_style = space
+indent_size = 2
+
+# Trailing whitespace not allowed
+[*.{js,jsx,ts,tsx}]
+trim_trailing_whitespace = true
+
+# Only remove trailing whitespace from changed lines
+[*.{js,jsx,ts,tsx}]
+diff_trimmed_whitespace = true
+
+# Prefer single quotes for strings
+[*.{js,jsx,ts,tsx}]
+quote_type = single
+
+# Enforce a maximum line length of 80 characters
+[*.{js,jsx,ts,tsx}]
+max_line_length = 80
+
+#For Python:
+
+# EditorConfig is awesome: http://EditorConfig.org
+
+# top-most EditorConfig file
+root = true
+
+# Unix-style newlines with a newline ending every file
+[*]
+end_of_line = lf
+insert_final_newline = true
+
+# Matches multiple files with brace expansion notation
+# Set default charset
+[*.{py}]
+charset = utf-8
+
+# 4 space indentation
+[*.py]
+indent_style = space
+indent_size = 4
+
+# Trailing whitespace not allowed
+[*.{py}]
+trim_trailing_whitespace = true
+
+# Only remove trailing whitespace from changed lines
+[*.{py}]
+diff_trimmed_whitespace = true
+
+# Enforce a maximum line length of 80 characters
+[*.{py}]
+max_line_length = 80
+
+
+#For C#:
+
+
+# EditorConfig is awesome: http://EditorConfig.org
+
+# top-most EditorConfig file
+root = true
+
+# Unix-style newlines with a newline ending every file
+[*]
+end_of_line = lf
+insert_final_newline = true
+
+# Matches multiple files with brace expansion notation
+# Set default charset
+[*.{cs}]
+charset = utf-8
+
+# 4 space indentation
+[*.cs]
+indent_style = space
+indent_size = 4
+
+# Trailing whitespace not allowed
+[*.{cs}]
+trim_trailing_whitespace = true
+
+# Only remove trailing whitespace from changed lines
+[*.{cs}]
+diff_trimmed_whitespace = true
+
+# Enforce a maximum line length of 80 characters
+[*.{cs}]
+max_line_length = 80
+
+
+#For C++:
+
+
+# EditorConfig is awesome: http://EditorConfig.org
+
+# top-most EditorConfig file
+root = true
+
+# Unix-style newlines with a newline ending every file
+[*]
+end_of_line = lf
+insert_final_newline = true
+
+# Matches multiple files with brace expansion notation
+# Set default charset
+[*.{cpp,hpp}]
+charset = utf-8
+
+# 4 space indentation
+[*.cpp]
+indent_style = space
+indent_size = 4
+
+[*.hpp]
+indent_style = space
+indent_size = 4
+
+# Trailing whitespace not allowed
+[*.{cpp,hpp}]
+trim_trailing_whitespace = true
+
+# Only remove trailing whitespace from changed lines
+[*.{cpp,hpp}]
+diff_trimmed_whitespace = true
+
+# Enforce a maximum line length of 80 characters
+[*.{cpp,hpp}]
+max_line_length = 80
+
+
+#For Markdown:
+
+
+# EditorConfig is awesome: http://EditorConfig.org
+
+# top-most EditorConfig file
+root = true
+
+# Unix-style newlines with a newline ending every file
+[*]
+end_of_line = lf
+insert_final_newline = true
+
+# Matches multiple files with brace expansion notation
+# Set default charset
+[*.{md}]
+charset = utf-8
+
+# Trailing whitespace not allowed
+[*.{md}]
+trim_trailing_whitespace = true
+
+# Only remove trailing whitespace from changed lines
+[*.{md}]
+diff_trimmed_whitespace = true
+
+# Enforce a maximum line length of 80 characters
+[*.{md}]
+max_line_length = 80
+
+
+#For Java:
+
+
+# EditorConfig is awesome: http://EditorConfig.org
+
+# top-most EditorConfig file
+root = true
+
+# Unix-style newlines with a newline ending every file
+[*]
+end_of_line = lf
+insert_final_newline = true
+
+# Matches multiple files with brace expansion notation
+# Set default charset
+[*.{java}]
+charset = utf-8
+
+# 4 space indentation
+[*.java]
+indent_style = space
+indent_size = 4
+
+# Trailing whitespace not allowed
+[*.{java}]
+trim_trailing_whitespace = true
+
+# Only remove trailing whitespace from changed lines
+[*.{java}]
+diff_trimmed_whitespace = true
+
+# Enforce a maximum line length of 80 characters
+[*.{java}]
+max_line_length = 80

@@ -8,6 +8,7 @@
 	"extends": [
 		"plugin:@typescript-eslint/eslint-recommended",
 		"plugin:@typescript-eslint/recommended",
+		"plugin:markdownlint/recommended",
 		"prettier",
 		"prettier/@typescript-eslint",
 		"eslint:recommended"
@@ -16,7 +17,7 @@
 	"env": {
 		"node": true
 	},
-	"ignorePatterns": [".eslintrc.cjs", "**/database/**/*.js", "**/database/**/*.ts"],
+	"ignorePatterns": [".eslintrc.cjs", "**/database/**/*.js", "**/database/**/*.ts", "*.cjs", "main.ts"],
 	"rules": {
 		"@typescript-eslint/interface-name-prefix": "off",
 		"@typescript-eslint/explicit-function-return-type": "off",
@@ -24,5 +25,11 @@
 		"@typescript-eslint/no-explicit-any": "off",
 		"@typescript-eslint/no-non-null-assertion": "off",
 		"no-case-declarations": "off"
-	}
+	},
+	"overrides": [{
+		"files": ["*.md"],
+		"excludedFiles": ["**/*.ts", "**/*.js"],
+		"parser": "eslint-plugin-markdownlint/parser",
+		"extends": ["plugin:markdownlint/recommended"]
+	}]
 }

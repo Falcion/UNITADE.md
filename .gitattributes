@@ -1,3 +1,5 @@
+# Apply override to all files in the directory
+*.md linguist-detectable
 ## GITATTRIBUTES FOR WEB PROJECTS
 #
 # These settings are for any web project.

@@ -53,7 +53,7 @@ class UnitadeSettingsTab extends PluginSettingTab {
     let { containerEl } = this;
 
     containerEl.empty();
-    
+
     new Setting(containerEl)
       .setName('Extensions')
       .setDesc('Enter file extensions to be treated as Markdown, separated by commas.')

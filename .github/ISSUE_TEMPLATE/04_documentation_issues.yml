@@ -29,6 +29,15 @@ body:
       placeholder: 'ISSUE_POLICY:L#1'
     validations:
       required: true
+  - type: textarea
+    id: what-wanted
+    attributes:
+      label: What the essence of the issue
+      description: And tell the maintainers, what the nature of the issue.
+      placeholder: Write that form, tell us what's bugged!
+      value: ...
+    validations:
+      required: true
   - type: checkboxes
     id: terms
     attributes:

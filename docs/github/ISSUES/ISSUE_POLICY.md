@@ -1,4 +1,4 @@
-Issues are the lifeblood of UNITADE, they help us track, prioritize, and address bugs, feature requests, and other improvements, project appreciates your interest in contributing to our project by creating, commenting on, or managing issues.
+Issues are the lifeblood of PATTERNU, they help us track, prioritize, and address bugs, feature requests, and other improvements, project appreciates your interest in contributing to our project by creating, commenting on, or managing issues.
 
 To ensure that issues are handled effectively and that everyone in our community has a positive experience, team put together this issue policy (thereafter as “policy”): this document provides guidelines on how to create, manage, and interact with issues within our project repository.
 
