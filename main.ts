@@ -1,4 +1,6 @@
-import { App, Plugin, PluginSettingTab, Setting } from 'obsidian';
+import { App, FileSystemAdapter, Notice, Plugin, PluginSettingTab, Setting } from 'obsidian';
+import * as fs from 'fs';
+import * as path from 'path';
 
 interface UnitadeSettings {
   extensions: string;
@@ -8,6 +10,8 @@ const DEFAULT_SETTINGS: UnitadeSettings = {
   extensions: 'txt',
 };
 
+const CONFLICTING_PLUGINS = ['txt-as-md-obsidian', 'ini-obsidian'];
+
 export default class UnitadePlugin extends Plugin {
   settings: UnitadeSettings = DEFAULT_SETTINGS;
 
@@ -15,8 +19,35 @@ export default class UnitadePlugin extends Plugin {
     // Load the saved settings when the plugin is loaded.
     await this.loadSettings();
 
+    this.checkConflicts(undefined);
+
     this.addSettingTab(new UnitadeSettingsTab(this.app, this));
     this.registerOnLoadExtensions();
+  }
+
+  checkConflicts(additional_message: string | undefined) {
+    const pluginsFolder = path.join(this.app.vault.configDir, 'plugins');
+
+    if(additional_message == undefined)
+      additional_message = '';
+
+    const basePath = (this.app.vault.adapter as FileSystemAdapter).getBasePath();
+
+    fs.readdir(path.join(basePath, pluginsFolder), (err, folders) => {
+      if (err) {
+        console.error('Error reading plugins folder:', err);
+        return;
+      }
+
+      const conflict = folders.filter((folder) => CONFLICTING_PLUGINS.includes(folder));
+
+      if(conflict.length > 0) {
+        console.warn('Conflicting plugin folders detected:', conflict);
+        new Notice(`Conflicting plugins detected: ${conflict.join(', ')}\n${additional_message}`);
+      }
+      else
+        console.log('No conflicting plugin folders found.');
+    });
   }
 
   async loadSettings() {
@@ -27,7 +58,6 @@ export default class UnitadePlugin extends Plugin {
     // Save the current settings back to Obsidian's data store.
     await this.saveData(this.settings);
 
-    // Re-register extensions with the updated settings.
     this.registerOnLoadExtensions();
   }
 
@@ -37,7 +67,11 @@ export default class UnitadePlugin extends Plugin {
       .map((ext) => ext.trim())
       .filter((ext) => ext !== '');
 
-    this.registerExtensions(extensions, "markdown");
+    try {
+      this.registerExtensions(extensions, "markdown");
+    } catch(err) {
+      new Notice(`Error with registering extensions: err`, 500);
+    }
   }
 }
 
