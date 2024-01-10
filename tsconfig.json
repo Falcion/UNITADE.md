@@ -1,6 +1,5 @@
 {
 	"compilerOptions": {
-		//"module": "ES6",
 		"module": "commonjs",
 		"declaration": false,
 		"removeComments": false,
@@ -11,7 +10,8 @@
         "lib": [
             "es2022",
             "dom",
-            "dom.iterable"
+            "dom.iterable",
+			"scripthost",
         ],
 		"outDir": "out",
 		"baseUrl": "./",

@@ -1,6 +1,8 @@
 import esbuild from "esbuild";
+import {sassPlugin} from 'esbuild-sass-plugin'
 import process from "process";
 import builtins from "builtin-modules";
+
 
 const banner =
 `/*
@@ -16,10 +18,14 @@ const context = await esbuild.context({
 		js: banner,
 	},
 	entryPoints: ["main.ts"],
+    plugins: [
+        sassPlugin(),
+    ],
 	bundle: true,
 	external: [
 		"obsidian",
 		"electron",
+        "codemirror",
 		"@codemirror/autocomplete",
 		"@codemirror/collab",
 		"@codemirror/commands",
@@ -33,7 +39,7 @@ const context = await esbuild.context({
 		"@lezer/lr",
 		...builtins],
 	format: "cjs",
-	target: "es2018",
+	target: "es6",
 	logLevel: "info",
 	sourcemap: prod ? false : "inline",
 	treeShaking: true,
