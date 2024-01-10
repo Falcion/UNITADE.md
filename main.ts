@@ -57,8 +57,6 @@ export default class UnitadePlugin extends Plugin {
   async saveSettings() {
     // Save the current settings back to Obsidian's data store.
     await this.saveData(this.settings);
-
-    this.registerOnLoadExtensions();
   }
 
   registerOnLoadExtensions() {
@@ -67,11 +65,7 @@ export default class UnitadePlugin extends Plugin {
       .map((ext) => ext.trim())
       .filter((ext) => ext !== '');
 
-    try {
       this.registerExtensions(extensions, "markdown");
-    } catch(err) {
-      new Notice(`Error with registering extensions: err`, 500);
-    }
   }
 }
 
@@ -100,5 +94,15 @@ class UnitadeSettingsTab extends PluginSettingTab {
             await this.plugin.saveSettings();
           })
       );
+    new Setting(containerEl)
+          .setName('Force-update extensions')
+          .setDesc('If you changed extensions array, this plugins will reregister extensions in vault, can cause exceptions, so its recommended to reload vault or plugin instead of this option.')
+          .addButton((bt) =>
+            bt
+              .setButtonText('Update extensions')
+              .onClick(() => {
+                this.plugin.registerOnLoadExtensions();
+              })
+          );
   }
 }
