@@ -1,6 +1,6 @@
 {
   "name": "unitade",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A special pattern for Github™ repository with universal cases for markdown files of documentations and other actions/scripts",
   "main": "main.ts",
   "type": "module",
