@@ -6,5 +6,5 @@
     "description": "Effortlessly treat any file extension as note, organize diverse file formats in your vault.",
     "author": "Falcion",
     "authorUrl": "https://github.com/Falcion/UnitadeOBSIDIAN",
-    "isDesktopOnly": true
+    "isDesktopOnly": false
 }
