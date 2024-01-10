@@ -3,7 +3,6 @@
   "version": "1.1.0",
   "description": "A special pattern for Github™ repository with universal cases for markdown files of documentations and other actions/scripts",
   "main": "main.ts",
-  "type": "module",
   "directories": {
     "doc": "docs"
   },
@@ -25,7 +24,7 @@
     "prepare": "husky install && cd scripts/python && py -m venv venv",
     "prepare:husky": "husky install",
     "prepare:python": "cd scripts/python && py -m venv venv",
-    "build": "tsc -noEmit -skipLibCheck main.ts && node esbuild.config.mjs production",
+    "build": "tsc -noEmit -skipLibCheck --esModuleInterop main.ts && node esbuild.config.mjs production",
     "pack": "python scripts/python/pack.py",
     "release": "standard-version",
     "release:minor": "standard-version --release-as minor",
@@ -102,6 +101,7 @@
     "check-for-leaks": "^1.2.1",
     "dotenv": "^16.3.1",
     "dotenv-safe": "^8.2.0",
+    "esbuild-sass-plugin": "^2.16.1",
     "eslint": "^8.51.0",
     "eslint-config-standard": "^17.1.0",
     "eslint-plugin": "^1.0.1",
@@ -121,6 +121,7 @@
     "mocha": "^10.2.0",
     "prettier": "^3.0.3",
     "remark": "^15.0.1",
+    "sass": "^1.69.7",
     "standard-version": "^9.5.0",
     "temp": "^0.9.4",
     "ts-loader": "^9.5.0",
