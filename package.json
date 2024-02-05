@@ -111,7 +111,7 @@
     "extend": "^3.0.2",
     "folder-hash": "^4.0.4",
     "fs-extra": "^11.1.1",
-    "husky": "^8.0.3",
+    "husky": "^9.0.10",
     "inquirer": "^9.2.11",
     "lint": "^1.1.2",
     "lint-staged": "^15.0.1",
