@@ -1,3 +1,5 @@
+Project at the moment is being refactored/rewritten, wait for the changes.
+
 <div align="center">
     <a href="https://github.com/Falcion/UnitadeOBSIDIAN/graphs/contributors"><img src="https://img.shields.io/github/contributors/Falcion/UnitadeOBSIDIAN" alt="contributors"/></a>
     <a href="https://github.com/Falcion/UnitadeOBSIDIAN/stargazers"><img src="https://img.shields.io/github/stars/Falcion/UnitadeOBSIDIAN" alt="stargazers"/></a>
