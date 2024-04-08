@@ -1,0 +1,21 @@
+# EditorConfig is awesome: http://EditorConfig.org
+
+# top-most EditorConfig file
+root = true
+
+# Unix-style newlines with a newline ending every file
+[*]
+end_of_line = crlf
+insert_final_newline = true
+max_line_length = 800
+
+[*.js, *.ts]
+indent_size = 2
+indent_style = space
+single = true
+
+[*.json]
+indent_size = 4
+
+[package.json]
+indent_size = 2

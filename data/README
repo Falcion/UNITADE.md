@@ -1,0 +1,8 @@
+The official GitHub CLI now includes functionality that allows you to clone labels easily from one repo to another.
+
+Example syntax:
+`gh label clone org-name/repo-to-clone-from --repo org-name/repo-to-clone-to`
+See docs for the info:
+- https://cli.github.com/manual/gh_label_clone
+The GitHub CLI docs also illustrate listing the labels using custom JSON output templates: 
+- https://cli.github.com/manual/gh_label_list

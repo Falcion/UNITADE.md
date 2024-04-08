@@ -1,0 +1,9 @@
+{
+    "id": "unitade",
+    "name": "UNITADE",
+    "description": "Preconfigured pattern for your repository with universal cases for markdown files of documentations and other actions/scripts",
+    "author": "Falcion",
+    "authorUrl": "https://github.com/Falcion/",
+    "license": "MIT",
+    "version": "1.2.0"
+}
