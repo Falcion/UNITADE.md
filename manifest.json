@@ -1,9 +1,10 @@
 {
     "id": "unitade",
     "name": "UNITADE",
-    "description": "Preconfigured pattern for your repository with universal cases for markdown files of documentations and other actions/scripts",
+    "version": "1.2.0",
+    "minAppVersion": "1.0.0",
+    "description": "Effortlessly treat any file extension as note, organize diverse file formats in your vault.",
     "author": "Falcion",
-    "authorUrl": "https://github.com/Falcion/",
-    "license": "MIT",
-    "version": "1.2.0"
+    "authorUrl": "https://github.com/Falcion/UNITADE",
+    "isDesktopOnly": false
 }
