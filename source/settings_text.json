@@ -1,0 +1,8 @@
+{
+    "CONFIG_ROOT_NAME": "Extensions:",
+    "CONFIG_ROOT_DESC": "Enter the file extensions that should be registered with the vault and with which the application should start registering (taking into account).",
+    "CONFIG_MOBILE_NAME": "Mobile-specific:",
+    "CONFIG_MOBILE_DESC": "Both this module's extensions and default specific extensions will be used on mobile devices if this mode is enabled.",
+    "MARKDOWN_OVERCHARGE_NAME": "Enable markdown overcharge:",
+    "MARKDOWN_OVERCHANGE_DESC": "If enabled, automatically adds to OBSIDIAN's registry different variations of markdown extensions like .MDOWN and etc."
+}
