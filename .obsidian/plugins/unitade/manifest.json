@@ -1,0 +1,10 @@
+{
+    "id": "unitade",
+    "name": "Unitade",
+    "version": "1.2.0",
+    "minAppVersion": "1.0.0",
+    "description": "Effortlessly treat any file extension as note, organize diverse file formats in your vault.",
+    "author": "Falcion",
+    "authorUrl": "https://github.com/Falcion/UnitadeOBSIDIAN",
+    "isDesktopOnly": false
+}
