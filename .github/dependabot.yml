@@ -4,13 +4,13 @@
 # https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
 
 # Specify assignees for pull requests
-
-version: 2
-updates:
-  - package-ecosystem: "npm"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-    # Add assignees
-    assignees:
-      - "octocat"
+#
+#version: 2
+#updates:
+#  - package-ecosystem: "npm"
+#    directory: "/"
+#    schedule:
+#      interval: "weekly"
+#    # Add assignees
+#    assignees:
+#      - "octocat"
