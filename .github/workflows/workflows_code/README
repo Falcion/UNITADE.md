@@ -1,0 +1,5 @@
+For more open-source workflows, check this awesome repository:
+- https://github.com/meirwah/awesome-workflow-engines/
+
+Before using this workflows (renaming them into *.YML), please, move them into the
+folder of workflows, so they can work correctly (their retrospective path is in specified).
