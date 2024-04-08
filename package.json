@@ -135,7 +135,7 @@
     "lint": "^1.1.2",
     "lint-staged": "^15.2.2",
     "markdownlint": "^0.33.0",
-    "markdownlint-cli2": "^0.12.1",
+    "markdownlint-cli2": "^0.13.0",
     "minimist": "^1.2.8",
     "mocha": "^10.3.0",
     "npm-update": "^3.0.1",
