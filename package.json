@@ -1,0 +1,183 @@
+{
+  "name": "unitade",
+  "displayName": "UNITADE",
+  "private": "true",
+  "version": "1.2.0",
+  "description": "A plugin for note-taking app Obsidian™ which allows you to treat any file extension as markdown note-file",
+  "main": "main.ts",
+  "type": "commonjs",
+  "markdown": "github",
+  "directories": {
+    "doc": "docs"
+  },
+  "os": [
+    "linux",
+    "win32",
+    "win64"
+  ],
+  "readme": "https://github.com/Falcion/UNITADE#readme",
+  "scripts": {
+    "preinit": "npm i --force",
+    "generate-version-json": "node scripts/js/generate-version-json.js",
+    "lint": "node ./scripts/lint.js && npm run lint:docs",
+    "lint:js": "node ./scripts/lint.js --js",
+    "lint:docs": "remark docs -qf && npm run lint:js-in-markdown && npm run create-typescript-definitions && npm run lint:ts-check-js-in-markdown && npm run lint:docs-fiddles && npm run lint:docs-relative-links && npm run lint:markdownlint",
+    "lint:docs-fiddles": "standard \"docs/fiddles/**/*.js\"",
+    "lint:docs-relative-links": "electron-lint-markdown-links --root docs \"**/*.md\"",
+    "lint:markdownlint": "electron-markdownlint \"*.md\" \"docs/**/*.md\"",
+    "lint:ts-check-js-in-markdown": "electron-lint-markdown-ts-check --root docs \"**/*.md\" --ignore \"breaking-changes.md\"",
+    "lint:js-in-markdown": "electron-lint-markdown-standard --root docs \"**/*.md\"",
+    "precommit": "lint-staged",
+    "prepack": "check-for-leaks",
+    "prepare": "husky .husky/ && cd scripts/python && py -m venv venv && cd ./../../ && npm run prepare:main",
+    "prepare:husky": "husky .husky/",
+    "prepare:python": "cd scripts/python && py -m venv venv",
+    "prepare:main": "ts-node prepare.ts",
+    "update-analytics": "ts-node scripts/js/analytics-workflow.ts",
+    "build": "tsc -noEmit -skipLibCheck --esModuleInterop main.ts && node esbuild.config.mjs production",
+    "pack": "python scripts/python/pack.py",
+    "release": "standard-version",
+    "release:minor": "standard-version --release-as minor",
+    "release:patch": "standard-version --release-as patch",
+    "release:major": "standard-version --release-as major"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Falcion/UNITADE.git"
+  },
+  "keywords": [
+    "plugin",
+    "markdown",
+    "files",
+    "typescript",
+    "file-format",
+    "obsidian",
+    "obsidian-plugin"
+  ],
+  "author": {
+    "name": "Falcion",
+    "email": "io.falcion@outlook.com",
+    "url": "https://github.com/Falcion/"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Falcion/UNITADE/issues"
+  },
+  "homepage": "https://github.com/Falcion/UNITADE#readme",
+  "prettier": {
+    "tabWidth": 4,
+    "useTabs": true,
+    "bracketSpacing": true,
+    "singleQuote": false,
+    "endOfLine": "crlf",
+    "trailingComma": "all",
+    "semi": true
+  },
+  "lint-staged": {
+    "*.{js,ts}": [
+      "node scripts/lint.js --js --fix --only --"
+    ],
+    "*.{js,ts,d.ts}": [
+      "ts-node scripts/gen-filenames.ts"
+    ],
+    "*.{cc,mm,c,h}": [
+      "python3 scripts/run-clang-format.py -r -c --fix"
+    ],
+    "*.md": [
+      "npm run lint:docs"
+    ],
+    "*.{gn,gni}": [
+      "npm run gn-check",
+      "npm run gn-format"
+    ],
+    "*.py": [
+      "node scripts/lint.js --py --fix --only --"
+    ],
+    "{*.patch,.patches}": [
+      "node scripts/lint.js --patches --only --",
+      "ts-node scripts/js/check-patch-diff.ts"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-customizable"
+    }
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.1.0",
+    "@commitlint/config-conventional": "^19.1.0",
+    "@electron/lint-roller": "^1.12.0",
+    "@npmcli/package-json": "^5.0.0",
+    "@octokit/rest": "^20.0.2",
+    "@types/extend": "^3.0.4",
+    "@types/fs-extra": "^11.0.4",
+    "@types/minimist": "^1.2.5",
+    "@types/node": "^20.11.27",
+    "@typescript-eslint/eslint-plugin": "^7.2.0",
+    "@typescript-eslint/parser": "^7.2.0",
+    "axios": "^1.6.7",
+    "chai": "^5.1.0",
+    "check-for-leaks": "^1.2.1",
+    "colors": "^1.4.0",
+    "dotenv": "^16.4.5",
+    "dotenv-safe": "^9.1.0",
+    "eslint": "^8.57.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin": "^1.0.1",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-markdownlint": "^0.5.0",
+    "eslint-plugin-node": "^11.1.0",
+    "extend": "^3.0.2",
+    "folder-hash": "^4.0.4",
+    "fs-extra": "^11.2.0",
+    "husky": "^9.0.11",
+    "inquirer": "^9.2.16",
+    "lint": "^1.1.2",
+    "lint-staged": "^15.2.2",
+    "markdownlint": "^0.33.0",
+    "markdownlint-cli2": "^0.12.1",
+    "minimist": "^1.2.8",
+    "mocha": "^10.3.0",
+    "npm-update": "^3.0.1",
+    "prettier": "^3.2.5",
+    "remark": "^15.0.1",
+    "standard-version": "^9.5.0",
+    "temp": "^0.9.4",
+    "ts-loader": "^9.5.1",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.4.2",
+    "unicorn": "^0.0.1",
+    "url": "^0.11.3"
+  },
+  "badges": [
+    {
+      "description": "contributors",
+      "href": "https://github.com/Falcion/UNITADE/graphs/contributors",
+      "url": "https://img.shields.io/github/contributors/Falcion/UNITADE"
+    },
+    {
+      "description": "stargazers",
+      "href": "https://github.com/Falcion/UNITADE/stargazers",
+      "url": "https://img.shields.io/github/stars/Falcion/UNITADE"
+    },
+    {
+      "description": "forks",
+      "href": "https://github.com/Falcion/UNITADE/forks",
+      "url": "https://img.shields.io/github/forks/Falcion/UNITADE"
+    },
+    {
+      "description": "issues",
+      "href": "https://github.com/Falcion/UNITADE/issues",
+      "url": "https://img.shields.io/github/issues/Falcion/UNITADE"
+    },
+    {
+      "description": "last-commit",
+      "href": "https://github.com/Falcion/UNITADE/commits",
+      "url": "https://img.shields.io/github/last-commit/Falcion/UNITADE"
+    }
+  ],
+  "dependencies": {
+    "obsidian": "^1.5.7-1"
+  }
+}
