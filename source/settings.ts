@@ -6,7 +6,7 @@ import {
 } from 'obsidian';
 
 import UNITADE_PLUGIN from './main';
-import SETTING_LOCALE from './settings_text.json';
+import SETTING_LOCALE from './settings.text';
 
 export interface UNITADE_SETTINGS {
     markdown_overcharge: boolean,
@@ -29,8 +29,8 @@ export interface UNITADE_SETTINGS {
     errors: Record<string, string>,
 }
 
-export const DEFAULT_SETTINGS: Readonly<UNITADE_SETTINGS> = {
-    markdown_overcharge: true,
+export const DEFAULT_SETTINGS: UNITADE_SETTINGS = {
+    markdown_overcharge: false,
     extensions: 'txt',
     is_forced: false,
     is_onload: false,
@@ -80,8 +80,8 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
         containerEl.createEl('h2', { text: 'UNITADE\'s settings:' });
 
         new Setting(containerEl)
-            .setName(SETTING_LOCALE['MARKDOWN_OVERCHARGE_NAME'])
-            .setDesc(SETTING_LOCALE['MARKDOWN_OVERCHANGE_DESC'])
+            .setName(SETTING_LOCALE.getMdOv().name)
+            .setDesc(SETTING_LOCALE.getMdOv().desc)
             .addToggle(toggle => {
                 toggle
                     .setValue(this.plugin.settings.markdown_overcharge)
@@ -98,8 +98,8 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
             });
 
         this._config = new Setting(containerEl)
-            .setName(SETTING_LOCALE['CONFIG_ROOT_NAME'])
-            .setDesc(SETTING_LOCALE['CONFIG_ROOT_DESC']);
+            .setName(SETTING_LOCALE.getCfgRt().name)
+            .setDesc(SETTING_LOCALE.getCfgRt().desc);
 
         let configInput = new TextAreaComponent(containerEl)
             .setPlaceholder('txt, conf, config, data, logs')
@@ -136,8 +136,8 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
         configInput.inputEl.style.minHeight = '36px';
 
         this._configMobile = new Setting(containerEl)
-            .setName(SETTING_LOCALE['CONFIG_MOBILE_NAME'])
-            .setDesc(SETTING_LOCALE['CONFIG_MOBILE_DESC'])
+            .setName(SETTING_LOCALE.getCfgMb().name)
+            .setDesc(SETTING_LOCALE.getCfgMb().desc)
             .addToggle(toggle => {
                 toggle
                     .setValue(this.plugin.settings.mobile_settings.enable)
@@ -168,7 +168,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                     ...this.plugin.settings,
                     mobile_settings: {
                         ...this.plugin.settings.mobile_settings,
-                        extensions: undefined as string | undefined,
+                        extensions: '',
                     }
                 }
 
@@ -202,13 +202,47 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
         this._errors = containerEl.createEl('p', { text: 'None' });
         this._errors.style.whiteSpace = 'pre-line';
 
-        containerEl.createEl('h3', { text: 'Views' });
-        this._views = containerEl.createEl('p');
-        this._views.style.whiteSpace = 'pre-line';
-
         this.__updateErrors();
 
         containerEl.createEl('h2', { text: 'Advanced block' });
+
+        const input1 = new Setting(containerEl)
+            .setName(SETTING_LOCALE.getOnRf().name)
+            .setDesc(SETTING_LOCALE.getOnRf().desc)
+            .addToggle(toggle => {
+                toggle
+                    .setValue(this.plugin.settings.is_onload)
+                    .onChange(async (value) => {
+                        let next = {
+                            ...this.plugin.settings,
+                            is_onload: value,
+                            is_onload_unsafe: this.plugin.settings.is_onload_unsafe ? false : this.plugin.settings.is_onload_unsafe,
+                        };
+
+                        await this.plugin.uptSettings(next);
+                    });
+
+                return toggle;
+            });
+
+        new Setting(containerEl)
+            .setName(SETTING_LOCALE.getOnRu().name)
+            .setDesc(SETTING_LOCALE.getOnRu().desc)
+            .addToggle(toggle => {
+                toggle
+                    .setValue(this.plugin.settings.is_onload_unsafe)
+                    .onChange(async (value) => {
+                        let next = {
+                            ...this.plugin.settings,
+                            is_onload_unsafe: value,
+                            is_onload: this.plugin.settings.is_onload ? false : this.plugin.settings.is_onload,
+                        };
+
+                        await this.plugin.uptSettings(next);
+                    });
+
+                return toggle;
+            });
     }
 
     private __uptMbConfig(mbConfigInput: TextAreaComponent, mbConfigEnabled: boolean): void {
@@ -243,7 +277,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
         } else {
             this._errors!.innerHTML = `Errors: <ul>${Object.keys(this.plugin.settings.errors)
                 .map((k) => `<li><b>${k}</b>: ${this.plugin.settings.errors[k]}</li>`)
-                .join("")}</ul>`;
+                .join('')}</ul>`;
             this._errors!.style.color = 'red';
         }
     }
