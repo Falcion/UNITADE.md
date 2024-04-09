@@ -30,33 +30,40 @@ export default class UNITADE_PLUGIN extends Plugin {
         await this.ldSettings();
 
         this.app.vault.on('create', async (file) => {
-            const filename: string[] = file.name.split('.');
+            const filename: string[] = file.name.split('.').splice(1);
+
+            if (this.settings.is_ignore) {
+                for (const mask of this.settings.ignore_masks.split(';'))
+                    if (new RegExp(mask).test(file.name)) {
+                        return;
+                    }
+            }
 
             if (this.settings.is_onload) {
-                if (this.settings.ignore_extensions.split(',').includes(filename.last()!))
+                if (this.settings.ignore_extensions.split(';').includes(filename.last()!) && this.settings.is_ignore)
                     return;
-                if (this.settings.extensions.split(',').includes(filename.last()!))
+                if (this.settings.extensions.split(';').includes(filename.last()!))
                     return;
                 if (this.settings.mobile_settings.enable &&
-                    this.settings.mobile_settings.extensions.split(',').includes(filename.last()!))
+                    this.settings.mobile_settings.extensions.split(';').includes(filename.last()!))
                     return;
 
                 try {
                     this.__tryApply(filename.last()!, 'markdown');
 
-                    let __settings = this.settings.extensions.split(',');
+                    let __settings = this.settings.extensions.split(';');
 
                     __settings.push(`${filename.last()!}`);
 
-                    this.settings.extensions = __settings.join(',');
+                    this.settings.extensions = __settings.join(';');
 
                     if (this.settings.mobile_settings.enable) {
 
-                        let __mb_settings = this.settings.mobile_settings.extensions.split(',');
+                        let __mb_settings = this.settings.mobile_settings.extensions.split(';');
 
-                        __mb_settings.push(`, ${filename.last()!}`);
+                        __mb_settings.push(`${filename.last()!}`);
 
-                        this.settings.mobile_settings.extensions = __mb_settings.join(',');
+                        this.settings.mobile_settings.extensions = __mb_settings.join(';');
                     }
                 } catch (err: any) {
                     new Notification('Error from UNITADE plugin:', { body: `Error with on-load registry of: ${filename.last()!}};` });
@@ -66,32 +73,32 @@ export default class UNITADE_PLUGIN extends Plugin {
             }
 
             if (this.settings.is_onload_unsafe) {
-                const extensions: string[] = filename.splice(0);
+                const extensions: string[] = filename;
 
                 for (const extension of extensions) {
-                    if (this.settings.ignore_extensions.split(',').includes(extension))
-                        continue;
-                    if (this.settings.extensions.split(',').includes(extension))
+                    if (this.settings.ignore_extensions.split(';').includes(extension) && this.settings.is_ignore)
+                        return;
+                    if (this.settings.extensions.split(';').includes(extension))
                         return;
                     if (this.settings.mobile_settings.enable &&
-                        this.settings.mobile_settings.extensions.split(',').includes(extension))
+                        this.settings.mobile_settings.extensions.split(';').includes(extension))
                         return;
 
                     try {
                         this.__tryApply(extension, 'markdown');
 
-                        let __settings = this.settings.extensions.split(',');
+                        let __settings = this.settings.extensions.split(';');
 
-                        __settings.push(`, ${extension}`);
+                        __settings.push(`${extension}`);
 
-                        this.settings.extensions = __settings.join(',');
+                        this.settings.extensions = __settings.join(';');
 
                         if (this.settings.mobile_settings.enable) {
-                            let __mb_settings = this.settings.mobile_settings.extensions.split(',');
+                            let __mb_settings = this.settings.mobile_settings.extensions.split(';');
 
-                            __mb_settings.push(`, ${extension}`);
+                            __mb_settings.push(`${extension}`);
 
-                            this.settings.mobile_settings.extensions = __mb_settings.join(', ');
+                            this.settings.mobile_settings.extensions = __mb_settings.join(';');
                         }
                     } catch (err: any) {
                         new Notification('Error from UNITADE plugin:', { body: `Error with on-load registry of: ${extensions}` });
@@ -108,17 +115,17 @@ export default class UNITADE_PLUGIN extends Plugin {
 
         this.addSettingTab(new UNITADE_SETTINGS_TAB(this.app, this));
 
-        this.app.workspace.layoutReady ? this.layoutReady() : this.app.workspace.on('active-leaf-change', this.layoutReady);
+        this.app.workspace.layoutReady ? this.ltReady() : this.app.workspace.on('active-leaf-change', this.ltReady);
 
         this.__apply();
     }
 
-    layoutReady = () => {
-        this.app.workspace.off('layout-ready', this.layoutReady);
-        this.refreshLeaves();
+    ltReady = () => {
+        this.app.workspace.off('layout-ready', this.ltReady);
+        this.leafRfsh();
     }
 
-    refreshLeaves = () => {
+    leafRfsh = () => {
         /**@ts-expect-error */
         this.app.workspace.iterateCodeMirrors(cm => cm.setOption("mode", cm.getOption("mode")));
     }
@@ -139,7 +146,7 @@ export default class UNITADE_PLUGIN extends Plugin {
                 delete CodeMirror.modes[key];
         }
 
-        this.refreshLeaves();
+        this.leafRfsh();
     }
 
     async ldSettings(): Promise<void> {
@@ -157,25 +164,32 @@ export default class UNITADE_PLUGIN extends Plugin {
     }
 
     private __apply(): void {
+        if (this.settings.is_grouped) {
+            const data: { [key: string]: string[] } = parsegroup(this.settings.grouped_extensions);
+
+            for (const view in data) {
+                for (const extension in data[view])
+                    this.__tryApply(extension, view);
+            }
+        }
+
         if (this.is_mobile) {
             this.__applyCfg(this.settings.mobile_settings.extensions ?? this.settings.extensions);
         } else {
             this.__applyCfg(this.settings.extensions);
         }
 
-        if (this.settings.is_forced) {
-            const forced_extensions = this.settings.forced_extensions.split(',').map(s => s.trim());
+        const forced_extensions = this.settings.forced_extensions.split(';').map(s => s.trim());
 
-            for (const extension of forced_extensions) {
-                try {
-                    this.registerView(extension, (leaf: WorkspaceLeaf) => {
-                        return new UNITADE_VIEW(leaf, extension);
-                    });
-                } catch (err: any) {
-                    new Notification('Error from UNITADE plugin:', { body: `${err}` });
+        for (const extension of forced_extensions) {
+            try {
+                this.registerView(extension, (leaf: WorkspaceLeaf) => {
+                    return new UNITADE_VIEW(leaf, extension);
+                });
+            } catch (err: any) {
+                new Notification('Error from UNITADE plugin:', { body: `${err}` });
 
-                    console.error(err);
-                }
+                console.error(err);
             }
         }
     }
@@ -213,9 +227,12 @@ export default class UNITADE_PLUGIN extends Plugin {
     private __applyCfg(extensions: string): void {
         this._settings.errors = {};
 
-        const extensions_arr: string[] = extensions.split(',').map(s => s.trim());
+        const extensions_arr: string[] = extensions.split(';').map(s => s.trim());
 
         for (const extension of extensions_arr) {
+            if (this.settings.is_ignore && this.settings.ignore_extensions.split(';').includes(extension))
+                continue;
+
             const rnd_filetype = gencase(extension);
 
             for (const type of rnd_filetype)
@@ -231,8 +248,12 @@ export default class UNITADE_PLUGIN extends Plugin {
         }
     }
 
+    public unapply(): void {
+        this.__unapply(this.settings);
+    }
+
     private __unapplyCfg(extensions: string, markdown_charge: boolean) {
-        const ext_arr: string[] = extensions.split(',').map(s => s.trim());
+        const ext_arr: string[] = extensions.split(';').map(s => s.trim());
 
         for (const extension of ext_arr)
             if (markdown_charge || extension !== 'md')
@@ -268,4 +289,24 @@ function gencase(input: string): string[] {
     gen('', 0);
 
     return variations;
+}
+
+function parsegroup(input: string): { [key: string]: string[] } {
+    const settings: { [key: string]: string[] } = {};
+
+    const settings_parsed = input.split(';');
+
+    for (const setting of settings_parsed) {
+        const [key, values] = setting.trim().split(':');
+
+        if (values !== undefined) {
+            const arr_values = values.split(',').map(value => value.trim());
+
+            settings[key.trim()] = arr_values;
+        } else {
+            settings[key.trim()] = [];
+        }
+    }
+
+    return settings;
 }

@@ -6,6 +6,7 @@
 		"removeComments": false,
 		"resolveJsonModule": true,
 		"allowSyntheticDefaultImports": true,
+		"allowJs": true,
 		"skipLibCheck": true,
 		"target": "es6",
 		"lib": [

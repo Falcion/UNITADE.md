@@ -2,6 +2,8 @@ import esbuild from "esbuild";
 import { sassPlugin } from 'esbuild-sass-plugin'
 import process from "process";
 import builtins from "builtin-modules";
+import glsl from "esbuild-plugin-glsl";
+import nodeExternals from "esbuild-plugin-node-externals";
 
 
 const banner =
@@ -17,9 +19,20 @@ const context = await esbuild.context({
     banner: {
         js: banner,
     },
-    entryPoints: ["main.ts"],
+    entryPoints: ["source/main.ts"],
     plugins: [
         sassPlugin(),
+        glsl({
+            minify: true,
+        }),
+        nodeExternals({
+            packagePaths: 'package.json',
+            include: [
+                './lib/*',
+                './mode/*',
+                './addon/*',
+            ],
+        }),
     ],
     bundle: true,
     external: [
