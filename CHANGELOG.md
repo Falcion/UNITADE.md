@@ -2,6 +2,56 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0](https://github.com/mokkapps/changelog-generator-demo/compare/v1.2.0...v2.0.0) (2024-04-09)
+
+
+### Features
+
+* **codemirror:** revampe codemirror support ([6f0dcb6](https://github.com/mokkapps/changelog-generator-demo/commits/6f0dcb6ef52557ec75b7ae4daef1a0be6b51dc43))
+* **codemirrors:** add support for codemirrors with extensions ([e470fb9](https://github.com/mokkapps/changelog-generator-demo/commits/e470fb994f74111806600b1debc9ded1cc84c76a))
+* **core:** add custom view for extension as extension (grouped) mode ([367036b](https://github.com/mokkapps/changelog-generator-demo/commits/367036b716c839f2d8388137135cfd4dfc519f59))
+* **core:** add extension as extension mode ([979f38b](https://github.com/mokkapps/changelog-generator-demo/commits/979f38b1d9b38d27210a728490703d49eca07c6a))
+* **core:** add ignore extensions mode ([33982d2](https://github.com/mokkapps/changelog-generator-demo/commits/33982d29dd2f2196f9e0a49157b64af3b3a0b5d7))
+* **core:** add ignore masks (filenames by regular expressions) mode ([e895bc3](https://github.com/mokkapps/changelog-generator-demo/commits/e895bc3c1f0afcd1e4ca463e790a5968099c38a3))
+* **core:** add local codemirror support ([888442b](https://github.com/mokkapps/changelog-generator-demo/commits/888442bfb4713b68542369a94ae466fd4cf7a2ec))
+* **core:** change reading way for user input ([533b287](https://github.com/mokkapps/changelog-generator-demo/commits/533b2875794082dd716a6fff1e09cb8943c68b1d))
+* **core:** full rework of past plugin's functionality ([1dff5eb](https://github.com/mokkapps/changelog-generator-demo/commits/1dff5ebfdb8ce33ace6ed210868f429ebda849f4))
+* **onload:** add support for ignoring dynamic registry mode ([e46895a](https://github.com/mokkapps/changelog-generator-demo/commits/e46895a5614047f137680f4ce8f5deafa69d2e7a))
+* **onload:** add support for safe dynamic registry mode ([75444d9](https://github.com/mokkapps/changelog-generator-demo/commits/75444d90caa430416e5cd765cba23089ad3d102b))
+* **onload:** add support for unsafe dynamic registry mode ([c2e9f34](https://github.com/mokkapps/changelog-generator-demo/commits/c2e9f34d659fe67df5ec0f842d7a8fde568ea168))
+* **onload:** add two modes of dynamic registry, safe and unsafe ([06d93c6](https://github.com/mokkapps/changelog-generator-demo/commits/06d93c64dd08c91f4ad252e805d8d09b66c656f7))
+* **registry:** add system for unloading registries ([75495d6](https://github.com/mokkapps/changelog-generator-demo/commits/75495d6261ae8da673ae47e2c5634ba4d9c0e47e))
+* **registry:** add system which checks registered extensions ([3ade6aa](https://github.com/mokkapps/changelog-generator-demo/commits/3ade6aae68b00b92ab6fb47ceddf1a5804072f89))
+* **registry:** reconfigure and rewrite at its concept the idea of registries in OBSIDIAN ([5241357](https://github.com/mokkapps/changelog-generator-demo/commits/5241357e7fb13c5cf77af04c53195e6a722932e2))
+* **settings:** add errors view and mobile settings to the plugin ([dd63b1b](https://github.com/mokkapps/changelog-generator-demo/commits/dd63b1ba7107d741f2ce5fb4751f625bbac28f06))
+* **settings:** add isolated localisation file for settings tab ([c97082e](https://github.com/mokkapps/changelog-generator-demo/commits/c97082eafd3d554e79f25413e3f97f8067163a67))
+* **settings:** full rework of settings tab and it's visuals ([158eee2](https://github.com/mokkapps/changelog-generator-demo/commits/158eee21308755594e577f8f4fc50069a0b34152))
+
+
+### Documentation
+
+* **dealings:** add normalized docs for project ([d2ef762](https://github.com/mokkapps/changelog-generator-demo/commits/d2ef76242ba73ebd18c9fa35cf25adb94eeb5bcc))
+* **dealings:** add techdocs to the project ([2d69d6a](https://github.com/mokkapps/changelog-generator-demo/commits/2d69d6a8cae4b4c4ed5ba6c3edb942301d47ddfe))
+* **docs-env:** add funding sponsorship to the project ([c622c9b](https://github.com/mokkapps/changelog-generator-demo/commits/c622c9b2b06cd9bf1b3fa649aef1ad1e02d63d84))
+* **docs-env:** add security policy within ref ([f4c96bd](https://github.com/mokkapps/changelog-generator-demo/commits/f4c96bd176eb84b43faebbd0254e72bfc9623d75))
+
+
+### Build system
+
+* **build-deps:** add ES builder for project (from OBSIDIAN) ([6daa972](https://github.com/mokkapps/changelog-generator-demo/commits/6daa97227fde129dcd5690fc409b76abd606575b))
+* **build-deps:** integrate HUSKY into the environment ([a73a4ce](https://github.com/mokkapps/changelog-generator-demo/commits/a73a4ce7ce5f2951f45939184574b2f5d9f3812c))
+* **build-env:** add scripts for environment ([0f17ed8](https://github.com/mokkapps/changelog-generator-demo/commits/0f17ed876cf3c76e574cacf28f27bc918f6b6cfb))
+* **build-env:** add support for OBSDIAN in docs purposes ([9a30460](https://github.com/mokkapps/changelog-generator-demo/commits/9a30460d9230b9c6641aefc719ccce789104e2e4))
+* **dependabot:** remove dependabot from project ([5960cb1](https://github.com/mokkapps/changelog-generator-demo/commits/5960cb115fed993562f41109cfdbcc6881cfdad7))
+* **deps-dev:** bump chai from 4.4.0 to 5.0.0 ([7738d92](https://github.com/mokkapps/changelog-generator-demo/commits/7738d929bd33b3795f66a525ba3e2ba21c0e6418))
+* **deps-dev:** bump chai from 4.4.0 to 5.0.0 ([08f1801](https://github.com/mokkapps/changelog-generator-demo/commits/08f1801826c5a3e37a03062a653e31ba83543d20))
+* **deps-dev:** bump markdownlint from 0.32.1 to 0.33.0 ([2cdceda](https://github.com/mokkapps/changelog-generator-demo/commits/2cdceda65943fb2bab1e6b466193318199e4d2b9))
+
+
+### Fixes
+
+* **build:** fix and updated build and environment ([733910b](https://github.com/mokkapps/changelog-generator-demo/commits/733910b3461d6285100a0fb0c0893c8c9cbbc85e))
+
 ## [1.2.0](https://github.com/mokkapps/changelog-generator-demo/compare/v1.1.1...v1.2.0) (2024-01-10)
 
 
