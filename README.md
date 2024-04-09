@@ -6,6 +6,7 @@
     <a href="https://github.com/Falcion/UNITADE/stargazers"><img src="https://img.shields.io/github/stars/Falcion/UNITADE" alt="stargazers"/></a>
     <a href="https://github.com/Falcion/UNITADE/forks"><img src="https://img.shields.io/github/forks/Falcion/UNITADE" alt="forks"/></a>
     <a href="https://github.com/Falcion/UNITADE/issues"><img src="https://img.shields.io/github/issues/Falcion/UNITADE" alt="issues"/></a>
+    <a href="https://github.com/Falcion/UNITADE/actions/workflows/analytics.yml"><img src="https://img.shields.io/github/actions/workflow/status/Falcion/UNITADE/.github%2Fworkflows%2Fanalytics.yml" alt="build"></a>
     <a href="https://github.com/Falcion/UNITADE/commits"><img src="https://img.shields.io/github/last-commit/Falcion/UNITADE" alt="commit-activity"/></a>
     <a href="https://obsidian.md/plugins?search=unitade"><img src="https://img.shields.io/github/downloads/Falcion/UnitadeOBSIDIAN/total" alt="downloads"/></a>
     <a href="https://github.com/Falcion/UnitadeOBSDIAIN/releases"><img src="https://img.shields.io/github/manifest-json/v/Falcion/UnitadeOBSIDIAN" alt="version"/></a>
