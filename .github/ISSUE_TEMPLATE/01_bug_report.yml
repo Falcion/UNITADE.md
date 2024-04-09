@@ -34,7 +34,11 @@ body:
       label: Version of an project's essence
       description: What version of an project's essence are you running.
       options:
-        - ...
+        - "1.2.0"
+        - "1.1.0"
+        - "1.0.2"
+        - "1.0.1"
+        - "1.0.0"
       default: 0
     validations:
       required: true
