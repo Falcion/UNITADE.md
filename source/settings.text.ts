@@ -23,8 +23,15 @@ export default class SETTING_LOCALES {
     static getUlrd(): { name: string, desc: string } {
         return {
             name: "Unload plugin's registry",
-            desc: "On click, causes imitation of plugin disabling, meaning, reloading registry of extensions in vault to default mode.",
+            desc: "On click, causes imitation of disabling plugin, meaning, reloading registry of extensions in vault to default mode.",
         };
+    }
+
+    static getHlrd(): { name: string, desc: string } {
+        return {
+            name: "Hard-load plugin's registry",
+            desc: "On click, causes imitation of enabling plugin, meaning, reloading registries which are defined and set up within user's settings."
+        }
     }
 
     static getFrcInf(): { name: string, desc: string, msg: string } {

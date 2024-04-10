@@ -209,15 +209,33 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
             .addButton(button => {
                 button
                     .setButtonText('Unload')
-                    .setWarning()
+                    .setIcon('upload')
                     .onClick(async (event) => {
-                        console.info(`[${event.timeStamp}]: Caused unloading function!`);
+                        if (this.plugin.settings.debug_mode)
+                            console.info(`[${event.timeStamp}]: Caused unloading function!`);
 
                         this.plugin.unapply();
                     });
 
                 return button;
-            })
+            });
+
+        new Setting(containerEl)
+            .setName(SETTING_LOCALE.getHlrd().name)
+            .setDesc(SETTING_LOCALE.getHlrd().desc)
+            .addButton(button => {
+                button
+                    .setButtonText('Unload')
+                    .setIcon('upload')
+                    .onClick(async (event) => {
+                        if (this.plugin.settings.debug_mode)
+                            console.info(`[${event.timeStamp}]: Caused loading function!`);
+
+                        this.plugin.apply();
+                    });
+
+                return button;
+            });
 
         containerEl.createEl('h2', { text: 'Errors' });
         this._errors = containerEl.createEl('p', { text: 'None' });
