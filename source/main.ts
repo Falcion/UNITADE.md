@@ -33,11 +33,20 @@ export default class UNITADE_PLUGIN extends Plugin {
             const filename: string[] = file.name.split('.').splice(1);
 
             if (this.settings.is_ignore) {
-                for (const mask of this.settings.ignore_masks.split(';'))
-                    if (new RegExp(mask).test(file.name)) {
-                        return;
+                for (const mask of this.settings.ignore_masks.split(';')) {
+                    const _mask = mask.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+                    try {
+                        const regex = new RegExp(_mask);
+                        if (regex.test(file.name)) {
+                            return;
+                        }
+                    } catch (error) {
+                        console.error('Error creating regular expression:', error);
                     }
+                }
             }
+
 
             if (this.settings.is_onload) {
                 if (this.settings.ignore_extensions.split(';').includes(filename.last()!) && this.settings.is_ignore)
@@ -139,6 +148,8 @@ export default class UNITADE_PLUGIN extends Plugin {
             this.registerExtensions(['.md'], 'markdown');
         } catch (err: any) {
             console.error(err);
+
+            this.settings.errors['markdown_override'] = `Error with reregistering extensions: ${err}`;
         }
 
         for (const key in CodeMirror.modes) {
@@ -168,15 +179,14 @@ export default class UNITADE_PLUGIN extends Plugin {
             const data: { [key: string]: string[] } = parsegroup(this.settings.grouped_extensions);
 
             for (const view in data) {
-                for (const extension in data[view])
-                    this.__tryApply(extension, view);
+                this.__applyCfg(data[view].join(';'), view);
             }
         }
 
         if (this.is_mobile) {
-            this.__applyCfg(this.settings.mobile_settings.extensions ?? this.settings.extensions);
+            this.__applyCfg(this.settings.mobile_settings.extensions ?? this.settings.extensions, 'markdown');
         } else {
-            this.__applyCfg(this.settings.extensions);
+            this.__applyCfg(this.settings.extensions, 'markdown');
         }
 
         const forced_extensions = this.settings.forced_extensions.split(';').map(s => s.trim());
@@ -189,6 +199,8 @@ export default class UNITADE_PLUGIN extends Plugin {
             } catch (err: any) {
                 new Notification('Error from UNITADE plugin:', { body: `${err}` });
 
+                this.settings.errors[extension] = `Error from UNITADE plugin: ${err}`;
+
                 console.error(err);
             }
         }
@@ -199,7 +211,7 @@ export default class UNITADE_PLUGIN extends Plugin {
             return;
 
         /**@ts-expect-error */
-        if (Object.keys(this.app.viewRegistry.typeByExtension).includes(filetype))
+        if (this.app.viewRegistry.isExtensionRegistered(filetype))
             return;
 
         try {
@@ -224,8 +236,12 @@ export default class UNITADE_PLUGIN extends Plugin {
         }
     }
 
-    private __applyCfg(extensions: string): void {
-        this._settings.errors = {};
+    private __applyCfg(extensions: string, view: string): void {
+        this.settings.errors = {};
+
+        if (this.settings.debug_mode)
+            //@ts-expect-error
+            console.info(this.app.viewRegistry.typeByExtension);
 
         const extensions_arr: string[] = extensions.split(';').map(s => s.trim());
 
@@ -236,7 +252,7 @@ export default class UNITADE_PLUGIN extends Plugin {
             const rnd_filetype = gencase(extension);
 
             for (const type of rnd_filetype)
-                this.__tryApply(type, 'markdown');
+                this.__tryApply(type, view);
         }
     }
 
@@ -265,6 +281,8 @@ export default class UNITADE_PLUGIN extends Plugin {
                         const _msg = `Couldn't unregistry extension: ${extension};`
 
                         new Notification('Error from UNITADE plugin:', { body: _msg });
+
+                        this.settings.errors[extension] = _msg;
 
                         console.error(_msg);
                     }

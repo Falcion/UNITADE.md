@@ -28,6 +28,8 @@ export interface UNITADE_SETTINGS {
 
     stable: boolean,
     errors: Record<string, string>,
+
+    debug_mode: boolean,
 }
 
 export const DEFAULT_SETTINGS: UNITADE_SETTINGS = {
@@ -50,6 +52,8 @@ export const DEFAULT_SETTINGS: UNITADE_SETTINGS = {
 
     stable: true,
     errors: {},
+
+    debug_mode: false,
 }
 
 export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
