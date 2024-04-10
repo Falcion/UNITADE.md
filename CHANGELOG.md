@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.1.0](https://github.com/mokkapps/changelog-generator-demo/compare/v2.0.0...v2.1.0) (2024-04-10)
+
+
+### Features
+
+* **debug-mode:** add debug mode in hidden extensions (accessed through data.json) to show more data in console ([ccfdda6](https://github.com/mokkapps/changelog-generator-demo/commits/ccfdda622cdc65df64349174bc90858846c9aa7c))
+* **errors:** now error handling is more complex and it tries to show user any error possible (without spam) ([d97c645](https://github.com/mokkapps/changelog-generator-demo/commits/d97c645dcde964020824b5fbf0dbdc1d96d2606d))
+* **hard-load:** add hard-load button to force-load extensions ([8859546](https://github.com/mokkapps/changelog-generator-demo/commits/8859546cafb9b4ee551ff1dc60ef2951ec107748))
+* **semifix-group:** add parallel loading to the extensions block of groups and defaults one for less bugs and errors ([442d253](https://github.com/mokkapps/changelog-generator-demo/commits/442d2532b135ef09aceb17c1ef8c05013af7843c))
+
+
+### Fixes
+
+* **core:** fix always 'true' in mobile extensions settings (can't turn off) ([3878d61](https://github.com/mokkapps/changelog-generator-demo/commits/3878d614f1028e3922bce1a5ca5ef9f889103679))
+* **core:** fix ignoring masks mode for files and fix parsing of regular expressions ([2beccba](https://github.com/mokkapps/changelog-generator-demo/commits/2beccba376dbd920aacd068230068c868dc1fb56))
+* **global:** fix of [#32](https://github.com/Falcion/UNITADE/issues/32), [#31](https://github.com/Falcion/UNITADE/issues/31), [#30](https://github.com/Falcion/UNITADE/issues/30) ([267d823](https://github.com/mokkapps/changelog-generator-demo/commits/267d823c2923da78a44febbf9fff59a2d9004613))
+
 ## [2.0.0](https://github.com/mokkapps/changelog-generator-demo/compare/v1.2.0...v2.0.0) (2024-04-09)
 
 
