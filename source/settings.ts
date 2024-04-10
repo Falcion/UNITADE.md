@@ -225,8 +225,8 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
             .setDesc(SETTING_LOCALE.getHlrd().desc)
             .addButton(button => {
                 button
-                    .setButtonText('Unload')
-                    .setIcon('upload')
+                    .setButtonText('Force-load')
+                    .setIcon('download')
                     .onClick(async (event) => {
                         if (this.plugin.settings.debug_mode)
                             console.info(`[${event.timeStamp}]: Caused loading function!`);
