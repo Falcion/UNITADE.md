@@ -170,6 +170,9 @@ Project thanks the [Electron.js](https://github.com/electron/electron/) and [Ang
 
 Project itself is being distributed under the [MIT License](https://choosealicense.com/licenses/mit/) — see the file for more specified information.
 
+> Entirery of project's infrastructure is taken from repository template project:\
+> https://github.com/Falcion/Patternugit.git
+
 <p align="right"><a href="#readme-top" title="Back to the top of README">[^]</a></p>
 
 <!-- CONTACT:
