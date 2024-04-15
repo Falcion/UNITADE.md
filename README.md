@@ -2,14 +2,14 @@
  BLOCK OF SHIELDS AND LOGO:
  -->
  <div align="center">
-    <a href="https://github.com/Falcion/UNITADE/graphs/contributors"><img src="https://img.shields.io/github/contributors/Falcion/UNITADE" alt="contributors"/></a>
-    <a href="https://github.com/Falcion/UNITADE/stargazers"><img src="https://img.shields.io/github/stars/Falcion/UNITADE" alt="stargazers"/></a>
-    <a href="https://github.com/Falcion/UNITADE/forks"><img src="https://img.shields.io/github/forks/Falcion/UNITADE" alt="forks"/></a>
-    <a href="https://github.com/Falcion/UNITADE/issues"><img src="https://img.shields.io/github/issues/Falcion/UNITADE" alt="issues"/></a>
-    <a href="https://github.com/Falcion/UNITADE/actions/workflows/analytics.yml"><img src="https://img.shields.io/github/actions/workflow/status/Falcion/UNITADE/.github%2Fworkflows%2Fanalytics.yml" alt="build"></a>
-    <a href="https://github.com/Falcion/UNITADE/commits"><img src="https://img.shields.io/github/last-commit/Falcion/UNITADE" alt="commit-activity"/></a>
-    <a href="https://obsidian.md/plugins?search=unitade"><img src="https://img.shields.io/github/downloads/Falcion/UnitadeOBSIDIAN/total" alt="downloads"/></a>
-    <a href="https://github.com/Falcion/UnitadeOBSDIAIN/releases"><img src="https://img.shields.io/github/manifest-json/v/Falcion/UnitadeOBSIDIAN" alt="version"/></a>
+    <a href="https://github.com/Falcion/UNITADE.md/graphs/contributors"><img src="https://img.shields.io/github/contributors/Falcion/UNITADE.md" alt="contributors"/></a>
+    <a href="https://github.com/Falcion/UNITADE.md/stargazers"><img src="https://img.shields.io/github/stars/Falcion/UNITADE.md" alt="stargazers"/></a>
+    <a href="https://github.com/Falcion/UNITADE.md/forks"><img src="https://img.shields.io/github/forks/Falcion/UNITADE.md" alt="forks"/></a>
+    <a href="https://github.com/Falcion/UNITADE.md/issues"><img src="https://img.shields.io/github/issues/Falcion/UNITADE.md" alt="issues"/></a>
+    <a href="https://github.com/Falcion/UNITADE.md/actions/workflows/analytics.yml"><img src="https://img.shields.io/github/actions/workflow/status/Falcion/UNITADE.md/.github%2Fworkflows%2Fanalytics.yml" alt="build"></a>
+    <a href="https://github.com/Falcion/UNITADE.md/commits"><img src="https://img.shields.io/github/last-commit/Falcion/UNITADE.md" alt="commit-activity"/></a>
+    <a href="https://obsidian.md/plugins?search=unitade"><img src="https://img.shields.io/github/downloads/Falcion/UNITADE.mdOBSIDIAN/total" alt="downloads"/></a>
+    <a href="https://github.com/Falcion/UNITADE.mdOBSDIAIN/releases"><img src="https://img.shields.io/github/manifest-json/v/Falcion/UNITADE.mdOBSIDIAN" alt="version"/></a>
 </div>
 <!-- -->
 <br/>
@@ -22,11 +22,11 @@
      <p>
     Key for your zettelkasten.
     <br/>
-    <a href="https://github.com/Falcion/UNITADE/compare/">Contribute to us</a>
+    <a href="https://github.com/Falcion/UNITADE.md/compare/">Contribute to us</a>
     /
-    <a href="https://github.com/Falcion/UNITADE/tags/">View tags</a>
+    <a href="https://github.com/Falcion/UNITADE.md/tags/">View tags</a>
     /
-    <a href="https://github.com/Falcion/UNITADE/issues/">Report a bug</a>
+    <a href="https://github.com/Falcion/UNITADE.md/issues/">Report a bug</a>
     </p>
 </div>
 
@@ -87,7 +87,7 @@ If you want to use this plugin, there are two ways to download-and-use this plug
 Guidelines for direct-installation way:
 
 1. Download last tag on project's repository, for the last ZIP-tarball link provided below:\
-   [download latest release](https://github.com/Falcion/UnitadeOBSIDIAN/releases/latest/);
+   [download latest release](https://github.com/Falcion/UNITADE.mdOBSIDIAN/releases/latest/);
 2. Open your vault's folder, go to the subfolder "`/.obsidian/ → /plugins/" and paste contents of downloaded ZIP into this subfolder;
 3. Now, you can use plugin just as if you installed it from community plugins.
 

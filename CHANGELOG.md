@@ -17,7 +17,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 * **core:** fix always 'true' in mobile extensions settings (can't turn off) ([3878d61](https://github.com/mokkapps/changelog-generator-demo/commits/3878d614f1028e3922bce1a5ca5ef9f889103679))
 * **core:** fix ignoring masks mode for files and fix parsing of regular expressions ([2beccba](https://github.com/mokkapps/changelog-generator-demo/commits/2beccba376dbd920aacd068230068c868dc1fb56))
-* **global:** fix of [#32](https://github.com/Falcion/UNITADE/issues/32), [#31](https://github.com/Falcion/UNITADE/issues/31), [#30](https://github.com/Falcion/UNITADE/issues/30) ([267d823](https://github.com/mokkapps/changelog-generator-demo/commits/267d823c2923da78a44febbf9fff59a2d9004613))
+* **global:** fix of [#32](https://github.com/Falcion/UNITADE.md/issues/32), [#31](https://github.com/Falcion/UNITADE.md/issues/31), [#30](https://github.com/Falcion/UNITADE.md/issues/30) ([267d823](https://github.com/mokkapps/changelog-generator-demo/commits/267d823c2923da78a44febbf9fff59a2d9004613))
 
 ## [2.0.0](https://github.com/mokkapps/changelog-generator-demo/compare/v1.2.0...v2.0.0) (2024-04-09)
 
@@ -92,7 +92,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Features
 
-* **os:** open access for mobile users ([6416053](https://github.com/mokkapps/changelog-generator-demo/commits/6416053f08b39ff0438400208cdf392b290ba131)), closes [#6](https://github.com/Falcion/UnitadeOBSIDIAN/issues/6)
+* **os:** open access for mobile users ([6416053](https://github.com/mokkapps/changelog-generator-demo/commits/6416053f08b39ff0438400208cdf392b290ba131)), closes [#6](https://github.com/Falcion/UNITADE.mdOBSIDIAN/issues/6)
 
 
 ### Build system

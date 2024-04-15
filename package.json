@@ -1,6 +1,6 @@
 {
   "name": "unitade",
-  "displayName": "UNITADE",
+  "displayName": "UNITADE.md",
   "private": "true",
   "version": "2.1.0",
   "description": "A plugin for note-taking app Obsidian™ which allows you to treat any file extension as markdown note-file",
@@ -15,7 +15,7 @@
     "win32",
     "win64"
   ],
-  "readme": "https://github.com/Falcion/UNITADE#readme",
+  "readme": "https://github.com/Falcion/UNITADE.md#readme",
   "scripts": {
     "preinit": "npm i --force",
     "generate-version-json": "node scripts/js/generate-version-json.js",
@@ -43,7 +43,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Falcion/UNITADE.git"
+    "url": "git+https://github.com/Falcion/UNITADE.md.git"
   },
   "keywords": [
     "plugin",
@@ -61,9 +61,9 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Falcion/UNITADE/issues"
+    "url": "https://github.com/Falcion/UNITADE.md/issues"
   },
-  "homepage": "https://github.com/Falcion/UNITADE#readme",
+  "homepage": "https://github.com/Falcion/UNITADE.md#readme",
   "prettier": {
     "tabWidth": 4,
     "useTabs": true,
@@ -155,28 +155,28 @@
   "badges": [
     {
       "description": "contributors",
-      "href": "https://github.com/Falcion/UNITADE/graphs/contributors",
-      "url": "https://img.shields.io/github/contributors/Falcion/UNITADE"
+      "href": "https://github.com/Falcion/UNITADE.md/graphs/contributors",
+      "url": "https://img.shields.io/github/contributors/Falcion/UNITADE.md"
     },
     {
       "description": "stargazers",
-      "href": "https://github.com/Falcion/UNITADE/stargazers",
-      "url": "https://img.shields.io/github/stars/Falcion/UNITADE"
+      "href": "https://github.com/Falcion/UNITADE.md/stargazers",
+      "url": "https://img.shields.io/github/stars/Falcion/UNITADE.md"
     },
     {
       "description": "forks",
-      "href": "https://github.com/Falcion/UNITADE/forks",
-      "url": "https://img.shields.io/github/forks/Falcion/UNITADE"
+      "href": "https://github.com/Falcion/UNITADE.md/forks",
+      "url": "https://img.shields.io/github/forks/Falcion/UNITADE.md"
     },
     {
       "description": "issues",
-      "href": "https://github.com/Falcion/UNITADE/issues",
-      "url": "https://img.shields.io/github/issues/Falcion/UNITADE"
+      "href": "https://github.com/Falcion/UNITADE.md/issues",
+      "url": "https://img.shields.io/github/issues/Falcion/UNITADE.md"
     },
     {
       "description": "last-commit",
-      "href": "https://github.com/Falcion/UNITADE/commits",
-      "url": "https://img.shields.io/github/last-commit/Falcion/UNITADE"
+      "href": "https://github.com/Falcion/UNITADE.md/commits",
+      "url": "https://img.shields.io/github/last-commit/Falcion/UNITADE.md"
     }
   ],
   "dependencies": {
