@@ -8,8 +8,8 @@
     <a href="https://github.com/Falcion/UNITADE.md/issues"><img src="https://img.shields.io/github/issues/Falcion/UNITADE.md" alt="issues"/></a>
     <a href="https://github.com/Falcion/UNITADE.md/actions/workflows/analytics.yml"><img src="https://img.shields.io/github/actions/workflow/status/Falcion/UNITADE.md/.github%2Fworkflows%2Fanalytics.yml" alt="build"></a>
     <a href="https://github.com/Falcion/UNITADE.md/commits"><img src="https://img.shields.io/github/last-commit/Falcion/UNITADE.md" alt="commit-activity"/></a>
-    <a href="https://obsidian.md/plugins?search=unitade"><img src="https://img.shields.io/github/downloads/Falcion/UNITADE.mdOBSIDIAN/total" alt="downloads"/></a>
-    <a href="https://github.com/Falcion/UNITADE.mdOBSDIAIN/releases"><img src="https://img.shields.io/github/manifest-json/v/Falcion/UNITADE.mdOBSIDIAN" alt="version"/></a>
+    <a href="https://obsidian.md/plugins?search=unitade"><img src="https://img.shields.io/github/downloads/Falcion/UNITADE.md/total" alt="downloads"/></a>
+    <a href="https://github.com/Falcion/UNITADE.mdOBSDIAIN/releases"><img src="https://img.shields.io/github/manifest-json/v/Falcion/UNITADE.md" alt="version"/></a>
 </div>
 <!-- -->
 <br/>
@@ -172,6 +172,9 @@ Project itself is being distributed under the [MIT License](https://choosealicen
 
 > Entirery of project's infrastructure is taken from repository template project:\
 > https://github.com/Falcion/Patternugit.git
+
+- modals idea and correspondive codebase was taken from project:\
+  [OBSIDIAN custom file extension](https://github.com/MeepTech/obsidian-custom-file-extensions-plugin)
 
 <p align="right"><a href="#readme-top" title="Back to the top of README">[^]</a></p>
 
