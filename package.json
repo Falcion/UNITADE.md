@@ -107,7 +107,7 @@
     "@commitlint/cli": "^19.2.1",
     "@commitlint/config-conventional": "^19.1.0",
     "@electron/lint-roller": "^1.12.1",
-    "@npmcli/package-json": "^5.0.0",
+    "@npmcli/package-json": "^5.0.3",
     "@octokit/rest": "^20.1.0",
     "@types/codemirror": "^5.60.15",
     "@types/extend": "^3.0.4",
