@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.1.1](https://github.com/mokkapps/changelog-generator-demo/compare/v2.1.0...v2.1.1) (2024-04-15)
+
+
+### Features
+
+* **modals:** add modal in files menu which allows you to create files with custom extensions ([4880eac](https://github.com/mokkapps/changelog-generator-demo/commits/4880eac0770aa8d7dffdf60b554abdba74ef022f))
+* **modals:** add modal in files menu which allows you to edit file's extensions ([1637443](https://github.com/mokkapps/changelog-generator-demo/commits/163744371915269703538ce404092767bab68d05))
+* **modals:** add new modals for creating and editing files ([5d40b5b](https://github.com/mokkapps/changelog-generator-demo/commits/5d40b5b7694d37fcabd2de4bee28ec544b985864))
+
+
+### Build system
+
+* **build-env:** update manifest for OBSIDIAN's API ([24d0ecf](https://github.com/mokkapps/changelog-generator-demo/commits/24d0ecff595b78240ce4b629805636f67f957ed1))
+
+
+### Documentation
+
+* **naming:** update naming of project (visual purposes) ([443189b](https://github.com/mokkapps/changelog-generator-demo/commits/443189b1e9f40070149087cddaab1cea490d812f))
+
 ## [2.1.0](https://github.com/mokkapps/changelog-generator-demo/compare/v2.0.0...v2.1.0) (2024-04-10)
 
 
