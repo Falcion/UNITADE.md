@@ -1,4 +1,5 @@
 import {
+    EventRef,
     Platform,
     Plugin,
     WorkspaceLeaf,
@@ -12,6 +13,18 @@ import UNITADE_SETTINGS_TAB, {
 import UNITADE_VIEW from './components/view';
 
 import CodeMirror from './../lib/codemirror';
+
+import {
+    TFileEdit
+} from './components/file-edit';
+import {
+    TFileCreate
+} from './components/file-create';
+
+import {
+    isTFile,
+    isTFolder
+} from './utils/utils';
 
 export default class UNITADE_PLUGIN extends Plugin {
     private _settings: UNITADE_SETTINGS = DEFAULT_SETTINGS;
@@ -31,6 +44,8 @@ export default class UNITADE_PLUGIN extends Plugin {
 
         this.app.vault.on('create', async (file) => {
             const filename: string[] = file.name.split('.').splice(1);
+
+            if (isTFolder(file)) return;
 
             if (this.settings.is_ignore) {
                 for (const mask of this.settings.ignore_masks.split(';')) {
@@ -126,15 +141,43 @@ export default class UNITADE_PLUGIN extends Plugin {
 
         this.app.workspace.layoutReady ? this.ltReady() : this.app.workspace.on('active-leaf-change', this.ltReady);
 
+        this.registerEvent(this.__ctxEditExt());
+
         this.__apply();
     }
 
-    ltReady = () => {
-        this.app.workspace.off('layout-ready', this.ltReady);
-        this.leafRfsh();
+    private __ctxEditExt(): EventRef {
+        return this.app.workspace.on('file-menu', (menu, file) => {
+            menu
+                .addItem((item) => {
+                    item.setTitle('Edit extension');
+                    item
+                        .setIcon('pencil')
+                        .onClick(() => {
+                            if (isTFolder(file)) return;
+
+                            new TFileEdit(this, file).open();
+                        });
+                })
+                .addItem((item) => {
+                    item.setTitle('Create with extension');
+                    item
+                        .setIcon('pencil')
+                        .onClick(() => {
+                            if (isTFile(file)) return;
+
+                            new TFileCreate(this, file).open();
+                        });
+                });
+        });
     }
 
-    leafRfsh = () => {
+    ltReady(): void {
+        this.app.workspace.off('layout-ready', this.ltReady);
+        this.leafRef();
+    }
+
+    leafRef(): void {
         /**@ts-expect-error */
         this.app.workspace.iterateCodeMirrors(cm => cm.setOption("mode", cm.getOption("mode")));
     }
@@ -157,7 +200,7 @@ export default class UNITADE_PLUGIN extends Plugin {
                 delete CodeMirror.modes[key];
         }
 
-        this.leafRfsh();
+        this.leafRef();
     }
 
     async ldSettings(): Promise<void> {

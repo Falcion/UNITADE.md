@@ -1,12 +1,12 @@
 import {
     App,
-    PluginSettingTab,
     Setting,
-    TextAreaComponent
+    PluginSettingTab,
+    TextAreaComponent,
 } from 'obsidian';
 
 import UNITADE_PLUGIN from './main';
-import SETTING_LOCALE from './settings.text';
+import SETTING_LOCALE from './locales/settings.text';
 
 export interface UNITADE_SETTINGS {
     markdown_overcharge: boolean,
