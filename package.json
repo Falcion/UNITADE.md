@@ -104,7 +104,7 @@
     }
   },
   "devDependencies": {
-    "@commitlint/cli": "^19.2.1",
+    "@commitlint/cli": "^19.2.2",
     "@commitlint/config-conventional": "^19.1.0",
     "@electron/lint-roller": "^1.12.1",
     "@npmcli/package-json": "^5.0.0",
