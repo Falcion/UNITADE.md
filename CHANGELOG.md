@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.1.2](https://github.com/mokkapps/changelog-generator-demo/compare/v2.1.1...v2.1.2) (2024-04-18)
+
+
+### Fixes
+
+* **edit-modal:** fix behaviour of edit extension modal ([897c4d2](https://github.com/mokkapps/changelog-generator-demo/commits/897c4d273c574e09f88b1126377edbfe8ae24919))
+
 ### [2.1.1](https://github.com/mokkapps/changelog-generator-demo/compare/v2.1.0...v2.1.1) (2024-04-15)
 
 
