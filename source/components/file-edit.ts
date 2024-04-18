@@ -106,7 +106,7 @@ export class TFileEdit extends Modal {
             }
         });
 
-        input.setValue(this._name);
+        input.setValue(this._extension);
         input.onChange((value) => {
             this._extension = value.startsWith(".") ? value.slice(1) : value;
 
@@ -116,7 +116,7 @@ export class TFileEdit extends Modal {
         new ButtonComponent(form)
             .setCta()
             .setIcon('pencil')
-            .setButtonText("Create")
+            .setButtonText("Edit")
             .onClick(() => (this.__submit()));
 
         new Setting(contentEl)
