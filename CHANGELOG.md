@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.1.3](https://github.com/mokkapps/changelog-generator-demo/compare/v2.1.2...v2.1.3) (2024-04-22)
+
+
+### Features
+
+* **codebase:** move utils functions to new submodule from core of plugin ([91d839e](https://github.com/mokkapps/changelog-generator-demo/commits/91d839eb899d8527a0fcece849e41019659ad3d0))
+
+
+### Build system
+
+* **build-deps:** update every dependency and test them with new build ([e52d59d](https://github.com/mokkapps/changelog-generator-demo/commits/e52d59dc35fd0ef0b3ec2c73f31285e96471252d))
+
+
+### Fixes
+
+* **settings:** hard-fix of again occuring mobile config always enabling ([e11a6df](https://github.com/mokkapps/changelog-generator-demo/commits/e11a6dfcb0336e85c7050e333a1c1a284cdffc70))
+
+
+### Refactoring
+
+* **ts-locales:** lining and semantic fix of semicolons in settings locales ([150066c](https://github.com/mokkapps/changelog-generator-demo/commits/150066c6e4ed62e901a8b7b70fddf463df6c2663))
+* **ts-utils:** lining and semantic fix of semicolons in the utils module ([80f6c4c](https://github.com/mokkapps/changelog-generator-demo/commits/80f6c4ce4ba6287dbd3b36397491f865e0aa751f))
+
 ### [2.1.2](https://github.com/mokkapps/changelog-generator-demo/compare/v2.1.1...v2.1.2) (2024-04-18)
 
 
