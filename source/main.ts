@@ -51,6 +51,10 @@ import {
     isTFile,
     isTFolder
 } from './utils/utils';
+import {
+    gencase,
+    parsegroup
+} from './utils/functions';
 
 export default class UNITADE_PLUGIN extends Plugin {
     private _settings: UNITADE_SETTINGS = DEFAULT_SETTINGS;
@@ -361,43 +365,4 @@ export default class UNITADE_PLUGIN extends Plugin {
                     }
                 }
     }
-}
-
-function gencase(input: string): string[] {
-    const variations: string[] = [];
-
-    function gen(current: string, index: number) {
-        if (index === input.length) {
-            variations.push(current);
-            return;
-        }
-
-        const char = input[index];
-        gen(current + char.toLowerCase(), index + 1);
-        gen(current + char.toUpperCase(), index + 1);
-    }
-
-    gen('', 0);
-
-    return variations;
-}
-
-function parsegroup(input: string): { [key: string]: string[] } {
-    const settings: { [key: string]: string[] } = {};
-
-    const settings_parsed = input.split(';');
-
-    for (const setting of settings_parsed) {
-        const [key, values] = setting.trim().split(':');
-
-        if (values !== undefined) {
-            const arr_values = values.split(',').map(value => value.trim());
-
-            settings[key.trim()] = arr_values;
-        } else {
-            settings[key.trim()] = [];
-        }
-    }
-
-    return settings;
 }
