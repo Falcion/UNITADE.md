@@ -57,7 +57,7 @@ export default class SETTING_LOCALES {
         return {
             name: "Hard-load plugin's registry",
             desc: "On click, causes imitation of enabling plugin, meaning, reloading registries which are defined and set up within user's settings."
-        }
+        };
     }
 
     static getFrcInf(): { name: string, desc: string, msg: string } {
@@ -87,7 +87,7 @@ export default class SETTING_LOCALES {
     static getOnMsg(): { msg: string } {
         return {
             msg: "ATTENTION: this setting can cause a “spam attack” with extensions in the OBSIDIAN extension registry and damage some files due to the editing format of the application itself, be careful when using this functionality.",
-        }
+        };
     }
 
     static getIgnInf(): { name: string, desc: string } {
