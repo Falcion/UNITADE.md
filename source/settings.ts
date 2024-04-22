@@ -177,7 +177,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                             ...this.plugin.settings,
                             mobile_settings: {
                                 ...this.plugin.settings.mobile_settings,
-                                enable: true,
+                                enable: value,
                             }
                         };
 
