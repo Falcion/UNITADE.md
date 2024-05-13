@@ -25,6 +25,7 @@
  */
 
 import {
+    App,
     EventRef,
     Platform,
     Plugin,
@@ -95,7 +96,6 @@ export default class UNITADE_PLUGIN extends Plugin {
                     }
                 }
             }
-
 
             if (this.settings.is_onload) {
                 if (this.settings.ignore_extensions.split(';').includes(filename.last()!) && this.settings.is_ignore)
@@ -173,7 +173,7 @@ export default class UNITADE_PLUGIN extends Plugin {
 
         this.addSettingTab(new UNITADE_SETTINGS_TAB(this.app, this));
 
-        this.app.workspace.layoutReady ? this.ltReady() : this.app.workspace.on('active-leaf-change', this.ltReady);
+        this.app.workspace.layoutReady ? this.ltReady(this.app) : this.app.workspace.on('layout-change', () => { this.ltReady(this.app); });
 
         this.registerEvent(this.__ctxEditExt());
 
@@ -214,14 +214,23 @@ export default class UNITADE_PLUGIN extends Plugin {
         });
     }
 
-    ltReady(): void {
-        this.app.workspace.off('layout-ready', this.ltReady);
-        this.leafRef();
+    ltReady(_app: App): void {
+        try {
+            _app.workspace.off('layout-ready', () => { this.ltReady(_app); });
+
+            this.leafRef(_app);
+        } catch (error) {
+            console.warn('Caught an error via LAYOUT-READY event.');
+        }
     }
 
-    leafRef(): void {
-        /**@ts-expect-error */
-        this.app.workspace.iterateCodeMirrors(cm => cm.setOption("mode", cm.getOption("mode")));
+    leafRef(_app: App): void {
+        try {
+            /**@ts-expect-error */
+            _app.workspace.iterateCodeMirrors(cm => cm.setOption("mode", cm.getOption("mode")));
+        } catch (error) {
+            console.warn('Caught an error via LEAF-ITERATE event.');
+        }
     }
 
     async onunload(): Promise<void> {
@@ -242,7 +251,7 @@ export default class UNITADE_PLUGIN extends Plugin {
                 delete CodeMirror.modes[key];
         }
 
-        this.leafRef();
+        this.leafRef(this.app);
     }
 
     async ldSettings(): Promise<void> {
