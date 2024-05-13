@@ -45,7 +45,7 @@ export class TFolderEdit extends Modal {
 
         this.target ??= this.plugin.app.vault.getRoot();
 
-        const target_path = this.target.path.split('\\');
+        const target_path = this.target.path.split('/');
 
         target_path.pop();
 
