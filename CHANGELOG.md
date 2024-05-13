@@ -2,6 +2,35 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.2.0](https://github.com/mokkapps/changelog-generator-demo/compare/v2.1.3...v2.2.0) (2024-05-13)
+
+
+### Features
+
+* **modals:** add new folder modals support ([432888d](https://github.com/mokkapps/changelog-generator-demo/commits/432888d8ee26874bb0da3e503378d0bfa220ba80))
+* **modals:** fix behaviour of modals within creating files ([7f0460e](https://github.com/mokkapps/changelog-generator-demo/commits/7f0460eda231091308c2128e34f9f32cdd732a06))
+* **modals:** fix behaviour of modals within editing extensions ([caf81b2](https://github.com/mokkapps/changelog-generator-demo/commits/caf81b225e8dcc676cc1903991ea6af20f65dd58))
+
+
+### Documentation
+
+* **versioning:** add information about unsupported versions of the project ([5c1d5bf](https://github.com/mokkapps/changelog-generator-demo/commits/5c1d5bf25766ffb6f5836a6c7390c48805995346))
+
+
+### Build system
+
+* **deps-dev:** bump @commitlint/cli from 19.2.2 to 19.3.0 ([346afa9](https://github.com/mokkapps/changelog-generator-demo/commits/346afa9327932af7458b0f748024e0fe6c2d4946))
+* **deps-dev:** bump @npmcli/package-json from 5.0.3 to 5.1.0 ([1555e90](https://github.com/mokkapps/changelog-generator-demo/commits/1555e902efcb912cfcd2e389759e9942ff0c13c4))
+* **deps-dev:** bump @typescript-eslint/eslint-plugin ([98a5525](https://github.com/mokkapps/changelog-generator-demo/commits/98a5525843e10ada1493ac71de7d0cf722c1fbfe))
+* **deps-dev:** bump @typescript-eslint/parser from 7.7.0 to 7.8.0 ([4dc6fbb](https://github.com/mokkapps/changelog-generator-demo/commits/4dc6fbb27e3ed5d6849bc45fba739f250761c488))
+* **deps-dev:** bump inquirer from 9.2.19 to 9.2.20 ([b77c98a](https://github.com/mokkapps/changelog-generator-demo/commits/b77c98a336753363196d7672822f734aae2d3178))
+
+
+### Fixes
+
+* **force-preview:** fix force-preview of extensions in plugin ([4f449d5](https://github.com/mokkapps/changelog-generator-demo/commits/4f449d5478e79200d938eaafdd08d62c12cba753)), closes [#54](https://github.com/Falcion/UNITADE.md/issues/54)
+* **modals-folder:** fix of folder edit modal wrong path creation ([887f654](https://github.com/mokkapps/changelog-generator-demo/commits/887f6547c98b8558e25e71201b17bbd1325cf9d3))
+
 ### [2.1.3](https://github.com/mokkapps/changelog-generator-demo/compare/v2.1.2...v2.1.3) (2024-04-22)
 
 
