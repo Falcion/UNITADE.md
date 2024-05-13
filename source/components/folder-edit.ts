@@ -29,30 +29,28 @@ import {
     ButtonComponent,
     TextComponent,
     TAbstractFile,
-    Setting,
 } from "obsidian";
 
 import UNITADE_PLUGIN from "./../main";
-import MODALES_LOCALE from "./../locales/modals.text";
 
-export class TFileCreate extends Modal {
-    private _filepath: string;
-
-    private _name: string;
-
-    private _integration: boolean;
+export class TFolderEdit extends Modal {
+    private _foldername: string;
+    private _folderpath: string;
 
     constructor(
         private plugin: UNITADE_PLUGIN,
-        private target: string,
+        private target: TAbstractFile
     ) {
         super(plugin.app);
 
-        this._filepath = this.target;
+        this.target ??= this.plugin.app.vault.getRoot();
 
-        this._name = '';
+        const target_path = this.target.path.split('\\');
 
-        this._integration = false;
+        target_path.pop();
+
+        this._foldername = this.target.name;
+        this._folderpath = target_path.join('/');
     }
 
     onOpen(): void {
@@ -89,7 +87,7 @@ export class TFileCreate extends Modal {
             margin-right: 10px;
             `;
 
-        disp.innerHTML = 'Enter fullname of your file';
+        disp.innerHTML = this.__pathgen();
 
         input.inputEl.addEventListener("keypress", (e) => {
             if (e.key === "Enter") {
@@ -99,31 +97,18 @@ export class TFileCreate extends Modal {
             }
         });
 
-        input.setValue(this._name);
+        input.setValue(this._foldername);
         input.onChange((value) => {
-            this._name = value;
+            this._foldername = value.startsWith(".") ? value.slice(1) : value;
 
-            disp.innerHTML = `Enter fullname of your file: ${this._pathgen()}`;
+            disp.innerHTML = this.__pathgen();
         });
 
         new ButtonComponent(form)
             .setCta()
             .setIcon('pencil')
-            .setButtonText("Create")
+            .setButtonText("Edit")
             .onClick(() => (this.__submit()));
-
-        new Setting(contentEl)
-            .setName(MODALES_LOCALE.gtToggle1().name)
-            .setDesc(MODALES_LOCALE.gtToggle1().desc)
-            .addToggle(toggle => {
-                toggle
-                    .setValue(this._integration)
-                    .onChange(async (value) => {
-                        this._integration = value;
-                    });
-
-                return toggle;
-            });
     }
 
     onClose() {
@@ -135,22 +120,10 @@ export class TFileCreate extends Modal {
     private async __submit() {
         this.close();
 
-        if (this._integration) {
-            let next = {
-                ...this.plugin.settings,
-            };
-
-            let extensions = this._name.split('.').slice(1).join(';');
-
-            next.extensions += `;${extensions}`;
-
-            this.plugin.uptSettings(next);
-        }
-
-        await this.app.vault.create(this._pathgen(), '');
+        await this.app.vault.rename(this.target, this.__pathgen());
     }
 
-    private _pathgen(): string {
-        return this._filepath + "/" + this._name;
+    private __pathgen(): string {
+        return this._folderpath + "/" + this._foldername;
     }
 } 

@@ -48,6 +48,10 @@ import {
 } from './components/file-create';
 
 import {
+    TFolderEdit
+} from './components/folder-edit';
+
+import {
     isTFile,
     isTFolder
 } from './utils/utils';
@@ -184,9 +188,13 @@ export default class UNITADE_PLUGIN extends Plugin {
                     item
                         .setIcon('pencil')
                         .onClick(() => {
-                            if (isTFolder(file)) return;
-
-                            new TFileEdit(this, file).open();
+                            if (isTFolder(file)) {
+                                new TFolderEdit(this, file)
+                                    .open();
+                            } else {
+                                new TFileEdit(this, file)
+                                    .open();
+                            }
                         });
                 })
                 .addItem((item) => {
@@ -194,9 +202,13 @@ export default class UNITADE_PLUGIN extends Plugin {
                     item
                         .setIcon('pencil')
                         .onClick(() => {
-                            if (isTFile(file)) return;
-
-                            new TFileCreate(this, file).open();
+                            if (isTFolder(file)) {
+                                new TFileCreate(this, file.path)
+                                    .open();
+                            } else {
+                                new TFileCreate(this, file.parent!.path)
+                                    .open();
+                            }
                         });
                 });
         });
