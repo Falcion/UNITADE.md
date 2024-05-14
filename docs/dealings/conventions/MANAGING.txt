@@ -1,2 +1,0 @@
-For managing projects, guidelines, software and etc., seek the:
-https://github.com/topics/project-management

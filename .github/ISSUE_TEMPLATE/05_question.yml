@@ -1,7 +1,7 @@
 name: Question
 description: Ask the question or seek for clarification
 title: "[QUESTION]: "
-labels: ["Question"]
+labels: ["question"]
 body:
   - type: markdown
     attributes:

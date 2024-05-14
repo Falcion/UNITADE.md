@@ -2,7 +2,7 @@
 name: Bug report (in .MD)
 about: A more conservative way to create a bug report to help to improve the project
 title: '[BUG]: '
-labels: Bug
+labels: "bug", "priority/medium"
 
 ---
 

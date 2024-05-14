@@ -230,6 +230,39 @@ labels:
   - name: priority/low
     color: "#13ff00"
     description:
+  - name: feature request
+    color: "#cec440"
+    description:
+  - name: localisation
+    color: "#ffcc00"
+    description:
+  - name: reason/client
+    color: "#3399ff"
+    description:
+  - name: reason/server
+    color: "#ff6666"
+    description:
+  - name: reason/api
+    color: "#66cc66"
+    description:
+  - name: reason/other
+    color: "#cc99ff"
+    description:
+  - name: reason/unknown
+    color: "#999999"
+    description:
+  - name: requires-patch
+    color: "#ff9900"
+    description:
+  - name: requires-help
+    color: "#ff5050"
+    description:
+  - name: help-wanted
+    color: "#ff5050"
+    description:
+  - name: other-repo
+    color: "#cc6699"
+    description:
   #- name:
   #  color: ''
   #  description:

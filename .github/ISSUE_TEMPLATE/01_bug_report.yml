@@ -1,7 +1,7 @@
 name: Bug report
 description: Create a bug report to help to improve the project
 title: "[BUG]: "
-labels: ["Bug"]
+labels: ["bug", "priority/medium"]
 body:
   - type: markdown
     attributes:
@@ -32,7 +32,7 @@ body:
     id: version
     attributes:
       label: Version of an project's essence
-      description: What version of an project's essence are you running, before choosing version, please, check supported semantics.
+      description: What version of an project's essence are you running.
       options:
         - "2.1.3"
         - "2.1.2"
@@ -52,7 +52,6 @@ body:
         - Windows
         - macOS
         - Linux
-        - Other
   - type: checkboxes
     id: terms
     attributes:

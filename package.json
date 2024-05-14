@@ -1,14 +1,14 @@
 {
   "name": "unitade",
   "displayName": "UNITADE.md",
-  "private": "true",
+  "private": true,
   "version": "2.2.0",
   "description": "A plugin for note-taking app Obsidian™ which allows you to treat any file extension as markdown note-file",
   "main": "main.ts",
-  "type": "commonjs",
   "markdown": "github",
   "directories": {
-    "doc": "docs"
+    "doc": "docs",
+    "lib": "lib"
   },
   "os": [
     "linux",
@@ -17,29 +17,45 @@
   ],
   "readme": "https://github.com/Falcion/UNITADE.md#readme",
   "scripts": {
-    "preinit": "npm i --force",
-    "generate-version-json": "node scripts/js/generate-version-json.js",
-    "lint": "node ./scripts/lint.js && npm run lint:docs",
-    "lint:js": "node ./scripts/lint.js --js",
-    "lint:docs": "remark docs -qf && npm run lint:js-in-markdown && npm run create-typescript-definitions && npm run lint:ts-check-js-in-markdown && npm run lint:docs-fiddles && npm run lint:docs-relative-links && npm run lint:markdownlint",
+    "lint": "node ./script/lint.js && npm run lint:docs",
+    "lint:js": "node ./script/lint.js --js",
+    "lint:clang-format": "python3 script/pytohn/run-clang-format.py -r -c shell/ || (echo \"\\nCode not formatted correctly.\" && exit 1)",
+    "lint:clang-tidy": "python3 ./script/python/run-clang-tidy.py",
+    "lint:cpp": "node ./script/lint.js --cc",
+    "lint:objc": "node ./script/lint.js --objc",
+    "lint:py": "node ./script/lint.js --py",
+    "lint:gn": "node ./script/lint.js --gn",
+    "lint:docs": "remark docs -qf && npm run lint:js-in-markdown && npm run ct-typescript-definitions && npm run lint:ts-check-js-in-markdown && npm run lint:docs-fiddles && npm run lint:docs-relative-links && npm run lint:markdown",
     "lint:docs-fiddles": "standard \"docs/fiddles/**/*.js\"",
     "lint:docs-relative-links": "electron-lint-markdown-links --root docs \"**/*.md\"",
-    "lint:markdownlint": "electron-markdownlint \"*.md\" \"docs/**/*.md\"",
+    "lint:markdown": "node ./script/lint.js --md",
     "lint:ts-check-js-in-markdown": "electron-lint-markdown-ts-check --root docs \"**/*.md\" --ignore \"breaking-changes.md\"",
     "lint:js-in-markdown": "electron-lint-markdown-standard --root docs \"**/*.md\"",
+    "create-api-json": "node script/js/create-api-json.js",
+    "ct-typescript-definitions": "npm run create-api-json && electron-typescript-definitions",
+    "gn-typescript-definitions": "npm run ct-typescript-definitions && shx cp environment.d.ts",
+    "pre-flight": "pre-flight",
+    "gn-check": "node ./script/js/gn-check.js",
+    "gn-format": "python3 script/python/run-gn-format.py",
+    "preversion": "npm i --force",
     "precommit": "lint-staged",
+    "preinstall": "node -e 'process.exit(0)'",
+    "pretest": "npm run ct-typescript-definitions",
     "prepack": "check-for-leaks",
-    "prepare": "husky .husky/ && cd scripts/python && py -m venv venv && cd ./../../ && npm run prepare:main",
-    "prepare:husky": "husky .husky/",
-    "prepare:python": "cd scripts/python && py -m venv venv",
-    "prepare:main": "ts-node prepare.ts",
+    "prepare": "husky .husky/ && cd scripts/python && py -m venv venv",
     "update-analytics": "ts-node scripts/js/analytics-workflow.ts",
-    "build": "tsc -noEmit -skipLibCheck --esModuleInterop source/main.ts && node esbuild.config.mjs production",
+    "test": "node ./script/spec-runner.js",
+    "start": "tsc && node out/environment.js",
+    "buildtsc": "tsc",
+    "install": "npm run start",
     "pack": "python scripts/python/pack.py",
     "release": "standard-version",
     "release:minor": "standard-version --release-as minor",
     "release:patch": "standard-version --release-as patch",
-    "release:major": "standard-version --release-as major"
+    "release:major": "standard-version --release-as major",
+    "generate-version-json": "node scripts/js/generate-version-json.js",
+    "cli": ".\\gh.cli.sh",
+    "build": "tsc -noEmit -skipLibCheck --esModuleInterop source/main.ts && node esbuild.config.mjs production"
   },
   "repository": {
     "type": "git",
@@ -61,7 +77,8 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Falcion/UNITADE.md/issues"
+    "url": "https://github.com/Falcion/UNITADE.md/issues",
+    "email": "io.falcion@outlook.com"
   },
   "homepage": "https://github.com/Falcion/UNITADE.md#readme",
   "prettier": {
@@ -185,5 +202,46 @@
     "esbuild-plugin-glsl": "^1.2.2",
     "esbuild-sass-plugin": "^3.2.0",
     "obsidian": "^1.5.7-1"
+  },
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": "limited",
+      "description": "Creates an environment for your projects"
+    },
+    "virtualWorkspaces": true
+  },
+  "release": {
+    "tagFormat": "${version}",
+    "dryRun": true,
+    "branches": [
+      "+([0-9])?(.{+([0-9]),x}).x",
+      "main",
+      "main-update",
+      "next",
+      "next-major",
+      {
+        "name": "beta",
+        "prerelease": true
+      },
+      {
+        "name": "alpha",
+        "prerelease": true
+      }
+    ]
+  },
+  "packageManager": "npm@10.7.0",
+  "module": "unitade",
+  "dist": {
+    "tarball": "https://api.github.com/repos/Falcion/UNITADE.md/tarball/main"
+  },
+  "engines": {
+    "npm": ">=10.0.0",
+    "node": ">=16.0.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "sh .husky/pre-commit",
+      "commit-msg": "sh .husky/commit-msg"
+    }
   }
 }

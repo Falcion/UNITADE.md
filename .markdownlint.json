@@ -1,7 +1,17 @@
 {
-    "extends": "@electron/lint-roller/configs/markdownlint.json",
-    "excludedFiles": [
-        "**/*.ts",
-        "**/*.js"
+  "extends": "@electron/lint-roller/configs/markdownlint.json",
+  "no-angle-brackets": true,
+  "no-inline-html": {
+    "allowed_elements": [
+      "br",
+      "details",
+      "img",
+      "li",
+      "summary",
+      "ul",
+      "unknown",
+      "Tabs",
+      "TabItem"
     ]
+  }
 }

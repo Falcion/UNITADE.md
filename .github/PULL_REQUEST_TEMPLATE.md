@@ -44,6 +44,6 @@ Please, write below every changes you made:
 - If testing was done, type below the procedures you make: \
   ...
 
-### Additional contenxt for that PR
+### Additional context for that PR
 
 ...
