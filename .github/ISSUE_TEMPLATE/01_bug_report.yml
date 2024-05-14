@@ -34,12 +34,13 @@ body:
       label: Version of an project's essence
       description: What version of an project's essence are you running.
       options:
+        - "2.2.1"
+        - "2.2.0"
         - "2.1.3"
         - "2.1.2"
         - "2.1.1"
         - "2.1.0"
         - "2.0.0"
-        - "..."
       default: 0
     validations:
       required: true
@@ -52,6 +53,7 @@ body:
         - Windows
         - macOS
         - Linux
+        - Mobile (specify)
   - type: checkboxes
     id: terms
     attributes:
