@@ -62,6 +62,7 @@ import {
     gencase,
     parsegroup
 } from './utils/functions';
+import { TFilesRename } from './components/files-rename';
 
 export default class UNITADE_PLUGIN extends Plugin {
     private _settings: UNITADE_SETTINGS = DEFAULT_SETTINGS;
@@ -219,15 +220,25 @@ export default class UNITADE_PLUGIN extends Plugin {
 
     private __ctxEditExts(): EventRef {
         return this.app.workspace.on('files-menu', (menu, files) => {
-            menu.addItem((item) => {
-                item.setTitle('Edit multiple extensions');
-                item
-                    .setIcon('pencil')
-                    .onClick(() => {
-                        new TFilesEdit(this, files)
-                            .open();
-                    });
-            });
+            menu
+                .addItem((item) => {
+                    item.setTitle('Edit multiple extensions');
+                    item
+                        .setIcon('pencil')
+                        .onClick(() => {
+                            new TFilesEdit(this, files)
+                                .open();
+                        });
+                })
+                .addItem((item) => {
+                    item.setTitle('Rename multiple files');
+                    item
+                        .setIcon('pencil')
+                        .onClick(() => {
+                            new TFilesRename(this, files)
+                                .open();
+                        })
+                });
         });
     }
 
