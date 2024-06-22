@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.3.0](https://github.com/mokkapps/changelog-generator-demo/compare/v2.2.1...v2.3.0) (2024-06-22)
+
+
+### Features
+
+* **files-modal:** add modal to change extension of batch of files ([#62](https://github.com/Falcion/UNITADE.md/issues/62)) ([875ce27](https://github.com/mokkapps/changelog-generator-demo/commits/875ce2782071d25e4b9c30dc95bc118645cbeee8))
+* **files-rename:** add modal to rename multiple files ([#62](https://github.com/Falcion/UNITADE.md/issues/62)) ([e535c36](https://github.com/mokkapps/changelog-generator-demo/commits/e535c364691381ca56890155538886d1126d9751))
+
+
+### Build system
+
+* **clone:** add .BAT script to clone dev-plugin in test-vault directly ([f6233fc](https://github.com/mokkapps/changelog-generator-demo/commits/f6233fce6bae9ef1665673cb1dcdf25ef59e54a5))
+
 ### [2.2.1](https://github.com/mokkapps/changelog-generator-demo/compare/v2.2.0...v2.2.1) (2024-05-14)
 
 

@@ -47,7 +47,9 @@ import {
 import {
     TFileCreate
 } from './components/file-create';
-
+import {
+    TFilesEdit
+} from './components/files-edit';
 import {
     TFolderEdit
 } from './components/folder-edit';
@@ -60,6 +62,7 @@ import {
     gencase,
     parsegroup
 } from './utils/functions';
+import { TFilesRename } from './components/files-rename';
 
 export default class UNITADE_PLUGIN extends Plugin {
     private _settings: UNITADE_SETTINGS = DEFAULT_SETTINGS;
@@ -176,6 +179,7 @@ export default class UNITADE_PLUGIN extends Plugin {
         this.app.workspace.layoutReady ? this.ltReady(this.app) : this.app.workspace.on('layout-change', () => { this.ltReady(this.app); });
 
         this.registerEvent(this.__ctxEditExt());
+        this.registerEvent(this.__ctxEditExts());
 
         this.__apply();
     }
@@ -210,6 +214,30 @@ export default class UNITADE_PLUGIN extends Plugin {
                                     .open();
                             }
                         });
+                });
+        });
+    }
+
+    private __ctxEditExts(): EventRef {
+        return this.app.workspace.on('files-menu', (menu, files) => {
+            menu
+                .addItem((item) => {
+                    item.setTitle('Edit multiple extensions');
+                    item
+                        .setIcon('pencil')
+                        .onClick(() => {
+                            new TFilesEdit(this, files)
+                                .open();
+                        });
+                })
+                .addItem((item) => {
+                    item.setTitle('Rename multiple files');
+                    item
+                        .setIcon('pencil')
+                        .onClick(() => {
+                            new TFilesRename(this, files)
+                                .open();
+                        })
                 });
         });
     }
