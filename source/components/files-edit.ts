@@ -161,7 +161,7 @@ export class TFilesEdit extends Modal {
             const filepath = file.path.split('/').slice(0, -1).join('/');
             const extension = filename.split('.').slice(1).join('.')!;
             const name = filename.split('.').first()!;
-            return `<div>${filepath}/${name}.${extension}</div>`;
+            return `<div>${filepath}/${name}.${this._new_extension}</div>`;
         }).join('');
     }
 } 
