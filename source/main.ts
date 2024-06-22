@@ -224,8 +224,9 @@ export default class UNITADE_PLUGIN extends Plugin {
                 item
                     .setIcon('pencil')
                     .onClick(() => {
-                        new TFilesEdit(this, files);
-                    })
+                        new TFilesEdit(this, files)
+                            .open();
+                    });
             });
         });
     }

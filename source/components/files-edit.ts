@@ -38,8 +38,6 @@ import MODALES_LOCALE from "./../locales/modals.text";
 export class TFilesEdit extends Modal {
     private _new_extension: string = 'md';
 
-    private _files: TAbstractFile[] = [];
-
     private _integration: boolean;
 
     constructor(
@@ -49,10 +47,6 @@ export class TFilesEdit extends Modal {
         super(plugin.app);
 
         this.target ??= [this.plugin.app.vault.getRoot()];
-
-        for (const item of target) {
-            this._files.push(item);
-        }
 
         this._integration = false;
     }
@@ -147,7 +141,7 @@ export class TFilesEdit extends Modal {
             this.plugin.uptSettings(next);
         }
 
-        this._files.forEach(async (file) => {
+        this.target.forEach(async (file) => {
             const filename = file.path.split('/').last()!
             const filepath = file.path.split('/').slice(0, -1).join('/');
 
@@ -162,7 +156,7 @@ export class TFilesEdit extends Modal {
     }
 
     private __generateDisplayInfo(): string {
-        return this._files.map(file => {
+        return this.target.map(file => {
             const filename = file.path.split('/').last()!;
             const filepath = file.path.split('/').slice(0, -1).join('/');
             const extension = filename.split('.').slice(1).join('.')!;
