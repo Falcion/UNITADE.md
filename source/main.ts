@@ -332,7 +332,11 @@ export default class UNITADE_PLUGIN extends Plugin {
         this.__apply();
     }
 
-    private __tryApply(filetype: string, view: string) {
+    public tryApply(filetype: string, view: string): void {
+        this.__tryApply(filetype, view);
+    }
+
+    private __tryApply(filetype: string, view: string): void {
         if (!this.settings.markdown_overcharge && ['md', 'mdown', 'markdown'].includes(filetype))
             return;
 

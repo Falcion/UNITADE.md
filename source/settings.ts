@@ -52,6 +52,8 @@ export interface UNITADE_SETTINGS {
         stable: boolean,
     },
 
+    barefiling: boolean,
+
     stable: boolean,
     errors: Record<string, string>,
 
@@ -75,6 +77,8 @@ export const DEFAULT_SETTINGS: UNITADE_SETTINGS = {
         extensions: 'txt',
         stable: true,
     },
+
+    barefiling: true,
 
     stable: true,
     errors: {},
@@ -149,6 +153,9 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                     } catch {
                         next.stable = false;
                     }
+                } else {
+                    next.mobile_settings.stable = false;
+                    next.mobile_settings.extensions = value;
                 }
 
                 this.__uptState(
@@ -210,6 +217,9 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                     } catch {
                         next.mobile_settings.stable = false;
                     }
+                } else {
+                    next.mobile_settings.stable = false;
+                    next.mobile_settings.extensions = value;
                 }
 
                 this.__uptState(
@@ -298,6 +308,9 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                     } catch {
                         next.stable = false;
                     }
+                } else {
+                    next.mobile_settings.stable = false;
+                    next.mobile_settings.extensions = value;
                 }
 
                 this.__uptState(
@@ -381,6 +394,29 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
         onRuStg.nameEl.parentElement!.appendChild(onRuAttention);
         onRuStg.nameEl.parentElement!.appendChild(onRuInfo);
 
+        new Setting(containerEl)
+            .setName(SETTING_LOCALE.getDbSp().name)
+            .setDesc(SETTING_LOCALE.getDbSp().desc)
+            .addToggle(toggle => {
+                toggle
+                    .setValue(this.plugin.settings.barefiling)
+                    .onChange(async (value) => {
+                        let next = {
+                            ...this.plugin.settings,
+                            barefiling: value
+                        };
+
+                        await this.plugin.uptSettings(next);
+
+                        if (this.plugin.settings.barefiling) {
+                            this.plugin.tryApply('', 'markdown');
+                        } else {
+                            /**@ts-expect-error */
+                            this.plugin.app.viewRegistry.unregisterExtensions(['']);
+                        }
+                    })
+            });
+
         this._configIgnore = new Setting(containerEl)
             .setName(SETTING_LOCALE.getIgnInf().name)
             .setDesc(SETTING_LOCALE.getIgnInf().desc)
@@ -434,6 +470,9 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                     } catch {
                         next.stable = false;
                     }
+                } else {
+                    next.mobile_settings.stable = false;
+                    next.mobile_settings.extensions = value;
                 }
 
                 this.__uptState(
@@ -470,6 +509,9 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                     } catch {
                         next.stable = false;
                     }
+                } else {
+                    next.mobile_settings.stable = false;
+                    next.mobile_settings.extensions = value;
                 }
 
                 this.__uptState(
@@ -536,6 +578,9 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                     } catch {
                         next.stable = false;
                     }
+                } else {
+                    next.mobile_settings.stable = false;
+                    next.mobile_settings.extensions = value;
                 }
 
                 this.__uptState(

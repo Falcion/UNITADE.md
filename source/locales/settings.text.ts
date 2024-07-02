@@ -70,7 +70,7 @@ export default class SETTING_LOCALES {
 
     static getOnRf(): { name: string, desc: string, info: string } {
         return {
-            name: "On-load extension registry",
+            name: "On-load extension registry:",
             desc: "If enabled, plugin will now registry every file's extension (this setting: last part of extensions sequence) when OBSIDIAN catches event of new file appearing in vault.",
             info: "This mode is interchangeable (that is, disabled) when an unsafe on-load registry is enabled."
         };
@@ -78,7 +78,7 @@ export default class SETTING_LOCALES {
 
     static getOnRu(): { name: string, desc: string, info: string } {
         return {
-            name: "On-load unsafe extension registry",
+            name: "On-load unsafe extension registry:",
             desc: "If enabled, plugin will now registry every file's extension (this setting: every part of extensions sequence) when OBSIDIAN catches event of new file appearing in vault.",
             info: "This mode is interchangeable (that is, disabled) when an normal on-load registry is enabled."
         };
@@ -128,5 +128,12 @@ export default class SETTING_LOCALES {
         return {
             msg: "Keep in mind, this setting is unstable due entire infrastructure of plugin and OBSIDIAN's API, it is recommended to turn off every other setting and clear them if possible before using this module: you can setup every other module just in this block.",
         };
+    }
+
+    static getDbSp(): { name: string, desc: string } {
+        return {
+            name: "Barefiles on-load registry:",
+            desc: "If enabled, plugin will try to register files without extensions (so-called bare files): for files with only extension (so-called dot files) use on-load extension registry.",
+        }
     }
 }
