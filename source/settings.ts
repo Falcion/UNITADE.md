@@ -154,8 +154,8 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                         next.stable = false;
                     }
                 } else {
-                    next.mobile_settings.stable = false;
-                    next.mobile_settings.extensions = value;
+                    next.stable = false;
+                    next.extensions = value;
                 }
 
                 this.__uptState(
@@ -309,8 +309,8 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                         next.stable = false;
                     }
                 } else {
-                    next.mobile_settings.stable = false;
-                    next.mobile_settings.extensions = value;
+                    next.stable = false;
+                    next.forced_extensions = value;
                 }
 
                 this.__uptState(
@@ -471,8 +471,8 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                         next.stable = false;
                     }
                 } else {
-                    next.mobile_settings.stable = false;
-                    next.mobile_settings.extensions = value;
+                    next.stable = false;
+                    next.ignore_extensions = value;
                 }
 
                 this.__uptState(
@@ -510,8 +510,8 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                         next.stable = false;
                     }
                 } else {
-                    next.mobile_settings.stable = false;
-                    next.mobile_settings.extensions = value;
+                    next.stable = false;
+                    next.ignore_masks = value;
                 }
 
                 this.__uptState(
@@ -579,8 +579,8 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                         next.stable = false;
                     }
                 } else {
-                    next.mobile_settings.stable = false;
-                    next.mobile_settings.extensions = value;
+                    next.stable = false;
+                    next.grouped_extensions = value;
                 }
 
                 this.__uptState(
