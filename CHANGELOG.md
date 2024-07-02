@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.4.0](https://github.com/mokkapps/changelog-generator-demo/compare/v2.3.1...v2.4.0) (2024-07-02)
+
+
+### Features
+
+* **barefiling:** add support to bare files ([a3099bc](https://github.com/mokkapps/changelog-generator-demo/commits/a3099bc8415c319bb9b48128d8258fefc814d7af))
+
+
+### Common
+
+* **locales:** fix locales in previous settings ([f7217e4](https://github.com/mokkapps/changelog-generator-demo/commits/f7217e4d02a8b93fd2cd34dd08c81ecd8c9bfc9e))
+* **settings:** add some tooltips to settings ([236cd5e](https://github.com/mokkapps/changelog-generator-demo/commits/236cd5ec06fc65df2cfeed3bbcf6aad281454486))
+* **stablechecks:** add stable checks and allow empty entry in the settings ([0698a5e](https://github.com/mokkapps/changelog-generator-demo/commits/0698a5e7d6e5890f022ea6835c3a8301474b02ee))
+
 ### [2.3.1](https://github.com/mokkapps/changelog-generator-demo/compare/v2.3.0...v2.3.1) (2024-06-23)
 
 
