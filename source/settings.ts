@@ -397,6 +397,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
         new Setting(containerEl)
             .setName(SETTING_LOCALE.getDbSp().name)
             .setDesc(SETTING_LOCALE.getDbSp().desc)
+            .setTooltip('This settings registries empty extension, which could be done manually within extension settings block.')
             .addToggle(toggle => {
                 toggle
                     .setValue(this.plugin.settings.barefiling)
@@ -538,6 +539,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
         let groupMsg = new Setting(containerEl)
             .setName(SETTING_LOCALE.getGrpInf().name)
             .setDesc(SETTING_LOCALE.getGrpInf().desc)
+            .setTooltip('For list of views view the docs of the plugin, more information on the wiki.')
             .addToggle(toggle => {
                 toggle
                     .setValue(this.plugin.settings.is_grouped)
