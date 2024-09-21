@@ -244,17 +244,33 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
             .setDesc(SETTING_LOCALE.getUlrd().desc)
             .addButton(button => {
                 button
-                    .setButtonText('Unload')
+                    .setButtonText('Hard-delete')
                     .setIcon('upload')
+                    .setWarning()
                     .onClick(async (event) => {
                         if (this.plugin.settings.debug_mode)
-                            console.info(`[${event.timeStamp}]: Caused unloading function!`);
+                            console.info(`[${event.timeStamp}]: Caused force-deleting function!`);
 
                         this.plugin.unapplyRegistry();
                     });
 
                 return button;
             });
+
+        new Setting(containerEl)
+            .setName('Force-unload')
+            .setDesc('On click, causes imitation of disabling plugin, meaning, reloading registry of extensions in vault to default mode.')
+            .addButton(button => {
+                button
+                    .setButtonText('Force-unload')
+                    .setIcon('upload')
+                    .onClick(async (event) => {
+                        if (this.plugin.settings.debug_mode)
+                            console.info(`[${event.timeStamp}]: Caused unloading function!`);
+
+                        this.plugin.unapply();
+                    })
+            })
 
         new Setting(containerEl)
             .setName(SETTING_LOCALE.getHlrd().name)

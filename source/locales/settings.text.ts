@@ -48,7 +48,7 @@ export default class SETTING_LOCALES {
 
     static getUlrd(): { name: string, desc: string } {
         return {
-            name: "Unload plugin's registry",
+            name: "Hard-delete registry",
             desc: "On click, causes full hot-deletion of entire registry of extensions, every extension which Obsidian could read will be deleted. Use with caution or for debug.",
         };
     }
