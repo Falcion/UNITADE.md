@@ -58,6 +58,7 @@ export interface UNITADE_SETTINGS {
     errors: Record<string, string>,
 
     debug_mode: boolean,
+    silence_errors: boolean,
 }
 
 export const DEFAULT_SETTINGS: UNITADE_SETTINGS = {
@@ -84,6 +85,7 @@ export const DEFAULT_SETTINGS: UNITADE_SETTINGS = {
     errors: {},
 
     debug_mode: false,
+    silence_errors: false
 }
 
 export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
@@ -633,6 +635,49 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
         groupExtInp.inputEl.style.width = '100%';
         groupExtInp.inputEl.style.height = '48px';
         groupExtInp.inputEl.style.minHeight = '36px';
+
+        containerEl.createEl('h3', { text: 'Additionals' });
+
+        new Setting(containerEl)
+            .setName('Debug mode:')
+            .setDesc('This mode starts output in application\'s console about actions you do.')
+            .setTooltip('Do not use this mode if you are not developer or familliar with console.')
+            .addToggle(toggle => {
+                toggle
+                    .setValue(this.plugin.settings.debug_mode)
+                    .onChange(async (value) => {
+                        let next = {
+                            ...this.plugin.settings,
+                            debug_mode: value,
+                        };
+
+                        await this.plugin.uptSettings(next);
+
+                        this.__updateErrors();
+                    });
+
+                return toggle;
+            });
+
+        new Setting(containerEl)
+            .setName('Silence errors:')
+            .setDesc('This mode silences every error and disables notifications: could help in case of error spamming.')
+            .addToggle(toggle => {
+                toggle
+                    .setValue(this.plugin.settings.silence_errors)
+                    .onChange(async (value) => {
+                        let next = {
+                            ...this.plugin.settings,
+                            silence_errors: value,
+                        };
+
+                        await this.plugin.uptSettings(next);
+
+                        this.__updateErrors();
+                    });
+
+                return toggle;
+            });
     }
 
     private __uptMbConfig(mbConfigInput: TextAreaComponent, mbConfigEnabled: boolean): void {

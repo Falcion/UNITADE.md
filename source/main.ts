@@ -96,7 +96,11 @@ export default class UNITADE_PLUGIN extends Plugin {
                             return;
                         }
                     } catch (error) {
-                        console.error('Error creating regular expression:', error);
+                        if (!this.settings.silence_errors) {
+                            console.error(error);
+                        } else {
+                            console.debug(`[UNITADE-ERROR]: Error is silenced, error: ${error}`);
+                        }
                     }
                 }
             }
@@ -128,9 +132,13 @@ export default class UNITADE_PLUGIN extends Plugin {
                         this.settings.mobile_settings.extensions = __mb_settings.join(';');
                     }
                 } catch (err: any) {
-                    new Notification('Error from UNITADE plugin:', { body: `Error with on-load registry of: ${filename.last()!}};` });
+                    if (!this.settings.silence_errors) {
+                        new Notification('Error from UNITADE plugin:', { body: `Error with on-load registry of: ${err}` });
 
-                    console.error(err);
+                        console.error(err);
+                    } else {
+                        console.debug(`[UNITADE-ERROR]: Error is silenced, error: ${err}`);
+                    }
                 }
             }
 
@@ -163,9 +171,13 @@ export default class UNITADE_PLUGIN extends Plugin {
                             this.settings.mobile_settings.extensions = __mb_settings.join(';');
                         }
                     } catch (err: any) {
-                        new Notification('Error from UNITADE plugin:', { body: `Error with on-load registry of: ${extensions}` });
+                        if (!this.settings.silence_errors) {
+                            new Notification('Error from UNITADE plugin:', { body: `Error with on-load registry of: ${extensions}` });
 
-                        console.error(err);
+                            console.error(err);
+                        } else {
+                            console.debug(`[UNITADE-ERROR]: Error is silenced, error: ${err}`);
+                        }
                     }
                 }
             }
@@ -270,7 +282,13 @@ export default class UNITADE_PLUGIN extends Plugin {
         try {
             this.registerExtensions(['.md'], 'markdown');
         } catch (err: any) {
-            console.error(err);
+            if (!this.settings.silence_errors) {
+                new Notification('Error from UNITADE plugin:', { body: err });
+
+                console.error(err);
+            } else {
+                console.debug(`[UNITADE-ERROR]: Error is silenced, error: ${err}`);
+            }
 
             this.settings.errors['markdown_override'] = `Error with reregistering extensions: ${err}`;
         }
@@ -320,11 +338,15 @@ export default class UNITADE_PLUGIN extends Plugin {
                     return new UNITADE_VIEW(leaf, extension);
                 });
             } catch (err: any) {
-                new Notification('Error from UNITADE plugin:', { body: `${err}` });
-
                 this.settings.errors[extension] = `Error from UNITADE plugin: ${err}`;
 
-                console.error(err);
+                if (!this.settings.silence_errors) {
+                    new Notification('Error from UNITADE plugin:', { body: `${err}` });
+
+                    console.error(err);
+                } else {
+                    console.debug(`[UNITADE-ERROR]: Error is silenced, error: ${err}`);
+                }
             }
         }
     }
@@ -365,9 +387,13 @@ export default class UNITADE_PLUGIN extends Plugin {
                 _msg = `Could not register extension: ${filetype} to view as ${view}.\n${err}`;
             }
 
-            new Notification('Error from UNITADE plugin:', { body: _msg });
+            if (!this.settings.silence_errors) {
+                new Notification('Error from UNITADE plugin:', { body: _msg });
 
-            console.error(_msg);
+                console.error(_msg);
+            } else {
+                console.debug(`[UNITADE-ERROR]: Error is silenced, error: ${_msg}`);
+            }
 
             this._settings.errors[filetype] = _msg;
         }
@@ -425,11 +451,15 @@ export default class UNITADE_PLUGIN extends Plugin {
                     } catch (err: any) {
                         const _msg = `Couldn't unregistry extension: ${extension};`
 
-                        new Notification('Error from UNITADE plugin:', { body: _msg });
-
                         this.settings.errors[extension] = _msg;
 
-                        console.error(_msg);
+                        if (!this.settings.silence_errors) {
+                            new Notification('Error from UNITADE plugin:', { body: _msg });
+
+                            console.error(_msg);
+                        } else {
+                            console.debug(`[UNITADE-ERROR]: Error is silenced, error: ${_msg}`);
+                        }
                     }
                 }
     }
