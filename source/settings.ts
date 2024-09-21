@@ -273,6 +273,24 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                 return button;
             });
 
+        new Setting(containerEl)
+            .setName('Reload registries')
+            .setDesc('Reloads views and registries extensions providing new settings and data to the app and keeping experience up-to-date with config.')
+            .addButton(button => {
+                button
+                    .setButtonText('Reload')
+                    .setIcon('reload')
+                    .onClick(async (event) => {
+                        if (this.plugin.settings.debug_mode)
+                            console.info(`[${event.timeStamp}]: Caused reloading function!`);
+
+                        this.plugin.unapply();
+                        this.plugin.apply();
+
+                        this.plugin.applyDefaults();
+                    })
+            })
+
         containerEl.createEl('h2', { text: 'Errors' });
         this._errors = containerEl.createEl('p', { text: 'None' });
         this._errors.style.whiteSpace = 'pre-line';

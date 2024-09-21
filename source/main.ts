@@ -63,6 +63,7 @@ import {
     parsegroup
 } from './utils/functions';
 import { TFilesRename } from './components/files-rename';
+import CONSTANTS from './utils/constants';
 
 export default class UNITADE_PLUGIN extends Plugin {
     private _settings: UNITADE_SETTINGS = DEFAULT_SETTINGS;
@@ -330,6 +331,12 @@ export default class UNITADE_PLUGIN extends Plugin {
 
     public apply(): void {
         this.__apply();
+    }
+
+    public applyDefaults(): void {
+        for (let defaultView in CONSTANTS.defaultExtensions) {
+            this.registerExtensions(CONSTANTS.defaultExtensions[defaultView], defaultView);
+        }
     }
 
     public tryApply(filetype: string, view: string): void {
