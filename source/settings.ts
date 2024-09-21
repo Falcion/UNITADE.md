@@ -250,7 +250,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                         if (this.plugin.settings.debug_mode)
                             console.info(`[${event.timeStamp}]: Caused unloading function!`);
 
-                        this.plugin.unapply();
+                        this.plugin.unapplyRegistry();
                     });
 
                 return button;

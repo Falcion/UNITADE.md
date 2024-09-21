@@ -405,6 +405,14 @@ export default class UNITADE_PLUGIN extends Plugin {
         this.__unapply(this.settings);
     }
 
+    public unapplyRegistry(): void {
+        /**@ts-expect-error */
+        for (const extensionKey in this.app.viewRegistry.typeByExtension) {
+            /**@ts-expect-error */
+            this.app.viewRegistry.unregisterExtensions([extensionKey]);
+        }
+    }
+
     private __unapplyCfg(extensions: string, markdown_charge: boolean) {
         const ext_arr: string[] = extensions.split(';').map(s => s.trim());
 

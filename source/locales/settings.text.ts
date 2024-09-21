@@ -49,14 +49,14 @@ export default class SETTING_LOCALES {
     static getUlrd(): { name: string, desc: string } {
         return {
             name: "Unload plugin's registry",
-            desc: "On click, causes imitation of disabling plugin, meaning, reloading registry of extensions in vault to default mode.",
+            desc: "On click, causes full hot-deletion of entire registry of extensions, every extension which Obsidian could read will be deleted. Use with caution or for debug.",
         };
     }
 
     static getHlrd(): { name: string, desc: string } {
         return {
             name: "Hard-load plugin's registry",
-            desc: "On click, causes imitation of enabling plugin, meaning, reloading registries which are defined and set up within user's settings."
+            desc: "On click, causes imitation of enabling plugin, meaning, reloading registries which are defined and set up within plugin's settings."
         };
     }
 
