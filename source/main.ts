@@ -64,12 +64,18 @@ import {
 } from './utils/functions';
 import { TFilesRename } from './components/files-rename';
 import CONSTANTS from './utils/constants';
+import LocalesModule from './locales/core';
 
 export default class UNITADE_PLUGIN extends Plugin {
     private _settings: UNITADE_SETTINGS = DEFAULT_SETTINGS;
+    private _locale: LocalesModule = new LocalesModule();
 
     public get settings(): UNITADE_SETTINGS {
         return this._settings;
+    }
+
+    public get locale(): LocalesModule {
+        return this._locale;
     }
 
     public get is_mobile(): boolean {
@@ -201,7 +207,7 @@ export default class UNITADE_PLUGIN extends Plugin {
         return this.app.workspace.on('file-menu', (menu, file) => {
             menu
                 .addItem((item) => {
-                    item.setTitle('Edit extension');
+                    item.setTitle(this.locale.getLocaleItem('MODAL_EDIT_EXTENSION')[0]!);
                     item
                         .setIcon('pencil')
                         .onClick(() => {
@@ -215,7 +221,7 @@ export default class UNITADE_PLUGIN extends Plugin {
                         });
                 })
                 .addItem((item) => {
-                    item.setTitle('Create with extension');
+                    item.setTitle(this.locale.getLocaleItem('MODAL_CREATE_WITH_EXTENSION')[0]!);
                     item
                         .setIcon('pencil')
                         .onClick(() => {
@@ -235,7 +241,7 @@ export default class UNITADE_PLUGIN extends Plugin {
         return this.app.workspace.on('files-menu', (menu, files) => {
             menu
                 .addItem((item) => {
-                    item.setTitle('Edit multiple extensions');
+                    item.setTitle(this.locale.getLocaleItem('MODAL_EDIT_MULTIPLE')[0]!);
                     item
                         .setIcon('pencil')
                         .onClick(() => {
@@ -244,7 +250,7 @@ export default class UNITADE_PLUGIN extends Plugin {
                         });
                 })
                 .addItem((item) => {
-                    item.setTitle('Rename multiple files');
+                    item.setTitle(this.locale.getLocaleItem('MODAL_EDIT_MULTIPLE')[1]!);
                     item
                         .setIcon('pencil')
                         .onClick(() => {

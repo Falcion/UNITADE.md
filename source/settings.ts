@@ -32,7 +32,7 @@ import {
 } from 'obsidian';
 
 import UNITADE_PLUGIN from './main';
-import SETTING_LOCALE from './locales/settings.text';
+import LocalesModule from './locales/core';
 
 export interface UNITADE_SETTINGS {
     markdown_overcharge: boolean,
@@ -90,6 +90,7 @@ export const DEFAULT_SETTINGS: UNITADE_SETTINGS = {
 
 export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
     plugin: UNITADE_PLUGIN;
+    locale: LocalesModule = new LocalesModule();
 
     private _config: Setting | undefined;
     private _configMobile: Setting | undefined;
@@ -119,8 +120,8 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
         containerEl.createEl('h3', { text: 'UNITADE\'s settings:' });
 
         new Setting(containerEl)
-            .setName(SETTING_LOCALE.getMdOv().name)
-            .setDesc(SETTING_LOCALE.getMdOv().desc)
+            .setName(this.locale.getLocaleItem('SETTINGS_MD_OVERRIDE')[0]!)
+            .setDesc(this.locale.getLocaleItem('SETTINGS_MD_OVERRIDE')[1]!)
             .addToggle(toggle => {
                 toggle
                     .setValue(this.plugin.settings.markdown_overcharge)
@@ -137,8 +138,8 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
             });
 
         this._config = new Setting(containerEl)
-            .setName(SETTING_LOCALE.getCfgRt().name)
-            .setDesc(SETTING_LOCALE.getCfgRt().desc);
+            .setName(this.locale.getLocaleItem('SETTINGS_EXTENSIONS')[0]!)
+            .setDesc(this.locale.getLocaleItem('SETTINGS_EXTENSIONS')[1]!);
 
         let configInput = new TextAreaComponent(containerEl)
             .setPlaceholder('txt; conf; config; data; logs')
@@ -176,8 +177,8 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
         configInput.inputEl.style.minHeight = '36px';
 
         this._configMobile = new Setting(containerEl)
-            .setName(SETTING_LOCALE.getCfgMb().name)
-            .setDesc(SETTING_LOCALE.getCfgMb().desc)
+            .setName(this.locale.getLocaleItem('SETTINGS_MOBILE_SPECIFIC')[0]!)
+            .setDesc(this.locale.getLocaleItem('SETTINGS_MOBILE_SPECIFIC')[1]!)
             .addToggle(toggle => {
                 toggle
                     .setValue(this.plugin.settings.mobile_settings.enable)
@@ -242,8 +243,8 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
         this.__uptMbConfig(mobileConfigInp, this.plugin.settings.mobile_settings.enable);
 
         new Setting(containerEl)
-            .setName(SETTING_LOCALE.getUlrd().name)
-            .setDesc(SETTING_LOCALE.getUlrd().desc)
+            .setName(this.locale.getLocaleItem('SETTINGS_HARD_DELETE')[0]!)
+            .setDesc(this.locale.getLocaleItem('SETTINGS_HARD_DELETE')[1]!)
             .addButton(button => {
                 button
                     .setButtonText('Hard-delete')
@@ -260,8 +261,8 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
             });
 
         new Setting(containerEl)
-            .setName('Force-unload')
-            .setDesc('On click, causes imitation of disabling plugin, meaning, reloading registry of extensions in vault to default mode.')
+            .setName(this.locale.getLocaleItem('SETTINGS_FORCE_UNLOAD')[0]!)
+            .setDesc(this.locale.getLocaleItem('SETTINGS_FORCE_UNLOAD')[1]!)
             .addButton(button => {
                 button
                     .setButtonText('Force-unload')
@@ -275,8 +276,8 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
             })
 
         new Setting(containerEl)
-            .setName(SETTING_LOCALE.getHlrd().name)
-            .setDesc(SETTING_LOCALE.getHlrd().desc)
+            .setName(this.locale.getLocaleItem('SETTINGS_HARD_LOAD')[0]!)
+            .setDesc(this.locale.getLocaleItem('SETTINGS_HARD_LOAD')[1]!)
             .addButton(button => {
                 button
                     .setButtonText('Force-load')
@@ -292,8 +293,8 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
             });
 
         new Setting(containerEl)
-            .setName('Reload registries')
-            .setDesc('Reloads views and registries extensions providing new settings and data to the app and keeping experience up-to-date with config.')
+            .setName(this.locale.getLocaleItem('SETTINGS_RELOAD_REGISTRIES')[0]!)
+            .setDesc(this.locale.getLocaleItem('SETTINGS_RELOAD_REGISTRIES')[1]!)
             .addButton(button => {
                 button
                     .setButtonText('Reload')
@@ -318,14 +319,14 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
         containerEl.createEl('h3', { text: 'Advanced block' });
 
         let forcedMsg = new Setting(containerEl)
-            .setName(SETTING_LOCALE.getFrcInf().name)
-            .setDesc(SETTING_LOCALE.getFrcInf().desc)
+            .setName(this.locale.getLocaleItem('SETTINGS_FORCED_EXTENSIONS')[0]!)
+            .setDesc(this.locale.getLocaleItem('SETTINGS_FORCED_EXTENSIONS')[1]!)
 
         let forcedWarn = document.createElement('div');
         forcedWarn.style.fontSize = '80%';
         forcedWarn.style.margin = '10px';
         forcedWarn.style.color = 'green';
-        forcedWarn.innerHTML = SETTING_LOCALE.getFrcInf().msg;
+        forcedWarn.innerHTML = this.locale.getLocaleItem('SETTINGS_FORCED_EXTENSIONS')[2]!
 
         forcedMsg.nameEl.appendChild(forcedWarn);
 
@@ -368,16 +369,16 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
         onRfAttention.style.fontSize = '80%';
         onRfAttention.style.margin = '10px';
         onRfAttention.style.color = 'darkRed';
-        onRfAttention.innerHTML = SETTING_LOCALE.getOnMsg().msg;
+        onRfAttention.innerHTML = this.locale.getLocaleItem('SETTINGS_WARNING_MSG')[0]!;
 
         let onRfInfo = document.createElement('div');
         onRfInfo.style.fontWeight = 'bold';
         onRfInfo.style.fontSize = '80%';
-        onRfInfo.innerHTML = SETTING_LOCALE.getOnRf().info;
+        onRfInfo.innerHTML = this.locale.getLocaleItem('SETTINGS_ONLOAD_REGISTRY')[2]!;
 
         const onRfStg = new Setting(containerEl)
-            .setName(SETTING_LOCALE.getOnRf().name)
-            .setDesc(SETTING_LOCALE.getOnRf().desc)
+            .setName(this.locale.getLocaleItem('SETTINGS_ONLOAD_REGISTRY')[0]!)
+            .setDesc(this.locale.getLocaleItem('SETTINGS_ONLOAD_REGISTRY')[1]!)
             .addToggle(toggle => {
                 toggle
                     .setValue(this.plugin.settings.is_onload)
@@ -401,16 +402,16 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
         onRuAttention.style.fontSize = '80%';
         onRuAttention.style.margin = '10px';
         onRuAttention.style.color = 'darkRed';
-        onRuAttention.innerHTML = SETTING_LOCALE.getOnMsg().msg;
+        onRuAttention.innerHTML = this.locale.getLocaleItem('SETTINGS_WARNING_MSG')[0]!;
 
         let onRuInfo = document.createElement('div');
         onRuInfo.style.fontWeight = 'bold';
         onRuInfo.style.fontSize = '80%';
-        onRuInfo.innerHTML = SETTING_LOCALE.getOnRf().info;
+        onRuInfo.innerHTML = this.locale.getLocaleItem('SETTINGS_ONLOAD_UNSAFE')[2]!
 
         const onRuStg = new Setting(containerEl)
-            .setName(SETTING_LOCALE.getOnRu().name)
-            .setDesc(SETTING_LOCALE.getOnRu().desc)
+            .setName(this.locale.getLocaleItem('SETTINGS_ONLOAD_UNSAFE')[0]!)
+            .setDesc(this.locale.getLocaleItem('SETTINGS_ONLOAD_UNSAFE')[1]!)
             .addToggle(toggle => {
                 toggle
                     .setValue(this.plugin.settings.is_onload_unsafe)
@@ -431,8 +432,8 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
         onRuStg.nameEl.parentElement!.appendChild(onRuInfo);
 
         new Setting(containerEl)
-            .setName(SETTING_LOCALE.getDbSp().name)
-            .setDesc(SETTING_LOCALE.getDbSp().desc)
+            .setName(this.locale.getLocaleItem('SETTINGS_BAREFILES')[0]!)
+            .setDesc(this.locale.getLocaleItem('SETTINGS_BAREFILES')[1]!)
             .setTooltip('This settings registries empty extension, which could be done manually within extension settings block.')
             .addToggle(toggle => {
                 toggle
@@ -455,8 +456,8 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
             });
 
         this._configIgnore = new Setting(containerEl)
-            .setName(SETTING_LOCALE.getIgnInf().name)
-            .setDesc(SETTING_LOCALE.getIgnInf().desc)
+            .setName(this.locale.getLocaleItem('SETTINGS_IGNORE_MODE')[0]!)
+            .setDesc(this.locale.getLocaleItem('SETTINGS_IGNORE_MODE')[1]!)
             .addToggle(toggle => {
                 toggle
                     .setValue(this.plugin.settings.is_ignore)
@@ -484,13 +485,13 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
         ignoreWarn.style.fontSize = '80%';
         ignoreWarn.style.margin = '10px';
         ignoreWarn.style.color = 'yellow';
-        ignoreWarn.innerHTML = SETTING_LOCALE.getIgnMsg().msg;
+        ignoreWarn.innerHTML = this.locale.getLocaleItem('SETTINGS_IGNORE_MSG')[0]!;
 
         this._configIgnore.nameEl.appendChild(ignoreWarn);
 
         let ignoreExtMsg = new Setting(containerEl)
-            .setName(SETTING_LOCALE.getIgnExt().name)
-            .setDesc(SETTING_LOCALE.getIgnExt().desc);
+            .setName(this.locale.getLocaleItem('SETTINGS_IGNORE_EXTENSIONS')[0]!)
+            .setDesc(this.locale.getLocaleItem('SETTINGS_IGNORE_EXTENSIONS')[1]!);
 
         let ignoreExtInp = new TextAreaComponent(containerEl)
             .setPlaceholder('txt; conf; config; data; logs')
@@ -528,8 +529,8 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
         ignoreExtInp.inputEl.style.minHeight = '36px';
 
         let ignoreMskMsg = new Setting(containerEl)
-            .setName(SETTING_LOCALE.getIgnMsk().name)
-            .setDesc(SETTING_LOCALE.getIgnMsk().desc);
+            .setName(this.locale.getLocaleItem('SETTINGS_IGNORE_FILES')[0]!)
+            .setDesc(this.locale.getLocaleItem('SETTINGS_IGNORE_FILES')[1]!);
 
         let ignoreMskInp = new TextAreaComponent(containerEl)
             .setPlaceholder('\\.(txt|md)$; doc_[a-z]; file_\\d{3}; file1')
@@ -573,8 +574,8 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
         );
 
         let groupMsg = new Setting(containerEl)
-            .setName(SETTING_LOCALE.getGrpInf().name)
-            .setDesc(SETTING_LOCALE.getGrpInf().desc)
+            .setName(this.locale.getLocaleItem('SETTINGS_GROUP_EXTENSIONS')[0]!)
+            .setDesc(this.locale.getLocaleItem('SETTINGS_GROUP_EXTENSIONS')[1]!)
             .setTooltip('For list of views view the docs of the plugin, more information on the wiki.')
             .addToggle(toggle => {
                 toggle
@@ -597,7 +598,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
         groupedWarn.style.fontSize = '80%';
         groupedWarn.style.margin = '10px';
         groupedWarn.style.color = 'yellow';
-        groupedWarn.innerHTML = SETTING_LOCALE.getGrpMsg().msg;
+        groupedWarn.innerHTML = this.locale.getLocaleItem('SETTINGS_GROUP_MSG')[0]!;
 
         groupMsg.nameEl.appendChild(groupedWarn);
 
@@ -639,9 +640,9 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
         containerEl.createEl('h3', { text: 'Additionals' });
 
         new Setting(containerEl)
-            .setName('Debug mode:')
-            .setDesc('This mode starts output in application\'s console about actions you do.')
-            .setTooltip('Do not use this mode if you are not developer or familliar with console.')
+            .setName(this.locale.getLocaleItem('SETTINGS_DEBUG_MODE')[0]!)
+            .setDesc(this.locale.getLocaleItem('SETTINGS_DEBUG_MODE')[1]!)
+            .setTooltip(this.locale.getLocaleItem('SETTINGS_DEBUG_MODE')[2]!)
             .addToggle(toggle => {
                 toggle
                     .setValue(this.plugin.settings.debug_mode)
@@ -660,8 +661,8 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
             });
 
         new Setting(containerEl)
-            .setName('Silence errors:')
-            .setDesc('This mode silences every error and disables notifications: could help in case of error spamming.')
+            .setName(this.locale.getLocaleItem('SETTINGS_SILENCE_ERRORS')[0]!)
+            .setDesc(this.locale.getLocaleItem('SETTINGS_SILENCE_ERRORS')[1]!)
             .addToggle(toggle => {
                 toggle
                     .setValue(this.plugin.settings.silence_errors)
