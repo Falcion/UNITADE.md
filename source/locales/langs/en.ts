@@ -133,6 +133,9 @@ export const LOCALES_EN = {
         1: "Upon click, plugin would try to make config compatible with it's new functionality and config iteration."
     },
     "BUTTON_WIKI": {
-        0: "Upon click, redirects to the GitHub's wiki page of project which contains documentation about entire plugin."
+        0: "Open plugin's wiki",
+        1: "Upon click, redirects to the GitHub's wiki page of project which contains documentation about entire plugin.",
+        2: "This would redirect you in external link. Internet access required.",
+        3: "Open wiki"
     }
 };

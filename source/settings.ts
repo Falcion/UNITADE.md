@@ -729,6 +729,20 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
 
                 return button;
             });
+
+        new Setting(containerEl)
+            .setName(this.locale.getLocaleItem('BUTTON_WIKI')[0]!)
+            .setDesc(this.locale.getLocaleItem('BUTTON_WIKI')[1]!)
+            .addButton(button => {
+                button
+                    .setButtonText(this.locale.getLocaleItem('BUTTON_WIKI')[3]!)
+                    .setTooltip(this.locale.getLocaleItem('BUTTON_WIKI')[2]!)
+                    .onClick(async (event) => {
+                        window.open('https://github.com/Falcion/UNITADE.md/wiki');
+                    });
+
+                return button;
+            })
     }
 
     private __uptMbConfig(mbConfigInput: TextAreaComponent, mbConfigEnabled: boolean): void {
