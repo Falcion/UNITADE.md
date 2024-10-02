@@ -40,14 +40,14 @@ import { LOCALES_NL } from "./langs/nl";
 import { LOCALES_NO } from "./langs/no";
 import { LOCALES_PL } from "./langs/pl";
 import { LOCALES_PT } from "./langs/pt";
-import { LOCALES_PT_BR } from "./langs/pt-BR";
+import { LOCALES_PT_BR } from "./langs/pt_br";
 import { LOCALES_RO } from "./langs/ro";
 import { LOCALES_RU } from "./langs/ru";
 import { LOCALES_SQ } from "./langs/sq";
 import { LOCALES_TR } from "./langs/tr";
 import { LOCALES_UK } from "./langs/uk";
 import { LOCALES_ZH } from "./langs/zh";
-import { LOCALES_ZH_TW } from "./langs/zh-tw";
+import { LOCALES_ZH_TW } from "./langs/zh_tw";
 
 interface LocaleTranslation {
     0?: string;
@@ -109,14 +109,14 @@ export default class LocalesModule {
     }
 
     getLocaleItem(locale_item: string): LocaleTranslation {
-        if (locale_item === undefined || typeof locale_item !== 'number') {
+        if (locale_item === undefined) {
             throw new Error('Locale key is undefined or invalid: access denied.');
         }
 
         const translation = this.getTranslation();
 
         if (locale_item in translation) {
-            return translation[locale_item] || '';
+            return translation[locale_item];
         } else {
             throw new Error(`Locale key ${locale_item} is out of bounds.`);
         }

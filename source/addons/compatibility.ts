@@ -1,6 +1,6 @@
 import { App, PluginManifest } from "obsidian";
-import UNITADE_PLUGIN from "source/main";
-import { DEFAULT_SETTINGS } from "source/settings";
+import UNITADE_PLUGIN from "../main";
+import { DEFAULT_SETTINGS } from "../settings";
 
 export default class CompatibilityModule {
     private _app: App;
