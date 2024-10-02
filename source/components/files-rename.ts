@@ -33,7 +33,6 @@ import {
 } from "obsidian";
 
 import UNITADE_PLUGIN from "./../main";
-import MODALES_LOCALE from "./../locales/modals.text";
 
 export class TFilesRename extends Modal {
     private _new_name: string = '';

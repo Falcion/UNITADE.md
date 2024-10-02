@@ -137,5 +137,9 @@ export const LOCALES_EN = {
         1: "Upon click, redirects to the GitHub's wiki page of project which contains documentation about entire plugin.",
         2: "This would redirect you in external link. Internet access required.",
         3: "Open wiki"
+    },
+    "MODAL_INCLUDE_IN_REGISTRY": {
+        0: "Include in extensions registry:",
+        1: "If enabled, generated file's extension would be inserted in extensions array."
     }
 };
