@@ -49,10 +49,10 @@ export function parsegroup(input: string): { [key: string]: string[] } {
     const settings_parsed = input.split(';');
 
     for (const setting of settings_parsed) {
-        const [key, values] = setting.trim().split(':');
+        const [key, values] = setting.trim().split(':').map(x => x.trimStart());
 
         if (values !== undefined) {
-            const arr_values = values.split(',').map(value => value.trim());
+            const arr_values = values.split('>');
 
             settings[key.trim()] = arr_values;
         } else {
