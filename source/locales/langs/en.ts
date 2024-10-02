@@ -123,5 +123,16 @@ export const LOCALES_EN = {
     "MODAL_EDIT_MULTIPLE": {
         0: "Edit multiple extensions",
         1: "Rename multiple files"
+    },
+    "SETTINGS_COMPATIBILITY": {
+        0: "Compatibility module:",
+        1: "If turned on, plugin on it's start would try to parse configs of it's past versions to new config with old data: may be unstable, turned off by default."
+    },
+    "SETTINGS_COMPATIBILITY_BUTTON": {
+        0: "Make config compatible",
+        1: "Upon click, plugin would try to make config compatible with it's new functionality and config iteration."
+    },
+    "BUTTON_WIKI": {
+        0: "Upon click, redirects to the GitHub's wiki page of project which contains documentation about entire plugin."
     }
 };

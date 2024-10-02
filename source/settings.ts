@@ -33,6 +33,7 @@ import {
 
 import UNITADE_PLUGIN from './main';
 import LocalesModule from './locales/core';
+import CompatibilityModule from './addons/compatibility';
 
 export interface UNITADE_SETTINGS {
     markdown_overcharge: boolean,
@@ -59,6 +60,8 @@ export interface UNITADE_SETTINGS {
 
     debug_mode: boolean,
     silence_errors: boolean,
+    manifest_version: string,
+    compatibility_module: boolean
 }
 
 export const DEFAULT_SETTINGS: UNITADE_SETTINGS = {
@@ -85,7 +88,9 @@ export const DEFAULT_SETTINGS: UNITADE_SETTINGS = {
     errors: {},
 
     debug_mode: false,
-    silence_errors: false
+    silence_errors: false,
+    manifest_version: '',
+    compatibility_module: false,
 }
 
 export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
@@ -108,6 +113,10 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
         super(app, plugin);
 
         this.plugin = plugin;
+
+        if (this.plugin.settings.compatibility_module) {
+            new CompatibilityModule(app, plugin).start();
+        }
     }
 
     display(): void {
@@ -272,7 +281,9 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                             console.info(`[${event.timeStamp}]: Caused unloading function!`);
 
                         this.plugin.unapply();
-                    })
+                    });
+
+                return button;
             })
 
         new Setting(containerEl)
@@ -307,8 +318,10 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                         this.plugin.apply();
 
                         this.plugin.applyDefaults();
-                    })
-            })
+                    });
+
+                return button;
+            });
 
         containerEl.createEl('h2', { text: 'Errors' });
         this._errors = containerEl.createEl('p', { text: 'None' });
@@ -678,6 +691,43 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                     });
 
                 return toggle;
+            });
+
+        new Setting(containerEl)
+            .setName(this.locale.getLocaleItem('SETTINGS_COMPATIBILITY')[0]!)
+            .setDesc(this.locale.getLocaleItem('SETTINGS_COMPATIBILITY')[1]!)
+            .addToggle(toggle => {
+                toggle
+                    .setValue(this.plugin.settings.compatibility_module)
+                    .onChange(async (value) => {
+                        let next = {
+                            ...this.plugin.settings,
+                            compatibility_module: value,
+                        };
+
+                        await this.plugin.uptSettings(next);
+
+                        this.__updateErrors();
+                    });
+
+                return toggle;
+            });
+
+        new Setting(containerEl)
+            .setName(this.locale.getLocaleItem('SETTINGS_COMPATIBILITY_BUTTON')[0]!)
+            .setDesc(this.locale.getLocaleItem('SETTINGS_COMPATIBILITY_BUTTON')[1]!)
+            .addButton(button => {
+                button
+                    .setButtonText('Start')
+                    .setIcon('arrow-up-down')
+                    .onClick(async (event) => {
+                        if (this.plugin.settings.debug_mode)
+                            console.info(`[${event.timeStamp}]: STARTED COMPATIBILITY PROCESS.`);
+
+                        await new CompatibilityModule(this.app, this.plugin).start();
+                    });
+
+                return button;
             });
     }
 
