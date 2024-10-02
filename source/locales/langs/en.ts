@@ -29,6 +29,12 @@
  * `en: "English"`
  */
 export const LOCALES_EN = {
+    "UNITADE_SETTINGS_COMMON": {
+        0: "UNITADE's settings:",
+        1: "Errors:",
+        2: "Advanced block",
+        3: "Additionals"
+    },
     "SETTINGS_EXTENSIONS": {
         0: "Extensions:",
         1: "Enter the file extensions that should be registered with the vault and with which the application should start registering (taking into account): input must be separated by semicolons (';')."
@@ -84,14 +90,16 @@ export const LOCALES_EN = {
     },
     "SETTINGS_GROUP_EXTENSIONS": {
         0: "Grouped extensions:",
-        1: "Enter by specified syntax extensions which you want to treat as other custom extensions (groups are separated by (';') semicolons while values are separated by (',') commas)."
+        1: "Enter by specified syntax extensions which you want to treat as other custom extensions (groups are separated by (';') semicolons while values are separated by ('>') symbols).",
+        2: "For list of views view the docs of the plugin, more information on the wiki."
     },
     "SETTINGS_GROUP_MSG": {
         0: "Keep in mind, this setting is unstable due entire infrastructure of plugin and OBSIDIAN's API, it is recommended to turn off every other setting and clear them if possible before using this module: you can setup every other module just in this block."
     },
     "SETTINGS_BAREFILES": {
         0: "Barefiles on-load registry:",
-        1: "If enabled, plugin will try to register files without extensions (so-called bare files): for files with only extension (so-called dot files) use on-load extension registry."
+        1: "If enabled, plugin will try to register files without extensions (so-called bare files): for files with only extension (so-called dot files) use on-load extension registry.",
+        2: "This settings registries empty extension, which could be done manually within extension settings block."
     },
     "MODALS_INCLUDE_REGISTRY": {
         0: "Include in extensions registry:",
@@ -141,5 +149,14 @@ export const LOCALES_EN = {
     "MODAL_INCLUDE_IN_REGISTRY": {
         0: "Include in extensions registry:",
         1: "If enabled, generated file's extension would be inserted in extensions array."
+    },
+    "ERROR_REGISTRY_EXTENSION": {
+        0: "Could not register extension: {0} to view as {1}.\nIt's already registered.",
+        1: "Could not register extension: {0} to view as {1}.\n{2}",
+        2: "Couldn't unregistry extension: {0}.",
+        3: "Error with registering extensions:"
+    },
+    "ERROR_COMMON_MESSAGE": {
+        0: "Error from UNITADE plugin:"
     }
 };

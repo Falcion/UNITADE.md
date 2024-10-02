@@ -62,3 +62,9 @@ export function parsegroup(input: string): { [key: string]: string[] } {
 
     return settings;
 }
+
+export function formatString(template: string, ...args: string[]): string {
+    return template.replace(/{(\d+)}/g, (match, index) => {
+        return typeof args[index] !== 'undefined' ? args[index] : match;
+    });
+}

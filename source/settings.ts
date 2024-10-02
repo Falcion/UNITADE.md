@@ -126,7 +126,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
 
         containerEl.empty();
 
-        containerEl.createEl('h3', { text: 'UNITADE\'s settings:' });
+        containerEl.createEl('h3', { text: this.locale.getLocaleItem('UNITADE_SETTINGS_COMMON')[0]! });
 
         new Setting(containerEl)
             .setName(this.locale.getLocaleItem('SETTINGS_MD_OVERRIDE')[0]!)
@@ -261,7 +261,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                     .setWarning()
                     .onClick(async (event) => {
                         if (this.plugin.settings.debug_mode)
-                            console.info(`[${event.timeStamp}]: Caused force-deleting function!`);
+                            console.info(`[${event.timeStamp}]: CAUSED FORCE-DELETING FUNCTION!`);
 
                         this.plugin.unapplyRegistry();
                     });
@@ -278,7 +278,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                     .setIcon('upload')
                     .onClick(async (event) => {
                         if (this.plugin.settings.debug_mode)
-                            console.info(`[${event.timeStamp}]: Caused unloading function!`);
+                            console.info(`[${event.timeStamp}]: CAUSED UNLOADING FUNCTION!`);
 
                         this.plugin.unapply();
                     });
@@ -295,7 +295,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                     .setIcon('download')
                     .onClick(async (event) => {
                         if (this.plugin.settings.debug_mode)
-                            console.info(`[${event.timeStamp}]: Caused loading function!`);
+                            console.info(`[${event.timeStamp}]: CAUSED LOADING FUNCTION!`);
 
                         this.plugin.apply();
                     });
@@ -312,7 +312,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                     .setIcon('reload')
                     .onClick(async (event) => {
                         if (this.plugin.settings.debug_mode)
-                            console.info(`[${event.timeStamp}]: Caused reloading function!`);
+                            console.info(`[${event.timeStamp}]: CAUSED RELOADING FUNCTION!`);
 
                         this.plugin.unapply();
                         this.plugin.apply();
@@ -323,13 +323,13 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                 return button;
             });
 
-        containerEl.createEl('h2', { text: 'Errors' });
+        containerEl.createEl('h2', { text: this.locale.getLocaleItem('UNITADE_SETTINGS_COMMON')[1]! });
         this._errors = containerEl.createEl('p', { text: 'None' });
         this._errors.style.whiteSpace = 'pre-line';
 
         this.__updateErrors();
 
-        containerEl.createEl('h3', { text: 'Advanced block' });
+        containerEl.createEl('h3', { text: this.locale.getLocaleItem('UNITADE_SETTINGS_COMMON')[2]! });
 
         let forcedMsg = new Setting(containerEl)
             .setName(this.locale.getLocaleItem('SETTINGS_FORCED_EXTENSIONS')[0]!)
@@ -447,7 +447,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
         new Setting(containerEl)
             .setName(this.locale.getLocaleItem('SETTINGS_BAREFILES')[0]!)
             .setDesc(this.locale.getLocaleItem('SETTINGS_BAREFILES')[1]!)
-            .setTooltip('This settings registries empty extension, which could be done manually within extension settings block.')
+            .setTooltip(this.locale.getLocaleItem('SETTINGS_BAREFILES')[2]!)
             .addToggle(toggle => {
                 toggle
                     .setValue(this.plugin.settings.barefiling)
@@ -589,7 +589,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
         let groupMsg = new Setting(containerEl)
             .setName(this.locale.getLocaleItem('SETTINGS_GROUP_EXTENSIONS')[0]!)
             .setDesc(this.locale.getLocaleItem('SETTINGS_GROUP_EXTENSIONS')[1]!)
-            .setTooltip('For list of views view the docs of the plugin, more information on the wiki.')
+            .setTooltip(this.locale.getLocaleItem('SETTINGS_GROUP_EXTENSIONS')[2]!)
             .addToggle(toggle => {
                 toggle
                     .setValue(this.plugin.settings.is_grouped)
@@ -650,7 +650,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
         groupExtInp.inputEl.style.height = '48px';
         groupExtInp.inputEl.style.minHeight = '36px';
 
-        containerEl.createEl('h3', { text: 'Additionals' });
+        containerEl.createEl('h3', { text: this.locale.getLocaleItem('UNITADE_SETTINGS_COMMON')[3]! });
 
         new Setting(containerEl)
             .setName(this.locale.getLocaleItem('SETTINGS_DEBUG_MODE')[0]!)
@@ -738,6 +738,9 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                     .setButtonText(this.locale.getLocaleItem('BUTTON_WIKI')[3]!)
                     .setTooltip(this.locale.getLocaleItem('BUTTON_WIKI')[2]!)
                     .onClick(async (event) => {
+                        if (this.plugin.settings.debug_mode)
+                            console.info(`[${event.timeStamp}]: REFER EXTERNAL LINK.`);
+
                         window.open('https://github.com/Falcion/UNITADE.md/wiki');
                     });
 

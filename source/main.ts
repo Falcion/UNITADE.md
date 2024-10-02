@@ -59,6 +59,7 @@ import {
     isTFolder
 } from './utils/utils';
 import {
+    formatString,
     gencase,
     parsegroup
 } from './utils/functions';
@@ -105,7 +106,7 @@ export default class UNITADE_PLUGIN extends Plugin {
                         if (!this.settings.silence_errors) {
                             console.error(error);
                         } else {
-                            console.debug(`[UNITADE-ERROR]: Error is silenced, error: ${error}`);
+                            console.debug(`[UNITADE-ERROR]: ERROR IS SILENCED, ERROR: ${error}`);
                         }
                     }
                 }
@@ -139,11 +140,11 @@ export default class UNITADE_PLUGIN extends Plugin {
                     }
                 } catch (err: any) {
                     if (!this.settings.silence_errors) {
-                        new Notification('Error from UNITADE plugin:', { body: `Error with on-load registry of: ${err}` });
+                        new Notification(this.locale.getLocaleItem('ERROR_COMMON_MESSAGE')[0]!, { body: `${err}` });
 
                         console.error(err);
                     } else {
-                        console.debug(`[UNITADE-ERROR]: Error is silenced, error: ${err}`);
+                        console.debug(`[UNITADE-ERROR]: ERROR IS SILENCED, ERROR: ${err}`);
                     }
                 }
             }
@@ -178,11 +179,11 @@ export default class UNITADE_PLUGIN extends Plugin {
                         }
                     } catch (err: any) {
                         if (!this.settings.silence_errors) {
-                            new Notification('Error from UNITADE plugin:', { body: `Error with on-load registry of: ${extensions}` });
+                            new Notification(this.locale.getLocaleItem('ERROR_COMMON_MESSAGE')[0]!, { body: `${extensions}` });
 
                             console.error(err);
                         } else {
-                            console.debug(`[UNITADE-ERROR]: Error is silenced, error: ${err}`);
+                            console.debug(`[UNITADE-ERROR]: ERROR IS SILENCED, ERROR: ${err}`);
                         }
                     }
                 }
@@ -267,7 +268,7 @@ export default class UNITADE_PLUGIN extends Plugin {
 
             this.leafRef(_app);
         } catch (error) {
-            console.warn('Caught an error via LAYOUT-READY event.');
+            console.warn('CAUGHT AN ERROR VIA LAYOUT-READY EVENT.');
         }
     }
 
@@ -276,7 +277,7 @@ export default class UNITADE_PLUGIN extends Plugin {
             /**@ts-expect-error */
             _app.workspace.iterateCodeMirrors(cm => cm.setOption("mode", cm.getOption("mode")));
         } catch (error) {
-            console.warn('Caught an error via LEAF-ITERATE event.');
+            console.warn('CAUGHT AN ERROR VIA LEAF-ITERATE EVENT.');
         }
     }
 
@@ -289,14 +290,14 @@ export default class UNITADE_PLUGIN extends Plugin {
             this.registerExtensions(['.md'], 'markdown');
         } catch (err: any) {
             if (!this.settings.silence_errors) {
-                new Notification('Error from UNITADE plugin:', { body: err });
+                new Notification(this.locale.getLocaleItem('ERROR_COMMON_MESSAGE')[0]!, { body: err });
 
                 console.error(err);
             } else {
-                console.debug(`[UNITADE-ERROR]: Error is silenced, error: ${err}`);
+                console.debug(`[UNITADE-ERROR]: ERROR IS SILENCED, ERROR: ${err}`);
             }
 
-            this.settings.errors['markdown_override'] = `Error with reregistering extensions: ${err}`;
+            this.settings.errors['markdown_override'] = formatString(this.locale.getLocaleItem('ERROR_REGISTRY_EXTENSION')[3]!, err);
         }
 
         for (const key in CodeMirror.modes) {
@@ -347,11 +348,11 @@ export default class UNITADE_PLUGIN extends Plugin {
                 this.settings.errors[extension] = `Error from UNITADE plugin: ${err}`;
 
                 if (!this.settings.silence_errors) {
-                    new Notification('Error from UNITADE plugin:', { body: `${err}` });
+                    new Notification(this.locale.getLocaleItem('ERROR_COMMON_MESSAGE')[0]!, { body: `${err}` });
 
                     console.error(err);
                 } else {
-                    console.debug(`[UNITADE-ERROR]: Error is silenced, error: ${err}`);
+                    console.debug(`[UNITADE-ERROR]: ERROR IS SILENCED, ERROR: ${err}`);
                 }
             }
         }
@@ -388,17 +389,17 @@ export default class UNITADE_PLUGIN extends Plugin {
             let _msg: string;
 
             if (curr) {
-                _msg = `Could not register extension: ${filetype} to view as ${view}.\nIt's already registered.`;
+                _msg = formatString(this.locale.getLocaleItem('ERROR_REGISTRY_EXTENSION')[0]!, filetype, view);
             } else {
-                _msg = `Could not register extension: ${filetype} to view as ${view}.\n${err}`;
+                _msg = formatString(this.locale.getLocaleItem('ERROR_REGISTRY_EXTENSION')[1]!, filetype, view, err);
             }
 
             if (!this.settings.silence_errors) {
-                new Notification('Error from UNITADE plugin:', { body: _msg });
+                new Notification(this.locale.getLocaleItem('ERROR_COMMON_MESSAGE')[0]!, { body: _msg });
 
                 console.error(_msg);
             } else {
-                console.debug(`[UNITADE-ERROR]: Error is silenced, error: ${_msg}`);
+                console.debug(`[UNITADE-ERROR]: ERROR IS SILENCED, ERROR: ${_msg}`);
             }
 
             this._settings.errors[filetype] = _msg;
@@ -455,16 +456,16 @@ export default class UNITADE_PLUGIN extends Plugin {
                         /**@ts-expect-error */
                         this.app.viewRegistry.unregisterExtensions([extension]);
                     } catch (err: any) {
-                        const _msg = `Couldn't unregistry extension: ${extension};`
+                        const _msg = formatString(this.locale.getLocaleItem('ERROR_REGISTRY_EXTENSION')[2]!, extension);
 
                         this.settings.errors[extension] = _msg;
 
                         if (!this.settings.silence_errors) {
-                            new Notification('Error from UNITADE plugin:', { body: _msg });
+                            new Notification(this.locale.getLocaleItem('ERROR_COMMON_MESSAGE')[0]!, { body: _msg });
 
                             console.error(_msg);
                         } else {
-                            console.debug(`[UNITADE-ERROR]: Error is silenced, error: ${_msg}`);
+                            console.debug(`[UNITADE-ERROR]: ERROR IS SILENCED, ERROR: ${_msg}`);
                         }
                     }
                 }
