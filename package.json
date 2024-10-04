@@ -55,7 +55,7 @@
     "release:major": "standard-version --release-as major",
     "generate-version-json": "node scripts/js/generate-version-json.js",
     "cli": ".\\gh.cli.sh",
-    "build": "tsc -noEmit -skipLibCheck --esModuleInterop source/main.ts && node esbuild.config.mjs production && clone.bat"
+    "build": "tsc -noEmit -skipLibCheck --esModuleInterop --downlevelIteration source/main.ts && node esbuild.config.mjs production"
   },
   "repository": {
     "type": "git",
