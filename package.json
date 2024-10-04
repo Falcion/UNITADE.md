@@ -42,7 +42,7 @@
     "preinstall": "node -e 'process.exit(0)'",
     "pretest": "npm run ct-typescript-definitions",
     "prepack": "check-for-leaks",
-    "prepare": "husky .husky/ && cd scripts/python && py -m venv venv",
+    "prepare": "husky .husky/ && cd scripts/python && python3 -m venv venv",
     "update-analytics": "ts-node scripts/js/analytics-workflow.ts",
     "test": "node ./script/spec-runner.js",
     "start": "tsc && node out/environment.js",
