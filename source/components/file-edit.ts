@@ -142,7 +142,7 @@ export class TFileEdit extends Modal {
         this.close();
 
         if (this._integration) {
-            let next = {
+            const next = {
                 ...this.plugin.settings,
             };
 
@@ -155,6 +155,6 @@ export class TFileEdit extends Modal {
     }
 
     private __pathgen(): string {
-        return this._filepath + "/" + this._name + (!!this._extension ? "." : "") + this._extension;
+        return this._filepath + "/" + this._name + (this._extension ? "." : "") + this._extension;
     }
 } 

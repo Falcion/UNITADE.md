@@ -55,9 +55,9 @@ import {
 } from './components/folder-edit';
 
 import {
-    isTFile,
     isTFolder
 } from './utils/utils';
+
 import {
     formatString,
     gencase,
@@ -124,7 +124,7 @@ export default class UNITADE_PLUGIN extends Plugin {
                 try {
                     this.__tryApply(filename.last()!, 'markdown');
 
-                    let __settings = this.settings.extensions.split(';');
+                    const __settings = this.settings.extensions.split(';');
 
                     __settings.push(`${filename.last()!}`);
 
@@ -132,7 +132,7 @@ export default class UNITADE_PLUGIN extends Plugin {
 
                     if (this.settings.mobile_settings.enable) {
 
-                        let __mb_settings = this.settings.mobile_settings.extensions.split(';');
+                        const __mb_settings = this.settings.mobile_settings.extensions.split(';');
 
                         __mb_settings.push(`${filename.last()!}`);
 
@@ -164,14 +164,14 @@ export default class UNITADE_PLUGIN extends Plugin {
                     try {
                         this.__tryApply(extension, 'markdown');
 
-                        let __settings = this.settings.extensions.split(';');
+                        const __settings = this.settings.extensions.split(';');
 
                         __settings.push(`${extension}`);
 
                         this.settings.extensions = __settings.join(';');
 
                         if (this.settings.mobile_settings.enable) {
-                            let __mb_settings = this.settings.mobile_settings.extensions.split(';');
+                            const __mb_settings = this.settings.mobile_settings.extensions.split(';');
 
                             __mb_settings.push(`${extension}`);
 
@@ -191,7 +191,7 @@ export default class UNITADE_PLUGIN extends Plugin {
         })
 
         if (this._settings.markdown_overcharge)
-            /**@ts-expect-error */
+            /**@ts-expect-error: viewRegistry exists in runtime, but not in Obsidian's public API */
             this.app.viewRegistry.unregisterExtensions(['md']);
 
         this.addSettingTab(new UNITADE_SETTINGS_TAB(this.app, this));
@@ -274,7 +274,7 @@ export default class UNITADE_PLUGIN extends Plugin {
 
     leafRef(_app: App): void {
         try {
-            /**@ts-expect-error */
+            /**@ts-expect-error: not part of public API, accessing through runtime. */
             _app.workspace.iterateCodeMirrors(cm => cm.setOption("mode", cm.getOption("mode")));
         } catch (error) {
             console.warn('CAUGHT AN ERROR VIA LEAF-ITERATE EVENT.');
@@ -301,7 +301,7 @@ export default class UNITADE_PLUGIN extends Plugin {
         }
 
         for (const key in CodeMirror.modes) {
-            if (CodeMirror.modes.hasOwnProperty(key) && !['hypermd', 'markdown', 'null', 'xml'].includes(key))
+            if (Object.prototype.hasOwnProperty.call(CodeMirror.modes, key) && !['hypermd', 'markdown', 'null', 'xml'].includes(key))
                 delete CodeMirror.modes[key];
         }
 
@@ -363,7 +363,7 @@ export default class UNITADE_PLUGIN extends Plugin {
     }
 
     public applyDefaults(): void {
-        for (let defaultView in CONSTANTS.defaultExtensions) {
+        for (const defaultView in CONSTANTS.defaultExtensions) {
             this.registerExtensions(CONSTANTS.defaultExtensions[defaultView], defaultView);
         }
     }
@@ -376,15 +376,15 @@ export default class UNITADE_PLUGIN extends Plugin {
         if (!this.settings.markdown_overcharge && ['md', 'mdown', 'markdown'].includes(filetype))
             return;
 
-        /**@ts-expect-error */
+        /**@ts-expect-error: not part of public API, accessing through runtime. */
         if (this.app.viewRegistry.isExtensionRegistered(filetype))
             return;
 
         try {
             this.registerExtensions([filetype], view);
         } catch (err: any) {
-            /**@ts-expect-error */
-            let curr: string = this.app.viewRegistry.getTypeByExtension(filetype);
+            /**@ts-expect-error: not part of public API, accessing through runtime. */
+            const curr: string = this.app.viewRegistry.getTypeByExtension(filetype);
 
             let _msg: string;
 
@@ -410,7 +410,7 @@ export default class UNITADE_PLUGIN extends Plugin {
         this.settings.errors = {};
 
         if (this.settings.debug_mode)
-            //@ts-expect-error
+            /**@ts-expect-error: not part of public API, accessing through runtime. */
             console.info(this.app.viewRegistry.typeByExtension);
 
         const extensions_arr: string[] = extensions.split(';').map(s => s.trim());
@@ -439,9 +439,9 @@ export default class UNITADE_PLUGIN extends Plugin {
     }
 
     public unapplyRegistry(): void {
-        /**@ts-expect-error */
+        /**@ts-expect-error: not part of public API, accessing through runtime. */
         for (const extensionKey in this.app.viewRegistry.typeByExtension) {
-            /**@ts-expect-error */
+            /**@ts-expect-error: not part of public API, accessing through runtime. */
             this.app.viewRegistry.unregisterExtensions([extensionKey]);
         }
     }
@@ -453,7 +453,7 @@ export default class UNITADE_PLUGIN extends Plugin {
             if (markdown_charge || extension !== 'md')
                 if (!this._settings.errors[extension]) {
                     try {
-                        /**@ts-expect-error */
+                        /**@ts-expect-error: not part of public API, accessing through runtime. */
                         this.app.viewRegistry.unregisterExtensions([extension]);
                     } catch (err: any) {
                         const _msg = formatString(this.locale.getLocaleItem('ERROR_REGISTRY_EXTENSION')[2]!, extension);

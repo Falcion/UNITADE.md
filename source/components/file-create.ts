@@ -28,7 +28,6 @@ import {
     Modal,
     ButtonComponent,
     TextComponent,
-    TAbstractFile,
     Setting,
 } from "obsidian";
 
@@ -135,11 +134,11 @@ export class TFileCreate extends Modal {
         this.close();
 
         if (this._integration) {
-            let next = {
+            const next = {
                 ...this.plugin.settings,
             };
 
-            let extensions = this._name.split('.').slice(1).join(';');
+            const extensions = this._name.split('.').slice(1).join(';');
 
             next.extensions += `;${extensions}`;
 

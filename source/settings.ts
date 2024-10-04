@@ -120,7 +120,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
     }
 
     display(): void {
-        let {
+        const {
             containerEl
         } = this;
 
@@ -135,7 +135,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                 toggle
                     .setValue(this.plugin.settings.markdown_overcharge)
                     .onChange(async (value) => {
-                        let next = {
+                        const next = {
                             ...this.plugin.settings,
                             markdown_overcharge: value,
                         };
@@ -150,11 +150,11 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
             .setName(this.locale.getLocaleItem('SETTINGS_EXTENSIONS')[0]!)
             .setDesc(this.locale.getLocaleItem('SETTINGS_EXTENSIONS')[1]!);
 
-        let configInput = new TextAreaComponent(containerEl)
+        const configInput = new TextAreaComponent(containerEl)
             .setPlaceholder('txt; conf; config; data; logs')
             .setValue(this.plugin.settings.extensions)
             .onChange(async (value) => {
-                let next = {
+                const next = {
                     ...this.plugin.settings,
                 };
 
@@ -192,7 +192,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                 toggle
                     .setValue(this.plugin.settings.mobile_settings.enable)
                     .onChange(async (value) => {
-                        let next = {
+                        const next = {
                             ...this.plugin.settings,
                             mobile_settings: {
                                 ...this.plugin.settings.mobile_settings,
@@ -210,11 +210,11 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                 return toggle;
             });
 
-        let mobileConfigInp = new TextAreaComponent(containerEl)
+        const mobileConfigInp = new TextAreaComponent(containerEl)
             .setPlaceholder('txt; conf; config; data; logs')
             .setValue(this.plugin.settings.mobile_settings.extensions ? this.plugin.settings.mobile_settings.extensions : '')
             .onChange(async (value) => {
-                let next = {
+                const next = {
                     ...this.plugin.settings,
                     mobile_settings: {
                         ...this.plugin.settings.mobile_settings,
@@ -331,11 +331,11 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
 
         containerEl.createEl('h3', { text: this.locale.getLocaleItem('UNITADE_SETTINGS_COMMON')[2]! });
 
-        let forcedMsg = new Setting(containerEl)
+        const forcedMsg = new Setting(containerEl)
             .setName(this.locale.getLocaleItem('SETTINGS_FORCED_EXTENSIONS')[0]!)
             .setDesc(this.locale.getLocaleItem('SETTINGS_FORCED_EXTENSIONS')[1]!)
 
-        let forcedWarn = document.createElement('div');
+        const forcedWarn = document.createElement('div');
         forcedWarn.style.fontSize = '80%';
         forcedWarn.style.margin = '10px';
         forcedWarn.style.color = 'green';
@@ -343,11 +343,11 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
 
         forcedMsg.nameEl.appendChild(forcedWarn);
 
-        let frcExtInp = new TextAreaComponent(containerEl)
+        const frcExtInp = new TextAreaComponent(containerEl)
             .setPlaceholder('txt; md; ; data; db;')
             .setValue(this.plugin.settings.forced_extensions)
             .onChange(async (value) => {
-                let next = {
+                const next = {
                     ...this.plugin.settings,
                 };
 
@@ -378,13 +378,13 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
         frcExtInp.inputEl.style.height = '48px';
         frcExtInp.inputEl.style.minHeight = '36px';
 
-        let onRfAttention = document.createElement('div');
+        const onRfAttention = document.createElement('div');
         onRfAttention.style.fontSize = '80%';
         onRfAttention.style.margin = '10px';
         onRfAttention.style.color = 'darkRed';
         onRfAttention.innerHTML = this.locale.getLocaleItem('SETTINGS_WARNING_MSG')[0]!;
 
-        let onRfInfo = document.createElement('div');
+        const onRfInfo = document.createElement('div');
         onRfInfo.style.fontWeight = 'bold';
         onRfInfo.style.fontSize = '80%';
         onRfInfo.innerHTML = this.locale.getLocaleItem('SETTINGS_ONLOAD_REGISTRY')[2]!;
@@ -396,7 +396,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                 toggle
                     .setValue(this.plugin.settings.is_onload)
                     .onChange(async (value) => {
-                        let next = {
+                        const next = {
                             ...this.plugin.settings,
                             is_onload: value,
                             is_onload_unsafe: this.plugin.settings.is_onload_unsafe ? false : this.plugin.settings.is_onload_unsafe,
@@ -411,13 +411,13 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
         onRfStg.nameEl.parentElement!.appendChild(onRfAttention);
         onRfStg.nameEl.parentElement!.appendChild(onRfInfo);
 
-        let onRuAttention = document.createElement('div');
+        const onRuAttention = document.createElement('div');
         onRuAttention.style.fontSize = '80%';
         onRuAttention.style.margin = '10px';
         onRuAttention.style.color = 'darkRed';
         onRuAttention.innerHTML = this.locale.getLocaleItem('SETTINGS_WARNING_MSG')[0]!;
 
-        let onRuInfo = document.createElement('div');
+        const onRuInfo = document.createElement('div');
         onRuInfo.style.fontWeight = 'bold';
         onRuInfo.style.fontSize = '80%';
         onRuInfo.innerHTML = this.locale.getLocaleItem('SETTINGS_ONLOAD_UNSAFE')[2]!
@@ -429,7 +429,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                 toggle
                     .setValue(this.plugin.settings.is_onload_unsafe)
                     .onChange(async (value) => {
-                        let next = {
+                        const next = {
                             ...this.plugin.settings,
                             is_onload_unsafe: value,
                             is_onload: this.plugin.settings.is_onload ? false : this.plugin.settings.is_onload,
@@ -452,7 +452,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                 toggle
                     .setValue(this.plugin.settings.barefiling)
                     .onChange(async (value) => {
-                        let next = {
+                        const next = {
                             ...this.plugin.settings,
                             barefiling: value
                         };
@@ -462,7 +462,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                         if (this.plugin.settings.barefiling) {
                             this.plugin.tryApply('', 'markdown');
                         } else {
-                            /**@ts-expect-error */
+                            /**@ts-expect-error: not part of public API, accessing through runtime. */
                             this.plugin.app.viewRegistry.unregisterExtensions(['']);
                         }
                     })
@@ -475,7 +475,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                 toggle
                     .setValue(this.plugin.settings.is_ignore)
                     .onChange(async (value) => {
-                        let next = {
+                        const next = {
                             ...this.plugin.settings,
                             is_ignore: value,
                         };
@@ -494,7 +494,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                 return toggle;
             });
 
-        let ignoreWarn = document.createElement('div');
+        const ignoreWarn = document.createElement('div');
         ignoreWarn.style.fontSize = '80%';
         ignoreWarn.style.margin = '10px';
         ignoreWarn.style.color = 'yellow';
@@ -502,15 +502,15 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
 
         this._configIgnore.nameEl.appendChild(ignoreWarn);
 
-        let ignoreExtMsg = new Setting(containerEl)
+        const ignoreExtMsg = new Setting(containerEl)
             .setName(this.locale.getLocaleItem('SETTINGS_IGNORE_EXTENSIONS')[0]!)
             .setDesc(this.locale.getLocaleItem('SETTINGS_IGNORE_EXTENSIONS')[1]!);
 
-        let ignoreExtInp = new TextAreaComponent(containerEl)
+        const ignoreExtInp = new TextAreaComponent(containerEl)
             .setPlaceholder('txt; conf; config; data; logs')
             .setValue(this.plugin.settings.ignore_extensions)
             .onChange(async (value) => {
-                let next = {
+                const next = {
                     ...this.plugin.settings,
                 };
 
@@ -541,15 +541,15 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
         ignoreExtInp.inputEl.style.height = '48px';
         ignoreExtInp.inputEl.style.minHeight = '36px';
 
-        let ignoreMskMsg = new Setting(containerEl)
+        const ignoreMskMsg = new Setting(containerEl)
             .setName(this.locale.getLocaleItem('SETTINGS_IGNORE_FILES')[0]!)
             .setDesc(this.locale.getLocaleItem('SETTINGS_IGNORE_FILES')[1]!);
 
-        let ignoreMskInp = new TextAreaComponent(containerEl)
+        const ignoreMskInp = new TextAreaComponent(containerEl)
             .setPlaceholder('\\.(txt|md)$; doc_[a-z]; file_\\d{3}; file1')
             .setValue(this.plugin.settings.ignore_masks)
             .onChange(async (value) => {
-                let next = {
+                const next = {
                     ...this.plugin.settings,
                 };
 
@@ -586,7 +586,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
             this.plugin.settings.is_ignore,
         );
 
-        let groupMsg = new Setting(containerEl)
+        const groupMsg = new Setting(containerEl)
             .setName(this.locale.getLocaleItem('SETTINGS_GROUP_EXTENSIONS')[0]!)
             .setDesc(this.locale.getLocaleItem('SETTINGS_GROUP_EXTENSIONS')[1]!)
             .setTooltip(this.locale.getLocaleItem('SETTINGS_GROUP_EXTENSIONS')[2]!)
@@ -594,7 +594,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                 toggle
                     .setValue(this.plugin.settings.is_grouped)
                     .onChange(async (value) => {
-                        let next = {
+                        const next = {
                             ...this.plugin.settings,
                             is_grouped: value,
                         };
@@ -607,7 +607,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                 return toggle;
             });
 
-        let groupedWarn = document.createElement('div');
+        const groupedWarn = document.createElement('div');
         groupedWarn.style.fontSize = '80%';
         groupedWarn.style.margin = '10px';
         groupedWarn.style.color = 'yellow';
@@ -615,11 +615,11 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
 
         groupMsg.nameEl.appendChild(groupedWarn);
 
-        let groupExtInp = new TextAreaComponent(containerEl)
+        const groupExtInp = new TextAreaComponent(containerEl)
             .setPlaceholder('md: json, txt, pgb; json: data, md, txt;')
             .setValue(this.plugin.settings.grouped_extensions)
             .onChange(async (value) => {
-                let next = {
+                const next = {
                     ...this.plugin.settings,
                 };
 
@@ -660,7 +660,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                 toggle
                     .setValue(this.plugin.settings.debug_mode)
                     .onChange(async (value) => {
-                        let next = {
+                        const next = {
                             ...this.plugin.settings,
                             debug_mode: value,
                         };
@@ -680,7 +680,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                 toggle
                     .setValue(this.plugin.settings.silence_errors)
                     .onChange(async (value) => {
-                        let next = {
+                        const next = {
                             ...this.plugin.settings,
                             silence_errors: value,
                         };
@@ -700,7 +700,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                 toggle
                     .setValue(this.plugin.settings.compatibility_module)
                     .onChange(async (value) => {
-                        let next = {
+                        const next = {
                             ...this.plugin.settings,
                             compatibility_module: value,
                         };

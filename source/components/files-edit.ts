@@ -131,7 +131,7 @@ export class TFilesEdit extends Modal {
         this.close();
 
         if (this._integration) {
-            let next = {
+            const next = {
                 ...this.plugin.settings,
             };
 
@@ -151,14 +151,13 @@ export class TFilesEdit extends Modal {
     }
 
     private __pathgen(path: string, name: string): string {
-        return path + "/" + name + (!!this._new_extension ? "." : "") + this._new_extension;
+        return path + "/" + name + (this._new_extension ? "." : "") + this._new_extension;
     }
 
     private __generateDisplayInfo(): string {
         return this.target.map(file => {
             const filename = file.path.split('/').last()!;
             const filepath = file.path.split('/').slice(0, -1).join('/');
-            const extension = filename.split('.').slice(1).join('.')!;
             const name = filename.split('.').first()!;
             return `<div>${filepath}/${name}.${this._new_extension}</div>`;
         }).join('');

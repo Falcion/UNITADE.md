@@ -53,7 +53,7 @@ export default class UNITADE_VIEW extends TextFileView {
         this._codemirror.refresh();
     }
 
-    onChange = async (instance: CodeMirror.Editor, changes: CodeMirror.EditorChange[]) => {
+    onChange = async () => {
         this.requestSave();
     }
 
