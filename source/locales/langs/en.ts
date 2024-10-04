@@ -115,7 +115,7 @@ export const LOCALES_EN = {
     },
     "SETTINGS_DEBUG_MODE": {
         0: "Debug mode:",
-        1: "This mode starts output in application\'s console about actions you do.",
+        1: "This mode starts output in application's console about actions you do.",
         2: "Do not use this mode if you are not developer or familliar with console."
     },
     "SETTINGS_SILENCE_ERRORS": {
@@ -158,5 +158,10 @@ export const LOCALES_EN = {
     },
     "ERROR_COMMON_MESSAGE": {
         0: "Error from UNITADE plugin:"
+    },
+    "SETTINGS_CASE_INSENSITIVE": {
+        0: "Case insensitive mode:",
+        1: "If turned on, plugin would registry every upper and lower case variations of extension to provide Windows-like experience for extension.",
+        2: "Unstable on UNIX-systems."
     }
 };

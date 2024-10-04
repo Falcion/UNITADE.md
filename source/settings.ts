@@ -38,6 +38,7 @@ import CompatibilityModule from './addons/compatibility';
 export interface UNITADE_SETTINGS {
     markdown_overcharge: boolean,
     extensions: string,
+    is_case_insensitive: boolean,
     is_onload: boolean,
     is_onload_unsafe: boolean,
     forced_extensions: string,
@@ -67,6 +68,7 @@ export interface UNITADE_SETTINGS {
 export const DEFAULT_SETTINGS: UNITADE_SETTINGS = {
     markdown_overcharge: false,
     extensions: 'txt',
+    is_case_insensitive: true,
     is_onload: false,
     is_onload_unsafe: false,
     forced_extensions: '',
@@ -179,6 +181,27 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                 await this.plugin.uptSettings(next);
 
                 this.__updateErrors();
+            });
+
+        new Setting(containerEl)
+            .setName(this.plugin.locale.getLocaleItem('SETTINGS_CASE_INSENSITIVE')[0]!)
+            .setDesc(this.plugin.locale.getLocaleItem('SETTINGS_CASE_INSENSITIVE')[1]!)
+            .setTooltip(this.plugin.locale.getLocaleItem('SETTINGS_CASE_INSENSITIVE')[2]!)
+            .addToggle(toggle => {
+                toggle
+                    .setValue(this.plugin.settings.is_case_insensitive)
+                    .onChange(async (value) => {
+                        const next = {
+                            ...this.plugin.settings,
+                            is_case_insensitive: value,
+                        };
+
+                        await this.plugin.uptSettings(next);
+
+                        this.__updateErrors();
+                    });
+
+                return toggle;
             });
 
         configInput.inputEl.style.width = '100%';
