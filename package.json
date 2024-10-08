@@ -201,7 +201,9 @@
     "esbuild": "^0.20.2",
     "esbuild-plugin-glsl": "^1.2.2",
     "esbuild-sass-plugin": "^3.3.1",
-    "obsidian": "^1.5.7-1"
+    "monaco-editor": "^0.52.0",
+    "obsidian": "^1.5.7-1",
+    "terser": "^5.34.1"
   },
   "capabilities": {
     "untrustedWorkspaces": {
