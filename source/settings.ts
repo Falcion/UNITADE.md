@@ -34,6 +34,7 @@ import {
 import UNITADE_PLUGIN from './main';
 import LocalesModule from './locales/core';
 import CompatibilityModule from './addons/compatibility';
+import CONSTANTS from './utils/constants';
 
 export interface UNITADE_SETTINGS {
     markdown_overcharge: boolean,
@@ -62,7 +63,26 @@ export interface UNITADE_SETTINGS {
     debug_mode: boolean,
     silence_errors: boolean,
     manifest_version: string,
-    compatibility_module: boolean
+    compatibility_module: boolean,
+
+    code_editor_settings: {
+        enabled: boolean,
+        use_default_extensions: boolean,
+        extensions: string,
+        folding: boolean,
+        line_numbers: boolean,
+        word_wrapping: boolean,
+        minimapping: boolean,
+        validation_semantic: boolean,
+        validation_syntax: boolean,
+        theme: string,
+        font_size: number,
+        font_family: string,
+        font_ligatures: boolean;
+    },
+
+    SYS_FONTSIZE_MAX: number,
+    SYS_FONTSIZE_MIN: number,
 }
 
 export const DEFAULT_SETTINGS: UNITADE_SETTINGS = {
@@ -92,7 +112,27 @@ export const DEFAULT_SETTINGS: UNITADE_SETTINGS = {
     debug_mode: false,
     silence_errors: false,
     manifest_version: '',
-    compatibility_module: false,
+
+    compatibility_module: true,
+
+    code_editor_settings: {
+        enabled: true,
+        use_default_extensions: true,
+        extensions: '',
+        folding: true,
+        line_numbers: true,
+        word_wrapping: false,
+        minimapping: true,
+        validation_semantic: true,
+        validation_syntax: true,
+        theme: 'AUTO',
+        font_size: 14,
+        font_family: "'Cascadia Code', 'Fira Code', Consolas, 'Courier New', monospace",
+        font_ligatures: true,
+    },
+
+    SYS_FONTSIZE_MAX: 32,
+    SYS_FONTSIZE_MIN: 5,
 }
 
 export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
@@ -128,6 +168,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
 
         containerEl.empty();
 
+        //#region Basic settings (initial page)
         containerEl.createEl('h3', { text: this.locale.getLocaleItem('UNITADE_SETTINGS_COMMON')[0]! });
 
         new Setting(containerEl)
@@ -332,7 +373,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
             .addButton(button => {
                 button
                     .setButtonText('Reload')
-                    .setIcon('reload')
+                    .setIcon('refresh-ccw')
                     .onClick(async (event) => {
                         if (this.plugin.settings.debug_mode)
                             console.info(`[${event.timeStamp}]: CAUSED RELOADING FUNCTION!`);
@@ -345,13 +386,15 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
 
                 return button;
             });
-
+        //#endregion
+        //#region Errors
         containerEl.createEl('h2', { text: this.locale.getLocaleItem('UNITADE_SETTINGS_COMMON')[1]! });
         this._errors = containerEl.createEl('p', { text: 'None' });
         this._errors.style.whiteSpace = 'pre-line';
 
         this.__updateErrors();
-
+        //#endregion
+        //#region Advanced settings tab
         containerEl.createEl('h3', { text: this.locale.getLocaleItem('UNITADE_SETTINGS_COMMON')[2]! });
 
         const forcedMsg = new Setting(containerEl)
@@ -672,8 +715,326 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
         groupExtInp.inputEl.style.width = '100%';
         groupExtInp.inputEl.style.height = '48px';
         groupExtInp.inputEl.style.minHeight = '36px';
+        //#endregion
+        //#region Code editor settings tab
 
         containerEl.createEl('h3', { text: this.locale.getLocaleItem('UNITADE_SETTINGS_COMMON')[3]! });
+
+        new Setting(containerEl)
+            .setName('Enable code editor module:')
+            .setDesc('This mode will enable code editor functionalities like syntax highlighting, IntelliSence and etc.')
+            .setTooltip('May cause lags and other issues.')
+            .addToggle(toggle => {
+                toggle
+                    .setValue(this.plugin.settings.code_editor_settings.enabled)
+                    .onChange(async (value) => {
+                        const next = {
+                            ...this.plugin.settings,
+                            code_editor_settings: {
+                                ...this.plugin.settings.code_editor_settings,
+                                enabled: value
+                            },
+                        };
+
+                        await this.plugin.uptSettings(next);
+
+                        await this.__updateErrors();
+
+                        this.__uptCEConfig([
+                            useDefaultExtensions, editorExtensionsInput, editorTheme, 
+                            editorFolding, editorWordWrapping, editorLineNumbers, editorMinimapping,
+                            editorValidationSemantic, editorValidationSyntax, editorFontSize,
+                            editorFontFamily, editorFontLigatures
+                            ], value);
+                    })
+
+                return toggle;
+            });
+
+        const useDefaultExtensions = new Setting(containerEl)
+            .setName('Use default extensions:')
+            .setDesc('If disabled, code editor module will require to input its own extensions, otherwise, it would use "simple" extensions from config.')
+            .setTooltip('This block also can be replaced by grouped extensions.')
+            .addToggle(toggle => {
+                toggle
+                    .setValue(this.plugin.settings.code_editor_settings.use_default_extensions)
+                    .onChange(async (value) => {
+                        const next = {
+                            ...this.plugin.settings,
+                            code_editor_settings: {
+                                ...this.plugin.settings.code_editor_settings,
+                                use_default_extensions: value,
+                            },
+                        }
+
+                        await this.plugin.uptSettings(next);
+
+                        editorExtensionsInput.inputEl.style.display = toggle ? 'block' : 'none';                        
+                    });
+
+                return toggle;
+            });
+
+        const editorExtensionsInput = new TextAreaComponent(containerEl)
+            .setPlaceholder('txt; conf; config; data; logs')
+            .setValue(this.plugin.settings.code_editor_settings.extensions)
+            .onChange(async (value) => {
+                const next = {
+                    ...this.plugin.settings,
+                    code_editor_settings: {
+                        ...this.plugin.settings.code_editor_settings,
+                        extensions: '',
+                    },
+                };
+
+                if (value !== "" && value !== null && value !== undefined) {
+                    try {
+                        next.stable = true;
+                        next.code_editor_settings.extensions = value;
+                    } catch {
+                        next.stable = false;
+                    }
+                } else {
+                    next.stable = false;
+                    next.code_editor_settings.extensions = value;
+                }
+
+                this.__uptState(
+                    editorExtensionsInput,
+                    this.plugin.settings.stable,
+                    next.stable
+                );
+
+                await this.plugin.uptSettings(next);
+
+                this.__updateErrors();
+            });
+
+        editorExtensionsInput.inputEl.style.width = '100%';
+        editorExtensionsInput.inputEl.style.height = '48px';
+        editorExtensionsInput.inputEl.style.minHeight = '36px';
+
+        const editorFolding = new Setting(containerEl)
+            .setName('Enable folding:')
+            .setDesc('A feature that allows you to hide (collapse) parts of your code to improve readability.')
+            .addToggle(toggle => {
+               toggle
+                    .setValue(this.plugin.settings.code_editor_settings.folding)
+                    .onChange(async (value) => {
+                        const next = {
+                            ...this.plugin.settings,
+                            code_editor_settings: {
+                                ...this.plugin.settings.code_editor_settings,
+                                folding: value,
+                            },
+                        };
+
+                        await this.plugin.uptSettings(next);
+                    });
+                
+                return toggle;
+            });
+
+        const editorLineNumbers = new Setting(containerEl)
+            .setName('Line numbers:')
+            .setDesc('Feature to display line numbers in the editor.')
+            .addToggle(toggle => {
+                toggle
+                    .setValue(this.plugin.settings.code_editor_settings.line_numbers)
+                    .onChange(async (value) => {
+                        const next = {
+                            ...this.plugin.settings,
+                            code_editor_settings: {
+                                ...this.plugin.settings.code_editor_settings,
+                                line_numbers: value,
+                            },
+                        };
+
+                        await this.plugin.uptSettings(next);
+                    });
+
+                return toggle;
+            });
+
+        const editorWordWrapping = new Setting(containerEl)
+            .setName('Word wrapping:')
+            .setDesc('Feature that allows text to automatically wrap to the next line if it exceeds the width of the editor.')
+            .addToggle(toggle => {
+                toggle
+                    .setValue(this.plugin.settings.code_editor_settings.word_wrapping)
+                    .onChange(async (value) => {
+                        const next = {
+                            ...this.plugin.settings,
+                            code_editor_settings: {
+                                ...this.plugin.settings.code_editor_settings,
+                                word_wrapping: value,
+                            },
+                        };
+
+                        await this.plugin.uptSettings(next);
+                    });
+
+                return toggle;
+            });
+
+        const editorMinimapping = new Setting(containerEl)
+            .setName('Enable minimapping:')
+            .setDesc('Feature that provides a thumbnail view of the entire document.')
+            .addToggle(toggle => {
+                toggle 
+                    .setValue(this.plugin.settings.code_editor_settings.minimapping)
+                    .onChange(async (value) => {
+                        const next = {
+                            ...this.plugin.settings,
+                            code_editor_settings: {
+                                ...this.plugin.settings.code_editor_settings,
+                                minimapping: value,
+                            },
+                        };
+
+                        await this.plugin.uptSettings(next);
+                    });
+
+                return toggle;
+            });
+
+        const editorValidationSemantic = new Setting(containerEl)
+            .setName('Enable semantic validation:')
+            .setDesc('This process checks the code for logical errors and the correct use of variables, functions, and other elements. Semantic validation takes into account the context and meaning of the code.')
+            .addToggle(toggle => {
+                toggle
+                    .setValue(this.plugin.settings.code_editor_settings.validation_semantic)
+                    .onChange(async (value) => {
+                        const next = {
+                            ...this.plugin.settings,
+                            code_editor_settings: {
+                                ...this.plugin.settings.code_editor_settings,
+                                validation_semantic: value,
+                            },
+                        };
+
+                        await this.plugin.uptSettings(next);
+                    });
+
+                return toggle;
+            });
+
+        const editorValidationSyntax = new Setting(containerEl)
+            .setName('Enable syntax validation:')
+            .setDesc('This process checks code for errors related to its structure and syntax. It analyzes whether the code follows the rules of the programming language.')
+            .addToggle(toggle => {
+                toggle
+                    .setValue(this.plugin.settings.code_editor_settings.validation_syntax)
+                    .onChange(async (value) => {
+                        const next = {
+                            ...this.plugin.settings,
+                            code_editor_settings: {
+                                ...this.plugin.settings.code_editor_settings,
+                                validation_syntax: value,
+                            },
+                        };
+
+                        await this.plugin.uptSettings(next);
+                    });
+
+                return toggle;
+            });
+
+        const editorTheme = new Setting(containerEl)
+            .setName('Editor theme:')
+            .setDesc('Choose specific theme for code editor, visually affects syntax highlighting.')
+            .addDropdown(dropdown => {
+                dropdown
+                    .addOptions(CONSTANTS.themes)
+                    .setValue(this.plugin.settings.code_editor_settings.theme)
+                    .onChange(async (value) => {
+                        const next = {
+                            ...this.plugin.settings,
+                            code_editor_settings: {
+                                ...this.plugin.settings.code_editor_settings,
+                                theme: value,
+                            },
+                        };
+
+                        await this.plugin.uptSettings(next);
+
+                        this.__updateErrors();
+                        
+                    });
+
+                return dropdown;
+            });
+
+        containerEl.createEl('h4', { text: 'Font settings for code editor:' });
+
+        const editorFontSize = new Setting(containerEl)
+            .setName('Font size:')
+            .addSlider(slider => {
+                slider
+                    .setValue(this.plugin.settings.code_editor_settings.font_size)
+                    .setLimits(this.plugin.settings.SYS_FONTSIZE_MIN, this.plugin.settings.SYS_FONTSIZE_MAX, 1)
+                    .onChange(async (value) => {
+                        const next = {
+                            ...this.plugin.settings,
+                            code_editor_settings: {
+                                ...this.plugin.settings.code_editor_settings,
+                                font_size: value,
+                            },
+                        };
+
+                        await this.plugin.uptSettings(next);
+                    });
+
+                return slider;
+            });
+
+        const editorFontFamily = new Setting(containerEl)
+            .setName('Font family:')
+            .setDesc('Write here existing font families and fonts themselves: input format like in any code editor.')
+            .addTextArea(text => {
+                text
+                    .setValue(this.plugin.settings.code_editor_settings.font_family)
+                    .onChange(async (value) => {
+                        const next = {
+                            ...this.plugin.settings,
+                            code_editor_settings: {
+                                ...this.plugin.settings.code_editor_settings,
+                                font_family: value,
+                            },
+                        };
+
+                        await this.plugin.uptSettings(next);
+                    });
+
+                return text;
+            });
+
+        const editorFontLigatures = new Setting(containerEl)
+            .setName('Font ligatures:')
+            .setDesc('If your font supports ligatures, you can turn them on.')
+            .setTooltip('If ligatures are not supported by font, this would not work')
+            .addToggle(toggle => {
+                toggle
+                    .setValue(this.plugin.settings.code_editor_settings.font_ligatures)
+                    .onChange(async (value) => {
+                        const next = {
+                            ...this.plugin.settings,
+                            code_editor_settings: {
+                                ...this.plugin.settings.code_editor_settings,
+                                font_ligatures: value,
+                            },
+                        };
+
+                        await this.plugin.uptSettings(next);
+                    });
+
+                return toggle;
+            });
+
+        //#endregion
+        //#region Additionals settings tab
+
+        containerEl.createEl('h3', { text: this.locale.getLocaleItem('UNITADE_SETTINGS_COMMON')[4]! });
 
         new Setting(containerEl)
             .setName(this.locale.getLocaleItem('SETTINGS_DEBUG_MODE')[0]!)
@@ -768,11 +1129,26 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                     });
 
                 return button;
-            })
+            });
+
+        //#endregion
     }
 
     private __uptMbConfig(mbConfigInput: TextAreaComponent, mbConfigEnabled: boolean): void {
         mbConfigInput.inputEl.style.display = mbConfigEnabled ? 'block' : 'none';
+    }
+
+    private __uptCEConfig(configCodeEditorElements: (TextAreaComponent|Setting)[], configCodeEditorEnabled: boolean): void {
+        for(const configCodeEditorElement of configCodeEditorElements) {
+                if(configCodeEditorElement instanceof TextAreaComponent) {
+                    configCodeEditorElement.inputEl.style.display = configCodeEditorEnabled ? 'block' : 'none';
+                } else if(configCodeEditorElement instanceof Setting) {
+                    configCodeEditorElement.settingEl.style.display = configCodeEditorEnabled ? 'block' : 'none';
+                } else {
+                    throw new Error('Unknown type of throwable entity.');
+                }
+
+        }
     }
 
     private __uptIgnConfig(ignInps: TextAreaComponent[], ignMsgs: Setting[], ignConfigEnabled: boolean): void {

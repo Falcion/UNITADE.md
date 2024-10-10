@@ -33,7 +33,8 @@ export const LOCALES_EN = {
         0: "UNITADE's settings:",
         1: "Errors:",
         2: "Advanced block",
-        3: "Additionals"
+        3: "Code editor block:",
+        4: "Additionals",
     },
     "SETTINGS_EXTENSIONS": {
         0: "Extensions:",

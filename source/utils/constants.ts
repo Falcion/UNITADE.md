@@ -1,5 +1,5 @@
 /**
- * A class containing constants used for default file extensions by type (audio, image, video, etc.).
+ * A class containing constants.
  * 
  * @class
  * @example
@@ -30,5 +30,11 @@ export default class CONSTANTS {
         'video': ['mkv', 'mov', 'mp4', 'ogv', 'webm'],
         'pdf': ['pdf'],
         'markdown': ['md']
+    };
+
+    public static themes = {
+        'AUTO': 'AUTO',
+        'LIGHT': 'LIGHT',
+        'DARK': 'DARK'
     };
 }
