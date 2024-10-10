@@ -29,11 +29,9 @@ import {
     ButtonComponent,
     TextComponent,
     TAbstractFile,
-    Setting,
 } from "obsidian";
 
 import UNITADE_PLUGIN from "./../main";
-import MODALES_LOCALE from "./../locales/modals.text";
 
 export class TFilesRename extends Modal {
     private _new_name: string = '';
@@ -141,7 +139,7 @@ export class TFilesRename extends Modal {
             fin_name = `${this._new_name} (${this._new_name_queue.length})`;
         }
 
-        return path + "/" + fin_name + (!!extension ? "." : "") + extension;
+        return path + "/" + fin_name + (extension ? "." : "") + extension;
     }
 
     private __generateDisplayInfo(): string {
@@ -149,7 +147,6 @@ export class TFilesRename extends Modal {
             const filename = file.path.split('/').last()!;
             const filepath = file.path.split('/').slice(0, -1).join('/');
             const extension = filename.split('.').slice(1).join('.')!;
-            const name = filename.split('.').first()!;
             return `<div>${filepath}/${this._new_name}.${extension}</div>`;
         }).join('');
     }
