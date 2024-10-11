@@ -33,3 +33,4 @@
    1. Plugin's open API for integrations
    2. About views and registries
    3. About files and workspaces
+   4. Phantom views and extensions
