@@ -88,7 +88,7 @@ export interface UNITADE_SETTINGS {
 export const DEFAULT_SETTINGS: UNITADE_SETTINGS = {
     markdown_overcharge: false,
     extensions: 'txt',
-    is_case_insensitive: true,
+    is_case_insensitive: false,
     is_onload: false,
     is_onload_unsafe: false,
     forced_extensions: '',
