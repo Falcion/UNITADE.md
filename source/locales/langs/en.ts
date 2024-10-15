@@ -108,7 +108,7 @@ export const LOCALES_EN = {
     },
     "SETTINGS_FORCE_UNLOAD": {
         0: "Force-unload",
-        1: "'On click, causes imitation of disabling plugin, meaning, reloading registry of extensions in vault to default mode."
+        1: "On click, causes imitation of disabling plugin, meaning, reloading registry of extensions in vault to default mode."
     },
     "SETTINGS_RELOAD_REGISTRIES": {
         0: "Reload registries",

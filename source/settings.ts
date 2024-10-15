@@ -348,7 +348,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                     });
 
                 return button;
-            })
+            });
 
         new Setting(containerEl)
             .setName(this.locale.getLocaleItem('SETTINGS_HARD_LOAD')[0]!)
