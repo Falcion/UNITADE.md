@@ -3,5 +3,4 @@ Markdown Overcharge toggle allows you to disable markdown reading and staging in
 > [!Note]
 > Markdown files will still remain in the Vault after enabling the toggle. However, if you try to open them, you will be redirected to other editors, or the system will prompt you to choose which app to use for opening the file.
 >
-> For more details about this behavior, refer to the section:\
-> **"Phantom Views and Extensions"** in this wiki.
+> For more information about this, read the wiki's page about phantom views and registries.

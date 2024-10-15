@@ -7,6 +7,7 @@ This is the same problem for both VS Code and Obsidian any many other applicatio
 Linux not only provides any symbol available in the extensions of the filename, but also is a case-sensitive and because of this "strange" for common user behaviour occurs.
 
 **You can read more about this topic:**
+
 - https://superuser.com/questions/881804/case-sensitive-file-extensions-in-windows-and-linux
 
 ### Practice
@@ -33,9 +34,9 @@ Graphs datasets are defined by "appending" values by linear rule, meaning their 
 
 1. Output of the $O(n)$:
 
-```shell
-[...16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
-```
+    ```shell
+    [...16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
+    ```
 
 2. Output of the $O(n*2^n)$ of the same range:
 
