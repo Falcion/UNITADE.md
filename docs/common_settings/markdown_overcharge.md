@@ -1,7 +1,7 @@
 Markdown Overcharge toggle allows you to disable markdown reading and staging in your Obsidian Vault. When enabled, this feature removes `.md` file extensions from the app’s view registry.
 
 > [!Note]
-> Markdown files will still remain in the Vault after enabling the toggle. However, if you try to open them, you will be redirected to other editors, or the system will prompt you to choose which app to use for opening the file.  
+> Markdown files will still remain in the Vault after enabling the toggle. However, if you try to open them, you will be redirected to other editors, or the system will prompt you to choose which app to use for opening the file.
 >
-> For more details about this behavior, refer to the section:  
+> For more details about this behavior, refer to the section:\
 > **"Phantom Views and Extensions"** in this wiki.

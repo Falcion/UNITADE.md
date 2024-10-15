@@ -1,4 +1,4 @@
-Welcome to the UNITADE.md (or just "UNITADE") plugin’s wikipedia page. Here you will find comprehensive documentation and detailed information about the plugin's features, including insights into file views and registries. 
+Welcome to the UNITADE.md (or just "UNITADE") plugin’s wikipedia page. Here you will find comprehensive documentation and detailed information about the plugin's features, including insights into file views and registries.
 
 > This wiki is a living document and may be periodically updated as new features and improvements are added.
 
