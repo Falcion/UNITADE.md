@@ -6,12 +6,12 @@ Here is an example code of this method (it may differ in the source code):
 
 ```typescript
 public unapplyRegistry(): void {
+    /**@ts-expect-error: not part of public API, accessing through runtime. */
+    for (const extensionKey in this.app.viewRegistry.typeByExtension) {
         /**@ts-expect-error: not part of public API, accessing through runtime. */
-        for (const extensionKey in this.app.viewRegistry.typeByExtension) {
-            /**@ts-expect-error: not part of public API, accessing through runtime. */
-            this.app.viewRegistry.unregisterExtensions([extensionKey]);
-        }
+        this.app.viewRegistry.unregisterExtensions([extensionKey]);
     }
+}
 ```
 
 > [!Note]
