@@ -1,13 +1,11 @@
 @echo off
 
-REM Define the source and destination file paths
-SET ""
-SET ""
+REM If you include quotes in path, it wouldn't work: keep path default without any external symbols
+SET source_file=
+SET target_file=
 
-REM Copy the file
 COPY "%source_file%" "%target_file%" /Y
 
-REM Check if the copy operation was successful
 IF ERRORLEVEL 0 (
     ECHO File copied successfully.
 ) ELSE (

@@ -30,10 +30,30 @@ import {
     TAbstractFile,
 } from "obsidian";
 
-export function isTFile(file: TAbstractFile) {
+/**
+ * Determines whether the provided file is an instance of `TFile` from the Obsidian API.
+ * 
+ * @param {TAbstractFile} file - The file to check, which can be either a `TFile`, `TFolder`, or other `TAbstractFile` type.
+ * @returns {boolean} - Returns `true` if the file is an instance of `TFile`, otherwise `false`.
+ * 
+ * @example
+ * const isFile = isTFile(someFile);
+ * console.log(isFile); // true if someFile is a TFile, false otherwise
+ */
+export function isTFile(file: TAbstractFile): boolean {
     return (file instanceof TFile);
 }
 
-export function isTFolder(file: TAbstractFile) {
+/**
+ * Determines whether the provided file is an instance of `TFolder` from the Obsidian API.
+ * 
+ * @param {TAbstractFile} file - The file to check, which can be either a `TFile`, `TFolder`, or other `TAbstractFile` type.
+ * @returns {boolean} - Returns `true` if the file is an instance of `TFolder`, otherwise `false`.
+ * 
+ * @example
+ * const isFolder = isTFolder(someFile);
+ * console.log(isFolder); // true if someFile is a TFolder, false otherwise
+ */
+export function isTFolder(file: TAbstractFile): boolean {
     return (file instanceof TFolder);
 }

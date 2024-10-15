@@ -33,7 +33,6 @@ import {
 } from "obsidian";
 
 import UNITADE_PLUGIN from "./../main";
-import MODALES_LOCALE from "./../locales/modals.text";
 
 export class TFileEdit extends Modal {
     private _filepath: string;
@@ -120,8 +119,8 @@ export class TFileEdit extends Modal {
             .onClick(() => (this.__submit()));
 
         new Setting(contentEl)
-            .setName(MODALES_LOCALE.gtToggle1().name)
-            .setDesc(MODALES_LOCALE.gtToggle1().desc)
+            .setName(this.plugin.locale.getLocaleItem('MODAL_INCLUDE_IN_REGISTRY')[0]!)
+            .setDesc(this.plugin.locale.getLocaleItem('MODAL_INCLUDE_IN_REGISTRY')[1]!)
             .addToggle(toggle => {
                 toggle
                     .setValue(this._integration)
@@ -143,7 +142,7 @@ export class TFileEdit extends Modal {
         this.close();
 
         if (this._integration) {
-            let next = {
+            const next = {
                 ...this.plugin.settings,
             };
 
@@ -156,6 +155,6 @@ export class TFileEdit extends Modal {
     }
 
     private __pathgen(): string {
-        return this._filepath + "/" + this._name + (!!this._extension ? "." : "") + this._extension;
+        return this._filepath + "/" + this._name + (this._extension ? "." : "") + this._extension;
     }
 } 

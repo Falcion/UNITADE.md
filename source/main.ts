@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2023-2024
+ * Copyright (c) 2023-2024 Falcion
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -55,20 +55,28 @@ import {
 } from './components/folder-edit';
 
 import {
-    isTFile,
     isTFolder
 } from './utils/utils';
+
 import {
+    formatString,
     gencase,
     parsegroup
 } from './utils/functions';
 import { TFilesRename } from './components/files-rename';
+import CONSTANTS from './utils/constants';
+import LocalesModule from './locales/core';
 
 export default class UNITADE_PLUGIN extends Plugin {
     private _settings: UNITADE_SETTINGS = DEFAULT_SETTINGS;
+    private _locale: LocalesModule = new LocalesModule();
 
     public get settings(): UNITADE_SETTINGS {
         return this._settings;
+    }
+
+    public get locale(): LocalesModule {
+        return this._locale;
     }
 
     public get is_mobile(): boolean {
@@ -95,7 +103,11 @@ export default class UNITADE_PLUGIN extends Plugin {
                             return;
                         }
                     } catch (error) {
-                        console.error('Error creating regular expression:', error);
+                        if (!this.settings.silence_errors) {
+                            console.error(error);
+                        } else {
+                            console.debug(`[UNITADE-ERROR]: ERROR IS SILENCED, ERROR: ${error}`);
+                        }
                     }
                 }
             }
@@ -112,7 +124,7 @@ export default class UNITADE_PLUGIN extends Plugin {
                 try {
                     this.__tryApply(filename.last()!, 'markdown');
 
-                    let __settings = this.settings.extensions.split(';');
+                    const __settings = this.settings.extensions.split(';');
 
                     __settings.push(`${filename.last()!}`);
 
@@ -120,16 +132,20 @@ export default class UNITADE_PLUGIN extends Plugin {
 
                     if (this.settings.mobile_settings.enable) {
 
-                        let __mb_settings = this.settings.mobile_settings.extensions.split(';');
+                        const __mb_settings = this.settings.mobile_settings.extensions.split(';');
 
                         __mb_settings.push(`${filename.last()!}`);
 
                         this.settings.mobile_settings.extensions = __mb_settings.join(';');
                     }
                 } catch (err: any) {
-                    new Notification('Error from UNITADE plugin:', { body: `Error with on-load registry of: ${filename.last()!}};` });
+                    if (!this.settings.silence_errors) {
+                        new Notification(this.locale.getLocaleItem('ERROR_COMMON_MESSAGE')[0]!, { body: `${err}` });
 
-                    console.error(err);
+                        console.error(err);
+                    } else {
+                        console.debug(`[UNITADE-ERROR]: ERROR IS SILENCED, ERROR: ${err}`);
+                    }
                 }
             }
 
@@ -148,30 +164,34 @@ export default class UNITADE_PLUGIN extends Plugin {
                     try {
                         this.__tryApply(extension, 'markdown');
 
-                        let __settings = this.settings.extensions.split(';');
+                        const __settings = this.settings.extensions.split(';');
 
                         __settings.push(`${extension}`);
 
                         this.settings.extensions = __settings.join(';');
 
                         if (this.settings.mobile_settings.enable) {
-                            let __mb_settings = this.settings.mobile_settings.extensions.split(';');
+                            const __mb_settings = this.settings.mobile_settings.extensions.split(';');
 
                             __mb_settings.push(`${extension}`);
 
                             this.settings.mobile_settings.extensions = __mb_settings.join(';');
                         }
                     } catch (err: any) {
-                        new Notification('Error from UNITADE plugin:', { body: `Error with on-load registry of: ${extensions}` });
+                        if (!this.settings.silence_errors) {
+                            new Notification(this.locale.getLocaleItem('ERROR_COMMON_MESSAGE')[0]!, { body: `${extensions}` });
 
-                        console.error(err);
+                            console.error(err);
+                        } else {
+                            console.debug(`[UNITADE-ERROR]: ERROR IS SILENCED, ERROR: ${err}`);
+                        }
                     }
                 }
             }
         })
 
         if (this._settings.markdown_overcharge)
-            /**@ts-expect-error */
+            /**@ts-expect-error: viewRegistry exists in runtime, but not in Obsidian's public API */
             this.app.viewRegistry.unregisterExtensions(['md']);
 
         this.addSettingTab(new UNITADE_SETTINGS_TAB(this.app, this));
@@ -188,7 +208,7 @@ export default class UNITADE_PLUGIN extends Plugin {
         return this.app.workspace.on('file-menu', (menu, file) => {
             menu
                 .addItem((item) => {
-                    item.setTitle('Edit extension');
+                    item.setTitle(this.locale.getLocaleItem('MODAL_EDIT_EXTENSION')[0]!);
                     item
                         .setIcon('pencil')
                         .onClick(() => {
@@ -202,7 +222,7 @@ export default class UNITADE_PLUGIN extends Plugin {
                         });
                 })
                 .addItem((item) => {
-                    item.setTitle('Create with extension');
+                    item.setTitle(this.locale.getLocaleItem('MODAL_CREATE_WITH_EXTENSION')[0]!);
                     item
                         .setIcon('pencil')
                         .onClick(() => {
@@ -222,7 +242,7 @@ export default class UNITADE_PLUGIN extends Plugin {
         return this.app.workspace.on('files-menu', (menu, files) => {
             menu
                 .addItem((item) => {
-                    item.setTitle('Edit multiple extensions');
+                    item.setTitle(this.locale.getLocaleItem('MODAL_EDIT_MULTIPLE')[0]!);
                     item
                         .setIcon('pencil')
                         .onClick(() => {
@@ -231,7 +251,7 @@ export default class UNITADE_PLUGIN extends Plugin {
                         });
                 })
                 .addItem((item) => {
-                    item.setTitle('Rename multiple files');
+                    item.setTitle(this.locale.getLocaleItem('MODAL_EDIT_MULTIPLE')[1]!);
                     item
                         .setIcon('pencil')
                         .onClick(() => {
@@ -248,16 +268,16 @@ export default class UNITADE_PLUGIN extends Plugin {
 
             this.leafRef(_app);
         } catch (error) {
-            console.warn('Caught an error via LAYOUT-READY event.');
+            console.warn('CAUGHT AN ERROR VIA LAYOUT-READY EVENT.');
         }
     }
 
     leafRef(_app: App): void {
         try {
-            /**@ts-expect-error */
+            /**@ts-expect-error: not part of public API, accessing through runtime. */
             _app.workspace.iterateCodeMirrors(cm => cm.setOption("mode", cm.getOption("mode")));
         } catch (error) {
-            console.warn('Caught an error via LEAF-ITERATE event.');
+            console.warn('CAUGHT AN ERROR VIA LEAF-ITERATE EVENT.');
         }
     }
 
@@ -269,13 +289,19 @@ export default class UNITADE_PLUGIN extends Plugin {
         try {
             this.registerExtensions(['.md'], 'markdown');
         } catch (err: any) {
-            console.error(err);
+            if (!this.settings.silence_errors) {
+                new Notification(this.locale.getLocaleItem('ERROR_COMMON_MESSAGE')[0]!, { body: err });
 
-            this.settings.errors['markdown_override'] = `Error with reregistering extensions: ${err}`;
+                console.error(err);
+            } else {
+                console.debug(`[UNITADE-ERROR]: ERROR IS SILENCED, ERROR: ${err}`);
+            }
+
+            this.settings.errors['markdown_override'] = formatString(this.locale.getLocaleItem('ERROR_REGISTRY_EXTENSION')[3]!, err);
         }
 
         for (const key in CodeMirror.modes) {
-            if (CodeMirror.modes.hasOwnProperty(key) && !['hypermd', 'markdown', 'null', 'xml'].includes(key))
+            if (Object.prototype.hasOwnProperty.call(CodeMirror.modes, key) && !['hypermd', 'markdown', 'null', 'xml'].includes(key))
                 delete CodeMirror.modes[key];
         }
 
@@ -319,17 +345,27 @@ export default class UNITADE_PLUGIN extends Plugin {
                     return new UNITADE_VIEW(leaf, extension);
                 });
             } catch (err: any) {
-                new Notification('Error from UNITADE plugin:', { body: `${err}` });
-
                 this.settings.errors[extension] = `Error from UNITADE plugin: ${err}`;
 
-                console.error(err);
+                if (!this.settings.silence_errors) {
+                    new Notification(this.locale.getLocaleItem('ERROR_COMMON_MESSAGE')[0]!, { body: `${err}` });
+
+                    console.error(err);
+                } else {
+                    console.debug(`[UNITADE-ERROR]: ERROR IS SILENCED, ERROR: ${err}`);
+                }
             }
         }
     }
 
     public apply(): void {
         this.__apply();
+    }
+
+    public applyDefaults(): void {
+        for (const defaultView in CONSTANTS.defaultExtensions) {
+            this.registerExtensions(CONSTANTS.defaultExtensions[defaultView], defaultView);
+        }
     }
 
     public tryApply(filetype: string, view: string): void {
@@ -340,27 +376,31 @@ export default class UNITADE_PLUGIN extends Plugin {
         if (!this.settings.markdown_overcharge && ['md', 'mdown', 'markdown'].includes(filetype))
             return;
 
-        /**@ts-expect-error */
+        /**@ts-expect-error: not part of public API, accessing through runtime. */
         if (this.app.viewRegistry.isExtensionRegistered(filetype))
             return;
 
         try {
             this.registerExtensions([filetype], view);
         } catch (err: any) {
-            /**@ts-expect-error */
-            let curr: string = this.app.viewRegistry.getTypeByExtension(filetype);
+            /**@ts-expect-error: not part of public API, accessing through runtime. */
+            const curr: string = this.app.viewRegistry.getTypeByExtension(filetype);
 
             let _msg: string;
 
             if (curr) {
-                _msg = `Could not register extension: ${filetype} to view as ${view}.\nIt's already registered.`;
+                _msg = formatString(this.locale.getLocaleItem('ERROR_REGISTRY_EXTENSION')[0]!, filetype, view);
             } else {
-                _msg = `Could not register extension: ${filetype} to view as ${view}.\n${err}`;
+                _msg = formatString(this.locale.getLocaleItem('ERROR_REGISTRY_EXTENSION')[1]!, filetype, view, err);
             }
 
-            new Notification('Error from UNITADE plugin:', { body: _msg });
+            if (!this.settings.silence_errors) {
+                new Notification(this.locale.getLocaleItem('ERROR_COMMON_MESSAGE')[0]!, { body: _msg });
 
-            console.error(_msg);
+                console.error(_msg);
+            } else {
+                console.debug(`[UNITADE-ERROR]: ERROR IS SILENCED, ERROR: ${_msg}`);
+            }
 
             this._settings.errors[filetype] = _msg;
         }
@@ -370,7 +410,7 @@ export default class UNITADE_PLUGIN extends Plugin {
         this.settings.errors = {};
 
         if (this.settings.debug_mode)
-            //@ts-expect-error
+            /**@ts-expect-error: not part of public API, accessing through runtime. */
             console.info(this.app.viewRegistry.typeByExtension);
 
         const extensions_arr: string[] = extensions.split(';').map(s => s.trim());
@@ -398,6 +438,14 @@ export default class UNITADE_PLUGIN extends Plugin {
         this.__unapply(this.settings);
     }
 
+    public unapplyRegistry(): void {
+        /**@ts-expect-error: not part of public API, accessing through runtime. */
+        for (const extensionKey in this.app.viewRegistry.typeByExtension) {
+            /**@ts-expect-error: not part of public API, accessing through runtime. */
+            this.app.viewRegistry.unregisterExtensions([extensionKey]);
+        }
+    }
+
     private __unapplyCfg(extensions: string, markdown_charge: boolean) {
         const ext_arr: string[] = extensions.split(';').map(s => s.trim());
 
@@ -405,16 +453,20 @@ export default class UNITADE_PLUGIN extends Plugin {
             if (markdown_charge || extension !== 'md')
                 if (!this._settings.errors[extension]) {
                     try {
-                        /**@ts-expect-error */
+                        /**@ts-expect-error: not part of public API, accessing through runtime. */
                         this.app.viewRegistry.unregisterExtensions([extension]);
                     } catch (err: any) {
-                        const _msg = `Couldn't unregistry extension: ${extension};`
-
-                        new Notification('Error from UNITADE plugin:', { body: _msg });
+                        const _msg = formatString(this.locale.getLocaleItem('ERROR_REGISTRY_EXTENSION')[2]!, extension);
 
                         this.settings.errors[extension] = _msg;
 
-                        console.error(_msg);
+                        if (!this.settings.silence_errors) {
+                            new Notification(this.locale.getLocaleItem('ERROR_COMMON_MESSAGE')[0]!, { body: _msg });
+
+                            console.error(_msg);
+                        } else {
+                            console.debug(`[UNITADE-ERROR]: ERROR IS SILENCED, ERROR: ${_msg}`);
+                        }
                     }
                 }
     }

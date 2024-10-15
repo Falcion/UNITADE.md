@@ -33,7 +33,6 @@ import {
 } from "obsidian";
 
 import UNITADE_PLUGIN from "./../main";
-import MODALES_LOCALE from "./../locales/modals.text";
 
 export class TFilesEdit extends Modal {
     private _new_extension: string = 'md';
@@ -109,8 +108,8 @@ export class TFilesEdit extends Modal {
             .onClick(() => (this.__submit()));
 
         new Setting(contentEl)
-            .setName(MODALES_LOCALE.gtToggle1().name)
-            .setDesc(MODALES_LOCALE.gtToggle1().desc)
+            .setName(this.plugin.locale.getLocaleItem('MODAL_INCLUDE_IN_REGISTRY')[0]!)
+            .setDesc(this.plugin.locale.getLocaleItem('MODAL_INCLUDE_IN_REGISTRY')[1]!)
             .addToggle(toggle => {
                 toggle
                     .setValue(this._integration)
@@ -132,7 +131,7 @@ export class TFilesEdit extends Modal {
         this.close();
 
         if (this._integration) {
-            let next = {
+            const next = {
                 ...this.plugin.settings,
             };
 
@@ -152,14 +151,13 @@ export class TFilesEdit extends Modal {
     }
 
     private __pathgen(path: string, name: string): string {
-        return path + "/" + name + (!!this._new_extension ? "." : "") + this._new_extension;
+        return path + "/" + name + (this._new_extension ? "." : "") + this._new_extension;
     }
 
     private __generateDisplayInfo(): string {
         return this.target.map(file => {
             const filename = file.path.split('/').last()!;
             const filepath = file.path.split('/').slice(0, -1).join('/');
-            const extension = filename.split('.').slice(1).join('.')!;
             const name = filename.split('.').first()!;
             return `<div>${filepath}/${name}.${this._new_extension}</div>`;
         }).join('');
