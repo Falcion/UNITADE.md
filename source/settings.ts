@@ -194,7 +194,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
             .setDesc(this.locale.getLocaleItem('SETTINGS_EXTENSIONS')[1]!);
 
         const configInput = new TextAreaComponent(containerEl)
-            .setPlaceholder('txt; conf; config; data; logs')
+            .setPlaceholder('txt> conf> config> data> logs')
             .setValue(this.plugin.settings.extensions)
             .onChange(async (value) => {
                 const next = {
@@ -275,7 +275,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
             });
 
         const mobileConfigInp = new TextAreaComponent(containerEl)
-            .setPlaceholder('txt; conf; config; data; logs')
+            .setPlaceholder('txt> conf> config> data> logs')
             .setValue(this.plugin.settings.mobile_settings.extensions ? this.plugin.settings.mobile_settings.extensions : '')
             .onChange(async (value) => {
                 const next = {
@@ -410,7 +410,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
         forcedMsg.nameEl.appendChild(forcedWarn);
 
         const frcExtInp = new TextAreaComponent(containerEl)
-            .setPlaceholder('txt; md; ; data; db;')
+            .setPlaceholder('txt> md> > data> db')
             .setValue(this.plugin.settings.forced_extensions)
             .onChange(async (value) => {
                 const next = {
@@ -573,7 +573,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
             .setDesc(this.locale.getLocaleItem('SETTINGS_IGNORE_EXTENSIONS')[1]!);
 
         const ignoreExtInp = new TextAreaComponent(containerEl)
-            .setPlaceholder('txt; conf; config; data; logs')
+            .setPlaceholder('txt> conf> config> data> logs')
             .setValue(this.plugin.settings.ignore_extensions)
             .onChange(async (value) => {
                 const next = {
@@ -612,7 +612,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
             .setDesc(this.locale.getLocaleItem('SETTINGS_IGNORE_FILES')[1]!);
 
         const ignoreMskInp = new TextAreaComponent(containerEl)
-            .setPlaceholder('\\.(txt|md)$; doc_[a-z]; file_\\d{3}; file1')
+            .setPlaceholder('\\.(txt|md)$> doc_[a-z]> file_\\d{3}> file1')
             .setValue(this.plugin.settings.ignore_masks)
             .onChange(async (value) => {
                 const next = {
@@ -776,7 +776,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
             });
 
         const editorExtensionsInput = new TextAreaComponent(containerEl)
-            .setPlaceholder('txt; conf; config; data; logs')
+            .setPlaceholder('txt> conf> config> data> logs')
             .setValue(this.plugin.settings.code_editor_settings.extensions)
             .onChange(async (value) => {
                 const next = {
