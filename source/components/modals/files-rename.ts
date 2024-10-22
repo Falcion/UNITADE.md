@@ -31,7 +31,7 @@ import {
     TAbstractFile,
 } from "obsidian";
 
-import UNITADE_PLUGIN from "./../main";
+import UNITADE_PLUGIN from "../../main";
 
 export class TFilesRename extends Modal {
     private _new_name: string = '';

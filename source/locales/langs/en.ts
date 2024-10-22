@@ -38,7 +38,7 @@ export const LOCALES_EN = {
     },
     "SETTINGS_EXTENSIONS": {
         0: "Extensions:",
-        1: "Enter the file extensions that should be registered with the vault and with which the application should start registering (taking into account): input must be separated by semicolons (';')."
+        1: "Enter the file extensions that should be registered with the vault and with which the application should start registering (taking into account): input must be separated by semicolons ('>')."
     },
     "SETTINGS_MOBILE_SPECIFIC": {
         0: "Mobile-specific:",
@@ -164,5 +164,8 @@ export const LOCALES_EN = {
         0: "Case insensitive mode:",
         1: "If turned on, plugin would registry every upper and lower case variations of extension to provide Windows-like experience for extension.",
         2: "Unstable on UNIX-systems."
+    },
+    "MODAL_EDIT_FENCE": {
+        0: "Edit code fence"
     }
 };

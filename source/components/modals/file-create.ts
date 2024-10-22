@@ -28,16 +28,13 @@ import {
     Modal,
     ButtonComponent,
     TextComponent,
-    TAbstractFile,
     Setting,
 } from "obsidian";
 
-import UNITADE_PLUGIN from "./../main";
+import UNITADE_PLUGIN from "../../main";
 
-export class TFileEdit extends Modal {
+export class TFileCreate extends Modal {
     private _filepath: string;
-    private _filename: string;
-    private _extension: string;
 
     private _name: string;
 
@@ -45,18 +42,13 @@ export class TFileEdit extends Modal {
 
     constructor(
         private plugin: UNITADE_PLUGIN,
-        private target: TAbstractFile
+        private target: string,
     ) {
         super(plugin.app);
 
-        this.target ??= this.plugin.app.vault.getRoot();
+        this._filepath = this.target;
 
-        this._filename = this.target.path.split('/').last()!;
-        this._filepath = this.target.path.split('/').slice(0, -1).join('/');
-
-        this._extension = this._filename.split('.').slice(1).join('.')!;
-
-        this._name = this._filename.split('.').first()!;
+        this._name = '';
 
         this._integration = false;
     }
@@ -95,7 +87,7 @@ export class TFileEdit extends Modal {
             margin-right: 10px;
             `;
 
-        disp.innerHTML = this.__pathgen();
+        disp.innerHTML = 'Enter fullname of your file';
 
         input.inputEl.addEventListener("keypress", (e) => {
             if (e.key === "Enter") {
@@ -105,17 +97,17 @@ export class TFileEdit extends Modal {
             }
         });
 
-        input.setValue(this._extension);
+        input.setValue(this._name);
         input.onChange((value) => {
-            this._extension = value.startsWith(".") ? value.slice(1) : value;
+            this._name = value;
 
-            disp.innerHTML = this.__pathgen();
+            disp.innerHTML = `Enter fullname of your file: ${this._pathgen()}`;
         });
 
         new ButtonComponent(form)
             .setCta()
             .setIcon('pencil')
-            .setButtonText("Edit")
+            .setButtonText("Create")
             .onClick(() => (this.__submit()));
 
         new Setting(contentEl)
@@ -146,15 +138,17 @@ export class TFileEdit extends Modal {
                 ...this.plugin.settings,
             };
 
-            next.extensions += `;${this._extension}`;
+            const extensions = this._name.split('.').slice(1).join(';');
+
+            next.extensions += `;${extensions}`;
 
             this.plugin.uptSettings(next);
         }
 
-        await this.app.vault.rename(this.target, this.__pathgen());
+        await this.app.vault.create(this._pathgen(), '');
     }
 
-    private __pathgen(): string {
-        return this._filepath + "/" + this._name + (this._extension ? "." : "") + this._extension;
+    private _pathgen(): string {
+        return this._filepath + "/" + this._name;
     }
 } 

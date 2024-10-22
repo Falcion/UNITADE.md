@@ -32,9 +32,14 @@ export default class CONSTANTS {
         'markdown': ['md']
     };
 
-    public static themes = {
-        'AUTO': 'AUTO',
-        'LIGHT': 'LIGHT',
-        'DARK': 'DARK'
+    /**
+         * Initial theme to be used for rendering.
+         * The current out-of-the-box available themes are: 'vs' (default), 'vs-dark', 'hc-black', 'hc-light.**/
+    public static themes: Record<string, string> = {
+        'vs-dark': 'DARK',
+        'vs': 'LIGHT',
+        'hc-black': 'PITCH-BLACK',
+        'hc-light': 'PITCH-LIGHT',
+        'auto': 'AUTO'
     };
 }
