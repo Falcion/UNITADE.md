@@ -682,7 +682,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
         groupMsg.nameEl.appendChild(groupedWarn);
 
         const groupExtInp = new TextAreaComponent(containerEl)
-            .setPlaceholder('md: json, txt, pgb; json: data, md, txt;')
+            .setPlaceholder('markdown: json> txt> pgb; pdf: pdf; video: webm;')
             .setValue(this.plugin.settings.grouped_extensions)
             .onChange(async (value) => {
                 const next = {
