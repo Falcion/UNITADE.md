@@ -741,7 +741,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                         await this.__updateErrors();
 
                         this.__uptCEConfig([
-                            useDefaultExtensions, editorExtensionsInput, editorTheme, 
+                            useDefaultExtensions, editorExtensionsInput, codeExtensionsWarn, editorTheme, 
                             editorFolding, editorWordWrapping, editorLineNumbers, editorMinimapping,
                             editorValidationSemantic, editorValidationSyntax, editorFontSize,
                             editorFontFamily, editorFontLigatures
@@ -769,7 +769,10 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
 
                         await this.plugin.uptSettings(next);
 
-                        editorExtensionsInput.inputEl.style.display = toggle ? 'block' : 'none';                        
+                        this.__uptCEConfig([editorExtensionsInput, codeExtensionsWarn], !value);
+                        
+                        if(this.plugin.settings.debug_mode)
+                                console.debug(`HIDE EDITOR EXTENSIONS? =${value ? 'NO.' : 'YES.'}`);
                     });
 
                 return toggle;
@@ -809,6 +812,18 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
 
                 this.__updateErrors();
             });
+
+        const codeExtensionsWarn = new Setting(containerEl)
+            .setName('')
+            .setDesc('');
+
+        const codeExtensionsText = document.createElement('div');
+        codeExtensionsText.style.fontSize = '80%';
+        codeExtensionsText.style.margin = '10px';
+        codeExtensionsText.style.color = 'green';
+        codeExtensionsText.innerHTML = 'Be aware, this extensions must be excluding from every other, otherwise error with rendering may occure, to "clone" extensions, use specified feature.';
+
+        codeExtensionsWarn.infoEl.appendChild(codeExtensionsText);
 
         editorExtensionsInput.inputEl.style.width = '100%';
         editorExtensionsInput.inputEl.style.height = '48px';
@@ -955,6 +970,9 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                                 theme: value,
                             },
                         };
+
+                        if(this.plugin.settings.debug_mode)
+                            console.debug('CAUGHT THEME FOR THE EDITOR:' + `${value};`);
 
                         await this.plugin.uptSettings(next);
 
@@ -1184,7 +1202,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
             this._errors!.innerHTML = 'None';
             this._errors!.style.color = 'green';
         } else {
-            this._errors!.innerHTML = `Errors: <ul>${Object.keys(this.plugin.settings.errors)
+            this._errors!.innerHTML = `<ul>${Object.keys(this.plugin.settings.errors)
                 .map((k) => `<li><b>${k}</b>: ${this.plugin.settings.errors[k]}</li>`)
                 .join('')}</ul>`;
             this._errors!.style.color = 'red';
