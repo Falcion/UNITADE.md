@@ -43,16 +43,16 @@ import CodeMirror from './../lib/codemirror';
 
 import {
     TFileEdit
-} from './components/file-edit';
+} from './components/modals/file-edit';
 import {
     TFileCreate
-} from './components/file-create';
+} from './components/modals/file-create';
 import {
     TFilesEdit
-} from './components/files-edit';
+} from './components/modals/files-edit';
 import {
     TFolderEdit
-} from './components/folder-edit';
+} from './components/modals/folder-edit';
 
 import {
     isTFolder
@@ -63,13 +63,38 @@ import {
     gencase,
     parsegroup
 } from './utils/functions';
-import { TFilesRename } from './components/files-rename';
+import { TFilesRename } from './components/modals/files-rename';
 import CONSTANTS from './utils/constants';
 import LocalesModule from './locales/core';
+import { UNITADE_VIEW_CODE } from './components/views/view_monaco';
+import { ContextEditor } from './components/contexts/contextEditor';
+import { FenceEditModal } from './components/modals/codeblock-edit';
+import { ContextEditCodeblocks } from './components/contextEditCodeblock';
+
+declare module "obsidian" {
+	interface Workspace {
+		on(
+			name: "hover-link",
+			callback: (e: MouseEvent) => any,
+			ctx?: any,
+		): EventRef;
+	}
+}
 
 export default class UNITADE_PLUGIN extends Plugin {
     private _settings: UNITADE_SETTINGS = DEFAULT_SETTINGS;
     private _locale: LocalesModule = new LocalesModule();
+    private _observer!: MutationObserver;
+
+    public hover: {
+		linkText: string;
+		sourcePath: string;
+		event: MouseEvent;
+	} = {
+			linkText: "",
+			sourcePath: "",
+			event: new MouseEvent(""),
+		};
 
     public get settings(): UNITADE_SETTINGS {
         return this._settings;
@@ -202,6 +227,65 @@ export default class UNITADE_PLUGIN extends Plugin {
 
         this.registerEvent(this.__ctxEditExt());
         this.registerEvent(this.__ctxEditExts());
+        this.registerEvent(this.__ctxFence());
+
+        this._observer = new MutationObserver(async (mutations) => {
+            const mutation = mutations[0];
+            if (mutations.length !== 1 || mutation.addedNodes.length !== 1 || !this.hover.linkText) return;
+        
+            const addedNode = mutation.addedNodes[0] as HTMLElement;
+            if (addedNode.className !== "popover hover-popover") return;
+        
+            const file = this.app.metadataCache.getFirstLinkpathDest(this.hover.linkText, this.hover.sourcePath);
+            if (!file || !this.settings.extensions.includes(file.extension)) return;
+        
+            const fileContent = await this.app.vault.read(file);
+            const contentEl = createDiv();
+            
+            new ContextEditor(contentEl, this, fileContent, file.extension, false, true);
+        
+            const w = 700, h = 500, gep = 10;
+            const x = this.hover.event.clientX, y = this.hover.event.clientY;
+            const target = this.hover.event.target as HTMLElement;
+            const targetRect = target.getBoundingClientRect();
+        
+            if (addedNode instanceof HTMLDivElement) {
+                addedNode.style.position = "absolute";
+                addedNode.style.left = `${x + gep}px`;
+        
+                const spaceBelow = window.innerHeight - y - gep * 3;
+                const spaceAbove = y - gep * 3;
+        
+                if (spaceBelow > h) {
+                    addedNode.style.top = `${targetRect.bottom + gep}px`;
+                } else if (spaceAbove > h) {
+                    addedNode.style.top = `${targetRect.top - h - gep}px`;
+                } else {
+                    addedNode.style.top = `${targetRect.top - h / 2 - gep}px`;
+                    addedNode.style.left = `${targetRect.right + gep * 2}px`;
+                }
+            }
+        
+            contentEl.setCssProps({
+                "width": `${w}px`,
+                "height": `${h}px`,
+                "padding-top": "10px",
+                "padding-bottom": "10px",
+            });
+        
+            addedNode.empty();
+            addedNode.appendChild(contentEl);
+        });
+        
+        this.registerEvent(this.app.workspace.on("hover-link", async (event: any) => {
+            const { linktext: linkText, sourcePath, event: hoverEvent } = event;
+            if (!linkText || !sourcePath) return;
+        
+            Object.assign(this.hover, { linkText, sourcePath, event: hoverEvent });
+        }));
+        
+        this._observer.observe(document, { childList: true, subtree: true });
+        
 
         this.__apply();
     }
@@ -264,6 +348,21 @@ export default class UNITADE_PLUGIN extends Plugin {
         });
     }
 
+    private __ctxFence(): EventRef {
+        return this.app.workspace.on("editor-menu", (menu) => {
+                if (!ContextEditCodeblocks.create(this).isInFence()) {
+                    return;
+                }
+                menu.addItem((item) => {
+                    item.setTitle(this.locale.getLocaleItem("MODAL_EDIT_FENCE")[0]!)
+                        .setIcon("code")
+                        .onClick(() => {
+                            FenceEditModal.openOnCurrentCode(this);
+                        });
+                });
+            });
+    }
+
     ltReady(_app: App): void {
         try {
             _app.workspace.off('layout-ready', () => { this.ltReady(_app); });
@@ -285,6 +384,8 @@ export default class UNITADE_PLUGIN extends Plugin {
 
     async onunload(): Promise<void> {
         super.onunload();
+
+        this._observer!.disconnect();
 
         this.__unapply(this.settings);
 
@@ -334,7 +435,10 @@ export default class UNITADE_PLUGIN extends Plugin {
      * @private
      * @returns {void}
      */
-    private __apply(): void {
+    private __apply(): void 
+    {
+        this.registerView('codeview', leaf => new UNITADE_VIEW_CODE(leaf, this));
+
         if (this.settings.is_grouped) {
             const data: { [key: string]: string[] } = parsegroup(this.settings.grouped_extensions);
 
