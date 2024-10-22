@@ -345,7 +345,7 @@ export default class UNITADE_PLUGIN extends Plugin {
                     return new UNITADE_VIEW(leaf, extension);
                 });
             } catch (err: any) {
-                this.settings.errors[extension] = `Error from UNITADE plugin: ${err}`;
+                this.settings.errors[extension] = `${this.locale.getLocaleItem('ERROR_COMMON_MESSAGE')[0]!} ${err}`;
 
                 if (!this.settings.silence_errors) {
                     new Notification(this.locale.getLocaleItem('ERROR_COMMON_MESSAGE')[0]!, { body: `${err}` });
