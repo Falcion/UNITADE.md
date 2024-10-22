@@ -324,6 +324,32 @@ export default class UNITADE_PLUGIN extends Plugin {
         this.__apply();
     }
 
+    //! MAIN METHOD OF ENTIRE PLUGIN:
+    //! Configures and applies everything from the settings.
+    /**
+     * This method configures and applies the settings for grouped extensions, mobile settings,
+     * and forced extensions in the UNITADE plugin. It parses and applies configurations based on
+     * the current plugin settings. The method works differently for grouped extensions, mobile extensions,
+     * and forced extensions, handling each case according to the settings provided by the user.
+     * 
+     * ### Grouped Extensions:
+     * If the `is_grouped` setting is enabled, it parses the `grouped_extensions` string into key-value pairs
+     * where each key is a view (such as 'markdown', 'pdf') and each value is an array of extensions. The method
+     * applies these configurations for each view by calling `__applyCfg`.
+     * 
+     * ### Mobile Settings:
+     * If the plugin is running in a mobile environment (`is_mobile` is true), the mobile extensions are configured.
+     * It applies either the mobile-specific extensions or falls back to the default extensions, then configures
+     * the 'markdown' view for those extensions.
+     * 
+     * ### Forced Extensions:
+     * The method also processes forced extensions, registering custom views for each forced extension defined
+     * in the settings. If an error occurs during this registration, it logs the error in the `errors` object and
+     * optionally displays a notification or logs a debug message if `silence_errors` is enabled.
+     * 
+     * @private
+     * @returns {void}
+     */
     private __apply(): void {
         if (this.settings.is_grouped) {
             const data: { [key: string]: string[] } = parsegroup(this.settings.grouped_extensions);
