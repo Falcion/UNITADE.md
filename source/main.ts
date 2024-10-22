@@ -94,7 +94,7 @@ export default class UNITADE_PLUGIN extends Plugin {
             if (isTFolder(file)) return;
 
             if (this.settings.is_ignore) {
-                for (const mask of this.settings.ignore_masks.split(';')) {
+                for (const mask of this.settings.ignore_masks.split('>')) {
                     const _mask = mask.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
                     try {
@@ -115,30 +115,30 @@ export default class UNITADE_PLUGIN extends Plugin {
             if (this.settings.is_onload) {
                 const total_extension = filename.join('.');
 
-                if (this.settings.ignore_extensions.split(';').includes(total_extension!) && this.settings.is_ignore)
+                if (this.settings.ignore_extensions.split('>').includes(total_extension!) && this.settings.is_ignore)
                     return;
-                if (this.settings.extensions.split(';').includes(total_extension!))
+                if (this.settings.extensions.split('>').includes(total_extension!))
                     return;
                 if (this.settings.mobile_settings.enable &&
-                    this.settings.mobile_settings.extensions.split(';').includes(total_extension!))
+                    this.settings.mobile_settings.extensions.split('>').includes(total_extension!))
                     return;
 
                 try {
                     this.__tryApply(total_extension!, 'markdown');
 
-                    const __settings = this.settings.extensions.split(';');
+                    const __settings = this.settings.extensions.split('>');
 
                     __settings.push(`${total_extension!}`);
 
-                    this.settings.extensions = __settings.join(';');
+                    this.settings.extensions = __settings.join('>');
 
                     if (this.settings.mobile_settings.enable) {
 
-                        const __mb_settings = this.settings.mobile_settings.extensions.split(';');
+                        const __mb_settings = this.settings.mobile_settings.extensions.split('>');
 
                         __mb_settings.push(`${total_extension!}`);
 
-                        this.settings.mobile_settings.extensions = __mb_settings.join(';');
+                        this.settings.mobile_settings.extensions = __mb_settings.join('>');
                     }
                 } catch (err: any) {
                     if (!this.settings.silence_errors) {
@@ -155,29 +155,29 @@ export default class UNITADE_PLUGIN extends Plugin {
                 const extensions: string[] = filename;
 
                 for (const extension of extensions) {
-                    if (this.settings.ignore_extensions.split(';').includes(extension) && this.settings.is_ignore)
+                    if (this.settings.ignore_extensions.split('>').includes(extension) && this.settings.is_ignore)
                         return;
-                    if (this.settings.extensions.split(';').includes(extension))
+                    if (this.settings.extensions.split('>').includes(extension))
                         return;
                     if (this.settings.mobile_settings.enable &&
-                        this.settings.mobile_settings.extensions.split(';').includes(extension))
+                        this.settings.mobile_settings.extensions.split('>').includes(extension))
                         return;
 
                     try {
                         this.__tryApply(extension, 'markdown');
 
-                        const __settings = this.settings.extensions.split(';');
+                        const __settings = this.settings.extensions.split('>');
 
                         __settings.push(`${extension}`);
 
-                        this.settings.extensions = __settings.join(';');
+                        this.settings.extensions = __settings.join('>');
 
                         if (this.settings.mobile_settings.enable) {
-                            const __mb_settings = this.settings.mobile_settings.extensions.split(';');
+                            const __mb_settings = this.settings.mobile_settings.extensions.split('>');
 
                             __mb_settings.push(`${extension}`);
 
-                            this.settings.mobile_settings.extensions = __mb_settings.join(';');
+                            this.settings.mobile_settings.extensions = __mb_settings.join('>');
                         }
                     } catch (err: any) {
                         if (!this.settings.silence_errors) {
@@ -330,23 +330,7 @@ export default class UNITADE_PLUGIN extends Plugin {
      * This method configures and applies the settings for grouped extensions, mobile settings,
      * and forced extensions in the UNITADE plugin. It parses and applies configurations based on
      * the current plugin settings. The method works differently for grouped extensions, mobile extensions,
-     * and forced extensions, handling each case according to the settings provided by the user.
-     * 
-     * ### Grouped Extensions:
-     * If the `is_grouped` setting is enabled, it parses the `grouped_extensions` string into key-value pairs
-     * where each key is a view (such as 'markdown', 'pdf') and each value is an array of extensions. The method
-     * applies these configurations for each view by calling `__applyCfg`.
-     * 
-     * ### Mobile Settings:
-     * If the plugin is running in a mobile environment (`is_mobile` is true), the mobile extensions are configured.
-     * It applies either the mobile-specific extensions or falls back to the default extensions, then configures
-     * the 'markdown' view for those extensions.
-     * 
-     * ### Forced Extensions:
-     * The method also processes forced extensions, registering custom views for each forced extension defined
-     * in the settings. If an error occurs during this registration, it logs the error in the `errors` object and
-     * optionally displays a notification or logs a debug message if `silence_errors` is enabled.
-     * 
+     * and forced extensions and etc, handling each case according to the settings provided by the user.
      * @private
      * @returns {void}
      */
@@ -355,7 +339,7 @@ export default class UNITADE_PLUGIN extends Plugin {
             const data: { [key: string]: string[] } = parsegroup(this.settings.grouped_extensions);
 
             for (const view in data) {
-                this.__applyCfg(data[view].join(';'), view);
+                this.__applyCfg(data[view].join('>'), view);
             }
         }
 
@@ -365,7 +349,7 @@ export default class UNITADE_PLUGIN extends Plugin {
             this.__applyCfg(this.settings.extensions, 'markdown');
         }
 
-        const forced_extensions = this.settings.forced_extensions.split(';').map(s => s.trim());
+        const forced_extensions = this.settings.forced_extensions.split('>').map(s => s.trim());
 
         for (const extension of forced_extensions) {
             try {
@@ -441,16 +425,22 @@ export default class UNITADE_PLUGIN extends Plugin {
             /**@ts-expect-error: not part of public API, accessing through runtime. */
             console.info(this.app.viewRegistry.typeByExtension);
 
-        const extensions_arr: string[] = extensions.split(';').map(s => s.trim());
+        const extensions_arr: string[] = extensions.split('>').map(s => s.trim());
 
         for (const extension of extensions_arr) {
-            if (this.settings.is_ignore && this.settings.ignore_extensions.split(';').includes(extension))
+            if (this.settings.is_ignore && this.settings.ignore_extensions.split('>').includes(extension))
                 continue;
 
-            const rnd_filetype = gencase(extension);
+            // If we ignore case difference (example: Windows systems)
+            if(this.settings.is_case_insensitive) {
+                const rnd_filetype = gencase(extension);
 
-            for (const type of rnd_filetype)
-                this.__tryApply(type, view);
+                for (const type of rnd_filetype)
+                    this.__tryApply(type, view);
+            } // Case sensitive (UNIX-like)
+            else {
+                this.__tryApply(extension, view);
+            }
         }
     }
 
@@ -475,7 +465,7 @@ export default class UNITADE_PLUGIN extends Plugin {
     }
 
     private __unapplyCfg(extensions: string, markdown_charge: boolean) {
-        const ext_arr: string[] = extensions.split(';').map(s => s.trim());
+        const ext_arr: string[] = extensions.split('>').map(s => s.trim());
 
         for (const extension of ext_arr)
             if (markdown_charge || extension !== 'md')
