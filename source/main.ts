@@ -37,7 +37,7 @@ import UNITADE_SETTINGS_TAB, {
     DEFAULT_SETTINGS,
 } from './settings';
 
-import UNITADE_VIEW from './components/view';
+import UNITADE_VIEW from './components/views/view_codemirror';
 
 import CodeMirror from './../lib/codemirror';
 
