@@ -113,20 +113,22 @@ export default class UNITADE_PLUGIN extends Plugin {
             }
 
             if (this.settings.is_onload) {
-                if (this.settings.ignore_extensions.split(';').includes(filename.last()!) && this.settings.is_ignore)
+                const total_extension = filename.join('.');
+
+                if (this.settings.ignore_extensions.split(';').includes(total_extension!) && this.settings.is_ignore)
                     return;
-                if (this.settings.extensions.split(';').includes(filename.last()!))
+                if (this.settings.extensions.split(';').includes(total_extension!))
                     return;
                 if (this.settings.mobile_settings.enable &&
-                    this.settings.mobile_settings.extensions.split(';').includes(filename.last()!))
+                    this.settings.mobile_settings.extensions.split(';').includes(total_extension!))
                     return;
 
                 try {
-                    this.__tryApply(filename.last()!, 'markdown');
+                    this.__tryApply(total_extension!, 'markdown');
 
                     const __settings = this.settings.extensions.split(';');
 
-                    __settings.push(`${filename.last()!}`);
+                    __settings.push(`${total_extension!}`);
 
                     this.settings.extensions = __settings.join(';');
 
@@ -134,7 +136,7 @@ export default class UNITADE_PLUGIN extends Plugin {
 
                         const __mb_settings = this.settings.mobile_settings.extensions.split(';');
 
-                        __mb_settings.push(`${filename.last()!}`);
+                        __mb_settings.push(`${total_extension!}`);
 
                         this.settings.mobile_settings.extensions = __mb_settings.join(';');
                     }
