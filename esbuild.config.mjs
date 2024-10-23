@@ -3,8 +3,6 @@ import { sassPlugin } from 'esbuild-sass-plugin'
 import process from "process";
 import builtins from "builtin-modules";
 import glsl from "esbuild-plugin-glsl";
-import nodeExternals from "esbuild-plugin-node-externals";
-
 
 const banner =
     `/*
@@ -25,20 +23,11 @@ const context = await esbuild.context({
         glsl({
             minify: true,
         }),
-        nodeExternals({
-            packagePaths: 'package.json',
-            include: [
-                './lib/*',
-                './mode/*',
-                './addon/*',
-            ],
-        }),
     ],
     bundle: true,
     external: [
         "obsidian",
         "electron",
-        "codemirror",
         "@codemirror/autocomplete",
         "@codemirror/collab",
         "@codemirror/commands",
@@ -57,6 +46,9 @@ const context = await esbuild.context({
     sourcemap: prod ? false : "inline",
     treeShaking: true,
     outfile: "out/main.js",
+    loader: {
+        '.ttf': 'base64',
+    },
 });
 
 if (prod) {
