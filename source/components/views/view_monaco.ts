@@ -11,14 +11,8 @@ import UNITADE_PLUGIN from "../../main";
 export class UNITADE_VIEW_CODE extends TextFileView {
 
     value = "";
-    monacoEditor: monaco.editor.IStandaloneCodeEditor | undefined;
+    monacoEditor!: monaco.editor.IStandaloneCodeEditor;
 
-    /**
-     * Creates an instance of the `UNITADE_VIEW_CODE`.
-     * 
-     * @param leaf - The workspace leaf associated with this view.
-     * @param plugin - Reference to the `CodeFilesPlugin` instance.
-     */
     constructor(leaf: WorkspaceLeaf, private plugin: UNITADE_PLUGIN) {
         super(leaf);
     }
@@ -30,17 +24,10 @@ export class UNITADE_VIEW_CODE extends TextFileView {
         await super.onOpen();
     }
 
-    /**
-     * Loads a file into the Monaco editor.
-     * 
-     * @param file - The TFile instance representing the file to be loaded.
-     */
     async onLoadFile(file: TFile) {
-        // Generate editor settings based on the plugin's configuration and file extension
         const setting = genEditorSettings(this.plugin.settings, this.file?.extension ?? "");
-        this.monacoEditor = monaco.editor.create(this.contentEl, setting);
 
-        // Trigger file save when editor content changes
+        this.monacoEditor = monaco.editor.create(this.contentEl, setting);
         this.monacoEditor.onDidChangeModelContent(() => {
             this.requestSave();
         });
@@ -51,30 +38,20 @@ export class UNITADE_VIEW_CODE extends TextFileView {
         await super.onLoadFile(file);
     }
 
-    /**
-     * Unloads the current file, removes event listeners, and disposes of the Monaco editor.
-     * 
-     * @param file - The TFile instance representing the file being unloaded.
-     */
     async onUnloadFile(file: TFile) {
-        window.removeEventListener('keydown', this.keyHandle, true);
+        window.removeEventListener('keydown', this.__keyHandler, true);
+
         await super.onUnloadFile(file);
         
-        this.monacoEditor!.dispose();
+        this.monacoEditor.dispose();
     }
 
-    /**
-     * Executes when the view is closed.
-     */
     async onClose() {
         await super.onClose();
     }
 
-    /**
-     * Recalculates the layout of the Monaco editor when the view is resized.
-     */
     onResize() {
-        this.monacoEditor!.layout();
+        this.monacoEditor.layout();
     }
 
     /**
@@ -86,67 +63,36 @@ export class UNITADE_VIEW_CODE extends TextFileView {
         return 'codeview';
     }
 
-    /**
-     * Retrieves the file path for the current context.
-     * 
-     * @param file - Optional TFile instance representing the current file.
-     * @returns The file path or undefined if no file is loaded.
-     */
     getContext(file?: TFile) {
         return file?.path ?? this.file?.path;
     }
 
-    /**
-     * Retrieves the current content of the editor.
-     * 
-     * @returns The current editor content as a string.
-     */
     getViewData = (): string => {
-        return this.monacoEditor!.getValue();
+        return this.monacoEditor.getValue();
     }
 
-    /**
-     * Sets the content of the editor.
-     * 
-     * @param data - The string content to be set in the editor.
-     * @param clear - If true, clears the current content before setting the new data.
-     */
     setViewData = (data: string, clear: boolean) => {
         if (clear) {
-            this.monacoEditor!.getModel()?.setValue(data);
+            this.monacoEditor.getModel()?.setValue(data);
         } else {
-            this.monacoEditor!.setValue(data);
+            this.monacoEditor.setValue(data);
         }
     }
 
-    /**
-     * Clears the editor's content.
-     */
     clear = () => {
-        this.monacoEditor!.setValue('');
+        this.monacoEditor.setValue('');
     }
 
-    /**
-     * Adds event listeners for keyboard shortcuts in the editor.
-     */
     private addKeyEvents = () => {
-        window.addEventListener('keydown', this.keyHandle, true);
+        window.addEventListener('keydown', this.__keyHandler, true);
     }
 
-    /**
-     * Adds event listeners for handling `Ctrl` + mouse wheel events to adjust font size.
-     */
     private addCtrlKeyWheelEvents = () => {
-        this.containerEl.addEventListener('wheel', this.mousewheelHandle, true);
+        this.containerEl.addEventListener('wheel', this.__mousewheelHandler, true);
     }
 
-    /**
-     * Handles specific key events such as `Ctrl + f` for search or `Alt + z` for toggling word wrap.
-     * 
-     * @param event - The keyboard event.
-     */
-    private keyHandle = (event: KeyboardEvent) => {
-        const ctrlMap = new Map<string, string>([
+    private __keyHandler = async (event: KeyboardEvent) => {
+        const KEYMAP = new Map<string, string>([
             ['f', 'actions.find'],
             ['h', 'editor.action.startFindReplaceAction'],
             ['/', 'editor.action.commentLine'],
@@ -157,10 +103,10 @@ export class UNITADE_VIEW_CODE extends TextFileView {
         ]);
         
         if (event.ctrlKey) {
-            const triggerName = ctrlMap.get(event.key);
-            if (triggerName) {
-                this.monacoEditor!.trigger('', triggerName, null);
-            }
+            const trigger_name = KEYMAP.get(event.key);
+            
+            if (trigger_name)
+                this.monacoEditor.trigger('', trigger_name, null);
         }
 
         if (event.altKey) {
@@ -173,20 +119,16 @@ export class UNITADE_VIEW_CODE extends TextFileView {
                     },
                 };
 
-                this.plugin.uptSettings(next);
-                this.monacoEditor!.updateOptions({
+                await this.plugin.uptSettings(next);
+
+                this.monacoEditor.updateOptions({
                     wordWrap: this.plugin.settings.code_editor_settings.word_wrapping ? "on" : "off",
                 });
             }
         }
     }
 
-    /**
-     * Handles `Ctrl + mouse wheel` events to adjust font size in the editor.
-     * 
-     * @param event - The wheel event.
-     */
-    private mousewheelHandle = (event: WheelEvent) => {
+    private __mousewheelHandler = async (event: WheelEvent) => {
         if (event.ctrlKey) {
             const delta = event.deltaY > 0 ? 1 : -1;
 
@@ -198,7 +140,8 @@ export class UNITADE_VIEW_CODE extends TextFileView {
                 },
             }
 
-            this.plugin.uptSettings(next);
+            await this.plugin.uptSettings(next);
+            
             this.monacoEditor!.updateOptions({
                 fontSize: this.plugin.settings.code_editor_settings.font_size,
             });

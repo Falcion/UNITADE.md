@@ -354,6 +354,105 @@ export function getLanguage(extension: string): string {
     }
 }
 
+import 'monaco-editor/esm/vs/basic-languages/css/css.contribution'
+import 'monaco-editor/esm/vs/basic-languages/xml/xml.contribution'
+import 'monaco-editor/esm/vs/basic-languages/javascript/javascript.contribution'
+
+import EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker';
+import TsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker';
+import JsonWorker from 'monaco-editor/esm/vs/language/json/json.worker';
+import CssWorker from 'monaco-editor/esm/vs/language/css/css.worker';
+import HtmlWorker from 'monaco-editor/esm/vs/language/html/html.worker';
+
+export function getWorker(language: string): Worker {
+    switch (language) {
+        case "javascript":
+        case "typescript":
+            return new TsWorker();
+        case "css":
+            return new CssWorker();
+        case "html":
+            return new HtmlWorker();
+        case "json":
+            return new JsonWorker();
+        // Additional languages mapped to a general editor worker
+        case "cpp":
+        case "python":
+        case "java":
+        case "php":
+        case "sql":
+        case "yaml":
+        case "bat":
+        case "lua":
+        case "ruby":
+        case "markdown":
+        case "r":
+        case "freemarker2":
+        case "restructuredtext":
+        case "hcl":
+        case "ini":
+        case "pug":
+        case "dart":
+        case "rust":
+        case "less":
+        case "apex":
+        case "tcl":
+        case "abap":
+        case "ecl":
+        case "pla":
+        case "vb":
+        case "sb":
+        case "m3":
+        case "go":
+        case "mips":
+        case "perl":
+        case "wgsl":
+        case "twig":
+        case "scss":
+        case "redis":
+        case "shell":
+        case "scala":
+        case "julia":
+        case "msdax":
+        case "lexon":
+        case "razor":
+        case "bicep":
+        case "azcli":
+        case "swift":
+        case "flow9":
+        case "xml":
+        case "kotlin":
+        case "cypher":
+        case "coffeescript":
+        case "fsharp":
+        case "scheme":
+        case "sparql":
+        case "aes":
+        case "liquid":
+        case "pascal":
+        case "elixir":
+        case "qsharp":
+        case "csharp":
+        case "clojure":
+        case "cameligo":
+        case "sol":
+        case "proto":
+        case "postiats":
+        case "pascaligo":
+        case "dockerfile":
+        case "handlebars":
+        case "powerquery":
+        case "objective-c":
+        case "systemverilog":
+        case "verilog":
+        case "st":
+        case "c":
+            return new EditorWorker();
+        default:
+            return new EditorWorker(); // Default worker for unsupported languages
+    }
+}
+
 /**
  * Generates editor settings for the Monaco editor based on user preferences and provided options.
  * 
@@ -403,6 +502,9 @@ export function genEditorSettings(
         scrollBeyondLastLine: false,
         'semanticHighlighting.enabled': true,
     };
+
+    if(setting.debug_mode)
+        console.debug(settings);
 
     return settings;
 }

@@ -85,6 +85,6 @@ export default class UNITADE_VIEW extends TextFileView {
     }
 
     getViewType(): string {
-        return this._extension;
+        return 'mirrorview';
     }
 }

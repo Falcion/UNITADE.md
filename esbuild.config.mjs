@@ -23,6 +23,21 @@ const context = await esbuild.context({
         glsl({
             minify: true,
         }),
+        {
+            name: 'worker-plugin',
+            setup(build) {
+                build.onResolve({ filter: /\.worker$/ }, args => {
+                    return { path: args.path, namespace: 'worker' };
+                });
+
+                build.onLoad({ filter: /.*/, namespace: 'worker' }, async (args) => {
+                    return {
+                        contents: `export default function WorkerWrapper() { return new Worker(new URL("${args.path}", import.meta.url)) }`,
+                        loader: 'js',
+                    };
+                });
+            },
+        },
     ],
     bundle: true,
     external: [
