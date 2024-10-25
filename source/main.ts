@@ -55,6 +55,7 @@ import {
 } from './components/modals/folder-edit';
 
 import {
+    getWorker,
     isTFolder
 } from './utils/utils';
 
@@ -112,6 +113,12 @@ export default class UNITADE_PLUGIN extends Plugin {
         super.onload();
 
         await this.ldSettings();
+
+        window.MonacoEnvironment = {
+            getWorker (_: string, label: string) {
+              return getWorker(label);
+            }
+        }
 
         this.app.vault.on('create', async (file) => {
             const filename: string[] = file.name.split('.').splice(1);
@@ -229,64 +236,88 @@ export default class UNITADE_PLUGIN extends Plugin {
         this.registerEvent(this.__ctxEditExts());
         this.registerEvent(this.__ctxFence());
 
-        this._observer = new MutationObserver(async (mutations) => {
-            const mutation = mutations[0];
-            if (mutations.length !== 1 || mutation.addedNodes.length !== 1 || !this.hover.linkText) return;
-        
-            const addedNode = mutation.addedNodes[0] as HTMLElement;
-            if (addedNode.className !== "popover hover-popover") return;
-        
-            const file = this.app.metadataCache.getFirstLinkpathDest(this.hover.linkText, this.hover.sourcePath);
-            if (!file || !this.settings.extensions.includes(file.extension)) return;
-        
-            const fileContent = await this.app.vault.read(file);
-            const contentEl = createDiv();
-            
-            new ContextEditor(contentEl, this, fileContent, file.extension, false, true);
-        
-            const w = 700, h = 500, gep = 10;
-            const x = this.hover.event.clientX, y = this.hover.event.clientY;
-            const target = this.hover.event.target as HTMLElement;
-            const targetRect = target.getBoundingClientRect();
-        
-            if (addedNode instanceof HTMLDivElement) {
-                addedNode.style.position = "absolute";
-                addedNode.style.left = `${x + gep}px`;
-        
-                const spaceBelow = window.innerHeight - y - gep * 3;
-                const spaceAbove = y - gep * 3;
-        
-                if (spaceBelow > h) {
-                    addedNode.style.top = `${targetRect.bottom + gep}px`;
-                } else if (spaceAbove > h) {
-                    addedNode.style.top = `${targetRect.top - h - gep}px`;
-                } else {
-                    addedNode.style.top = `${targetRect.top - h / 2 - gep}px`;
-                    addedNode.style.left = `${targetRect.right + gep * 2}px`;
-                }
-            }
-        
-            contentEl.setCssProps({
-                "width": `${w}px`,
-                "height": `${h}px`,
-                "padding-top": "10px",
-                "padding-bottom": "10px",
-            });
-        
-            addedNode.empty();
-            addedNode.appendChild(contentEl);
-        });
+        this._observer = new MutationObserver(async (mutation) => {
+			if (mutation.length !== 1) return;
+			if (mutation[0].addedNodes.length !== 1) return;
+			if (this.hover.linkText === null) return;
+
+			//@ts-expect-error Accessing runtime API
+			if (mutation[0].addedNodes[0].className !== "popover hover-popover") return;
+			const file = this.app.metadataCache.getFirstLinkpathDest(this.hover.linkText, this.hover.sourcePath);
+			if (!file) return;
+
+            let valid: boolean = false;
+
+            if(!this.settings.code_editor_settings.use_default_extensions)
+                valid = this.settings.code_editor_settings.extensions.includes(file.extension);
+            else
+                valid = this.settings.extensions.includes(file.extension);
+
+			if (valid === false) return;
+			const fileContent = await this.app.vault.read(file);
+
+			const node: Node = mutation[0].addedNodes[0];
+			const contentEl = createDiv();
+
+			new ContextEditor(
+				contentEl,
+				this,
+				fileContent,
+				file.extension,
+				false,
+				true
+			);
+
+			const w = 700;
+			const h = 500;
+			const gep = 10;
+			if (node instanceof HTMLDivElement) {
+				const x = this.hover.event.clientX;
+				const y = this.hover.event.clientY;
+				const target = this.hover.event.target as HTMLElement;
+				const targetRect = target.getBoundingClientRect();
+				const targetTop = targetRect.top;
+				const targetBottom = targetRect.bottom;
+				const targeRight = targetRect.right
+				node.style.position = "absolute";
+				node.style.left = `${x + gep}px`;
+
+				const spaceBelow = window.innerHeight - y - gep * 3;
+				const spaceAbove = y - gep * 3;
+				if (spaceBelow > h) {
+					node.style.top = `${targetBottom + gep}px`;
+				} else if (spaceAbove > h) {
+					node.style.top = `${targetTop - h - gep}px`;
+				} else {
+					node.style.top = `${targetTop - (h / 2) - gep}px`;
+					node.style.left = `${targeRight + gep * 2}px`;
+				}
+			}
+
+			contentEl.setCssProps({
+				"width": `${w}px`,
+				"height": `${h}px`,
+				"padding-top": "10px",
+				"padding-bottom": "10px",
+			});
+
+			node.empty();
+			node.appendChild(contentEl);
+		});
         
         this.registerEvent(this.app.workspace.on("hover-link", async (event: any) => {
-            const { linktext: linkText, sourcePath, event: hoverEvent } = event;
-            if (!linkText || !sourcePath) return;
-        
-            Object.assign(this.hover, { linkText, sourcePath, event: hoverEvent });
-        }));
+			const linkText: string = event.linktext;
+			const sourcePath: string = event.sourcePath;
+
+			if (!linkText || !sourcePath) return;
+
+			this.hover.linkText = linkText;
+			this.hover.sourcePath = sourcePath;
+			this.hover.event = event.event;
+		}));
         
         this._observer.observe(document, { childList: true, subtree: true });
         
-
         this.__apply();
     }
 
@@ -385,7 +416,7 @@ export default class UNITADE_PLUGIN extends Plugin {
     async onunload(): Promise<void> {
         super.onunload();
 
-        this._observer!.disconnect();
+        this._observer.disconnect();
 
         this.__unapply(this.settings);
 
@@ -437,7 +468,11 @@ export default class UNITADE_PLUGIN extends Plugin {
      */
     private __apply(): void 
     {
-        this.registerView('codeview', leaf => new UNITADE_VIEW_CODE(leaf, this));
+        /**@ts-expect-error: not part of public API, accessing through runtime. */
+        if (this.app.viewRegistry.viewByType['codeview'] === undefined || 
+            /**@ts-expect-error: not part of public API, accessing through runtime. */
+            this.app.viewRegistry.viewByType['codeview'] === null)
+            this.registerView('codeview', leaf => new UNITADE_VIEW_CODE(leaf, this));
 
         if (this.settings.is_grouped) {
             const data: { [key: string]: string[] } = parsegroup(this.settings.grouped_extensions);
@@ -448,9 +483,21 @@ export default class UNITADE_PLUGIN extends Plugin {
         }
 
         if (this.is_mobile) {
-            this.__applyCfg(this.settings.mobile_settings.extensions ?? this.settings.extensions, 'markdown');
+            this.__applyCfg(this.settings.mobile_settings.extensions ?? this.settings.extensions, 'markdown');                
         } else {
             this.__applyCfg(this.settings.extensions, 'markdown');
+        }
+
+        if(this.settings.code_editor_settings.enabled) {
+            if(this.settings.code_editor_settings.use_default_extensions) {
+                if(this.is_mobile)
+                    this.__applyCfg(this.settings.mobile_settings.extensions ?? this.settings.extensions, 'codeview');
+                else
+                    this.__applyCfg(this.settings.extensions, 'codeview');
+            }
+            else {
+                this.__applyCfg(this.settings.code_editor_settings.extensions, 'codeview');
+            }
         }
 
         const forced_extensions = this.settings.forced_extensions.split('>').map(s => s.trim());
