@@ -32,23 +32,31 @@ import {
     Setting,
 } from "obsidian";
 
-import UNITADE_PLUGIN from "./../main";
-import MODALES_LOCALE from "./../locales/modals.text";
+import UNITADE_PLUGIN from "../../main";
 
-export class TFilesRename extends Modal {
-    private _new_name: string = '';
+export class TFileEdit extends Modal {
+    private _filepath: string;
+    private _filename: string;
+    private _extension: string;
+
+    private _name: string;
 
     private _integration: boolean;
 
-    private _new_name_queue: string[] = [];
-
     constructor(
         private plugin: UNITADE_PLUGIN,
-        private target: TAbstractFile[]
+        private target: TAbstractFile
     ) {
         super(plugin.app);
 
-        this.target ??= [this.plugin.app.vault.getRoot()];
+        this.target ??= this.plugin.app.vault.getRoot();
+
+        this._filename = this.target.path.split('/').last()!;
+        this._filepath = this.target.path.split('/').slice(0, -1).join('/');
+
+        this._extension = this._filename.split('.').slice(1).join('.')!;
+
+        this._name = this._filename.split('.').first()!;
 
         this._integration = false;
     }
@@ -87,7 +95,7 @@ export class TFilesRename extends Modal {
             margin-right: 10px;
             `;
 
-        disp.innerHTML = this.__generateDisplayInfo();
+        disp.innerHTML = this.__pathgen();
 
         input.inputEl.addEventListener("keypress", (e) => {
             if (e.key === "Enter") {
@@ -97,18 +105,31 @@ export class TFilesRename extends Modal {
             }
         });
 
-        input.setValue(this._new_name);
+        input.setValue(this._extension);
         input.onChange((value) => {
-            this._new_name = value.startsWith(".") ? value.slice(1) : value;
+            this._extension = value.startsWith(".") ? value.slice(1) : value;
 
-            disp.innerHTML = this.__generateDisplayInfo();
+            disp.innerHTML = this.__pathgen();
         });
 
         new ButtonComponent(form)
             .setCta()
             .setIcon('pencil')
-            .setButtonText("Rename")
+            .setButtonText("Edit")
             .onClick(() => (this.__submit()));
+
+        new Setting(contentEl)
+            .setName(this.plugin.locale.getLocaleItem('MODAL_INCLUDE_IN_REGISTRY')[0]!)
+            .setDesc(this.plugin.locale.getLocaleItem('MODAL_INCLUDE_IN_REGISTRY')[1]!)
+            .addToggle(toggle => {
+                toggle
+                    .setValue(this._integration)
+                    .onChange(async (value) => {
+                        this._integration = value;
+                    });
+
+                return toggle;
+            });
     }
 
     onClose() {
@@ -120,37 +141,20 @@ export class TFilesRename extends Modal {
     private async __submit() {
         this.close();
 
-        this.target.forEach(async (file) => {
-            const filename = file.path.split('/').last()!
-            const filepath = file.path.split('/').slice(0, -1).join('/');
+        if (this._integration) {
+            const next = {
+                ...this.plugin.settings,
+            };
 
-            const extension = filename.split('.').last()!;
+            next.extensions += `;${this._extension}`;
 
-            const destination = this.__pathgen(filepath, extension);
-
-            this._new_name_queue.push(destination);
-
-            await this.app.vault.rename(file, destination);
-        });
-    }
-
-    private __pathgen(path: string, extension: string): string {
-        let fin_name = this._new_name;
-
-        if (this._new_name_queue.first()) {
-            fin_name = `${this._new_name} (${this._new_name_queue.length})`;
+            this.plugin.uptSettings(next);
         }
 
-        return path + "/" + fin_name + (!!extension ? "." : "") + extension;
+        await this.app.vault.rename(this.target, this.__pathgen());
     }
 
-    private __generateDisplayInfo(): string {
-        return this.target.map(file => {
-            const filename = file.path.split('/').last()!;
-            const filepath = file.path.split('/').slice(0, -1).join('/');
-            const extension = filename.split('.').slice(1).join('.')!;
-            const name = filename.split('.').first()!;
-            return `<div>${filepath}/${this._new_name}.${extension}</div>`;
-        }).join('');
+    private __pathgen(): string {
+        return this._filepath + "/" + this._name + (this._extension ? "." : "") + this._extension;
     }
 } 

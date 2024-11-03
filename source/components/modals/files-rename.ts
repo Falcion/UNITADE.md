@@ -31,26 +31,24 @@ import {
     TAbstractFile,
 } from "obsidian";
 
-import UNITADE_PLUGIN from "./../main";
+import UNITADE_PLUGIN from "../../main";
 
-export class TFolderEdit extends Modal {
-    private _foldername: string;
-    private _folderpath: string;
+export class TFilesRename extends Modal {
+    private _new_name: string = '';
+
+    private _integration: boolean;
+
+    private _new_name_queue: string[] = [];
 
     constructor(
         private plugin: UNITADE_PLUGIN,
-        private target: TAbstractFile
+        private target: TAbstractFile[]
     ) {
         super(plugin.app);
 
-        this.target ??= this.plugin.app.vault.getRoot();
+        this.target ??= [this.plugin.app.vault.getRoot()];
 
-        const target_path = this.target.path.split('/');
-
-        target_path.pop();
-
-        this._foldername = this.target.name;
-        this._folderpath = target_path.join('/');
+        this._integration = false;
     }
 
     onOpen(): void {
@@ -87,7 +85,7 @@ export class TFolderEdit extends Modal {
             margin-right: 10px;
             `;
 
-        disp.innerHTML = this.__pathgen();
+        disp.innerHTML = this.__generateDisplayInfo();
 
         input.inputEl.addEventListener("keypress", (e) => {
             if (e.key === "Enter") {
@@ -97,17 +95,17 @@ export class TFolderEdit extends Modal {
             }
         });
 
-        input.setValue(this._foldername);
+        input.setValue(this._new_name);
         input.onChange((value) => {
-            this._foldername = value.startsWith(".") ? value.slice(1) : value;
+            this._new_name = value.startsWith(".") ? value.slice(1) : value;
 
-            disp.innerHTML = this.__pathgen();
+            disp.innerHTML = this.__generateDisplayInfo();
         });
 
         new ButtonComponent(form)
             .setCta()
             .setIcon('pencil')
-            .setButtonText("Edit")
+            .setButtonText("Rename")
             .onClick(() => (this.__submit()));
     }
 
@@ -120,10 +118,36 @@ export class TFolderEdit extends Modal {
     private async __submit() {
         this.close();
 
-        await this.app.vault.rename(this.target, this.__pathgen());
+        this.target.forEach(async (file) => {
+            const filename = file.path.split('/').last()!
+            const filepath = file.path.split('/').slice(0, -1).join('/');
+
+            const extension = filename.split('.').last()!;
+
+            const destination = this.__pathgen(filepath, extension);
+
+            this._new_name_queue.push(destination);
+
+            await this.app.vault.rename(file, destination);
+        });
     }
 
-    private __pathgen(): string {
-        return this._folderpath + "/" + this._foldername;
+    private __pathgen(path: string, extension: string): string {
+        let fin_name = this._new_name;
+
+        if (this._new_name_queue.first()) {
+            fin_name = `${this._new_name} (${this._new_name_queue.length})`;
+        }
+
+        return path + "/" + fin_name + (extension ? "." : "") + extension;
+    }
+
+    private __generateDisplayInfo(): string {
+        return this.target.map(file => {
+            const filename = file.path.split('/').last()!;
+            const filepath = file.path.split('/').slice(0, -1).join('/');
+            const extension = filename.split('.').slice(1).join('.')!;
+            return `<div>${filepath}/${this._new_name}.${extension}</div>`;
+        }).join('');
     }
 } 

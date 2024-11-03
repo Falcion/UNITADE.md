@@ -29,7 +29,7 @@ import {
     WorkspaceLeaf,
 } from "obsidian";
 
-import CodeMirror from './../../lib/codemirror';
+import CodeMirror from '../../../lib/codemirror';
 
 export default class UNITADE_VIEW extends TextFileView {
     private _codemirror: CodeMirror.Editor;
@@ -53,7 +53,7 @@ export default class UNITADE_VIEW extends TextFileView {
         this._codemirror.refresh();
     }
 
-    onChange = async (instance: CodeMirror.Editor, changes: CodeMirror.EditorChange[]) => {
+    onChange = async () => {
         this.requestSave();
     }
 
@@ -85,6 +85,6 @@ export default class UNITADE_VIEW extends TextFileView {
     }
 
     getViewType(): string {
-        return this._extension;
+        return 'mirrorview';
     }
 }

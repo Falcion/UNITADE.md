@@ -32,25 +32,20 @@ import {
     Setting,
 } from "obsidian";
 
-import UNITADE_PLUGIN from "./../main";
-import MODALES_LOCALE from "./../locales/modals.text";
+import UNITADE_PLUGIN from "../../main";
 
-export class TFileCreate extends Modal {
-    private _filepath: string;
-
-    private _name: string;
+export class TFilesEdit extends Modal {
+    private _new_extension: string = 'md';
 
     private _integration: boolean;
 
     constructor(
         private plugin: UNITADE_PLUGIN,
-        private target: string,
+        private target: TAbstractFile[]
     ) {
         super(plugin.app);
 
-        this._filepath = this.target;
-
-        this._name = '';
+        this.target ??= [this.plugin.app.vault.getRoot()];
 
         this._integration = false;
     }
@@ -89,7 +84,7 @@ export class TFileCreate extends Modal {
             margin-right: 10px;
             `;
 
-        disp.innerHTML = 'Enter fullname of your file';
+        disp.innerHTML = this.__generateDisplayInfo();
 
         input.inputEl.addEventListener("keypress", (e) => {
             if (e.key === "Enter") {
@@ -99,22 +94,22 @@ export class TFileCreate extends Modal {
             }
         });
 
-        input.setValue(this._name);
+        input.setValue(this._new_extension);
         input.onChange((value) => {
-            this._name = value;
+            this._new_extension = value.startsWith(".") ? value.slice(1) : value;
 
-            disp.innerHTML = `Enter fullname of your file: ${this._pathgen()}`;
+            disp.innerHTML = this.__generateDisplayInfo();
         });
 
         new ButtonComponent(form)
             .setCta()
             .setIcon('pencil')
-            .setButtonText("Create")
+            .setButtonText("Edit")
             .onClick(() => (this.__submit()));
 
         new Setting(contentEl)
-            .setName(MODALES_LOCALE.gtToggle1().name)
-            .setDesc(MODALES_LOCALE.gtToggle1().desc)
+            .setName(this.plugin.locale.getLocaleItem('MODAL_INCLUDE_IN_REGISTRY')[0]!)
+            .setDesc(this.plugin.locale.getLocaleItem('MODAL_INCLUDE_IN_REGISTRY')[1]!)
             .addToggle(toggle => {
                 toggle
                     .setValue(this._integration)
@@ -136,21 +131,35 @@ export class TFileCreate extends Modal {
         this.close();
 
         if (this._integration) {
-            let next = {
+            const next = {
                 ...this.plugin.settings,
             };
 
-            let extensions = this._name.split('.').slice(1).join(';');
-
-            next.extensions += `;${extensions}`;
+            next.extensions += `;${this._new_extension}`;
 
             this.plugin.uptSettings(next);
         }
 
-        await this.app.vault.create(this._pathgen(), '');
+        this.target.forEach(async (file) => {
+            const filename = file.path.split('/').last()!
+            const filepath = file.path.split('/').slice(0, -1).join('/');
+
+            const name = filename.split('.').first()!;
+
+            await this.app.vault.rename(file, this.__pathgen(filepath, name));
+        });
     }
 
-    private _pathgen(): string {
-        return this._filepath + "/" + this._name;
+    private __pathgen(path: string, name: string): string {
+        return path + "/" + name + (this._new_extension ? "." : "") + this._new_extension;
+    }
+
+    private __generateDisplayInfo(): string {
+        return this.target.map(file => {
+            const filename = file.path.split('/').last()!;
+            const filepath = file.path.split('/').slice(0, -1).join('/');
+            const name = filename.split('.').first()!;
+            return `<div>${filepath}/${name}.${this._new_extension}</div>`;
+        }).join('');
     }
 } 
