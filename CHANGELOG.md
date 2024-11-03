@@ -2,6 +2,59 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.0.0](https://github.com/mokkapps/changelog-generator-demo/compare/v2.4.0...v3.0.0) (2024-11-03)
+
+
+### Features
+
+* **architecture:** create architecture for code editor and other things ([f37a46d](https://github.com/mokkapps/changelog-generator-demo/commits/f37a46d4d34bc203ed9799e3b7d0f2ebf70193d4))
+* **common:** add button to "Reload" registries in soft way which saves default extensions ([ec9c5cc](https://github.com/mokkapps/changelog-generator-demo/commits/ec9c5ccb170d8285c4151a20b9eb2fc256763e6f))
+* **common:** add support for default extensions and default views by default ([a918488](https://github.com/mokkapps/changelog-generator-demo/commits/a9184889cf6072e6bccafed3ae8c087993876df8))
+* **compatibility:** adapt compatibility module to new `>` semantics ([47b5f80](https://github.com/mokkapps/changelog-generator-demo/commits/47b5f80f6ed34cf5652ba997676669c5332aeab5))
+* **locale:** implement localization for errors ([b85563e](https://github.com/mokkapps/changelog-generator-demo/commits/b85563ec47f46537877d9b996bfdded59590febb))
+* **modals-locale:** now modals are also localized ([2a96a38](https://github.com/mokkapps/changelog-generator-demo/commits/2a96a386cde0db8199e6065f01297163b310b11f))
+* **monaco-editor:** implement monaco view in the main codebase ([9f5ba74](https://github.com/mokkapps/changelog-generator-demo/commits/9f5ba743a18826a01fa76b53c7691e4cee464382))
+* **monaco-editor:** integrate workers from monaco to fix visuals of code view ([dd15f31](https://github.com/mokkapps/changelog-generator-demo/commits/dd15f3107f518b8630f6ba700ae65053e2afaa7f))
+* **settings:** add block about code editor settings and implement them in code ([3105825](https://github.com/mokkapps/changelog-generator-demo/commits/3105825a1df8de3b6cf832235caa5717a4045d87))
+* **settings:** add some little graphics and additions to the settings tab ([d24fc82](https://github.com/mokkapps/changelog-generator-demo/commits/d24fc8207235c037dd4ca030edad8bf967ac73c2))
+
+
+### Build system
+
+* **build-deps:** include monaco-editor and terser as main dependencies ([7091114](https://github.com/mokkapps/changelog-generator-demo/commits/7091114eddfb04d832b40e7bf3ac6952d045383e))
+* **build-deps:** remove PY command from environment of plugin ([2d243da](https://github.com/mokkapps/changelog-generator-demo/commits/2d243da5892851c0da54d5d80eac6b2824519121))
+* **build-env:** add cloning script for debug in .SH variation ([ea842ca](https://github.com/mokkapps/changelog-generator-demo/commits/ea842ca1372b2c18d583fa1638713f5b64bd4982))
+* **deps-dev:** bump the npm_and_yarn group across 1 directory with 2 updates ([286be59](https://github.com/mokkapps/changelog-generator-demo/commits/286be5960565ececd8fcfedd98fa1e18615f732d))
+* **deps:** bump the npm_and_yarn group across 1 directory with 2 updates ([5007fe8](https://github.com/mokkapps/changelog-generator-demo/commits/5007fe82400f8f23918f01f61d958d234230a541))
+* **licensing:** update licensing information in every code ([31ebca8](https://github.com/mokkapps/changelog-generator-demo/commits/31ebca83a40c021a84646d066e0074badb39758a))
+* **tracking:** create script which allows to skip worktree of clone script and little refactoring of them ([1b527af](https://github.com/mokkapps/changelog-generator-demo/commits/1b527afeca5f399fe0a73a5f91cc9409e0c385e0))
+
+
+### Documentation
+
+* **wiki:** create a page about case insenstivity mode in plugin ([a7c66d3](https://github.com/mokkapps/changelog-generator-demo/commits/a7c66d39af96537effd580c23d3f83c5655e84f8))
+* **wiki:** create a page about extensions processing in plugin on wiki ([958cc1e](https://github.com/mokkapps/changelog-generator-demo/commits/958cc1eceb88a3fa75f43dcde87272155248d9ca))
+* **wiki:** create a page about hard-deleting registry by plugin ([515495f](https://github.com/mokkapps/changelog-generator-demo/commits/515495f8f40ac050f5adb30f36483a98687df103))
+* **wiki:** create a page about markdown overcharge of plugin on wiki ([2b46b2f](https://github.com/mokkapps/changelog-generator-demo/commits/2b46b2fc518404962254c0eb540b9fd7af766b91))
+* **wiki:** create a page about mobile extensions config ([0497f51](https://github.com/mokkapps/changelog-generator-demo/commits/0497f51d9ad7939f9fa260998ebdf520b9a91b8d))
+* **wiki:** create a page about unloading registry by plugin ([2e9f961](https://github.com/mokkapps/changelog-generator-demo/commits/2e9f961056de69949e0ae5b157fa155717d5003b))
+* **wiki:** create a sidebar for wiki of project ([b8a3bf0](https://github.com/mokkapps/changelog-generator-demo/commits/b8a3bf0d58549b35d1d8adf0fc25b4a4e21c1460))
+* **wiki:** create an introduction page ([5c64d72](https://github.com/mokkapps/changelog-generator-demo/commits/5c64d721986a5ad628118860e58c887f7cff97dc))
+
+
+### Refactoring
+
+* **naming:** now UNITADE's view names correspondingly to stack it uses ([36144de](https://github.com/mokkapps/changelog-generator-demo/commits/36144de0ddb62aad98f6adf469e947b8d77aab43))
+
+
+### Fixes
+
+* **build:** fix typescript shenanigans and implement clone .SH script for UNIX-systems ([8bf5e0f](https://github.com/mokkapps/changelog-generator-demo/commits/8bf5e0fef1c6ae4dc23a4b039f8fa10f7e52ea45))
+* **common:** fix some localizations errors and common TS errors ([30aa283](https://github.com/mokkapps/changelog-generator-demo/commits/30aa28328f1f1e5b39bb72e45dff2033d8a0a20d))
+* **global:** fix dependencies of codemirror and monaco from being externals ([d9a0395](https://github.com/mokkapps/changelog-generator-demo/commits/d9a0395c0d2b0bc0959aadb8963f8ff35dd935af))
+* **registry:** fix OLR system reading only last, fix of [#75](https://github.com/Falcion/UNITADE.md/issues/75) ([03f70dd](https://github.com/mokkapps/changelog-generator-demo/commits/03f70dd1760565c66bc502f6147e35d4118f35c2))
+* **settings:** fix example in settings to new grouped extensions config ([7a38b2c](https://github.com/mokkapps/changelog-generator-demo/commits/7a38b2c280fd041640e117b4afd8125d511bda5f))
+
 ## [2.4.0](https://github.com/mokkapps/changelog-generator-demo/compare/v2.3.1...v2.4.0) (2024-07-02)
 
 
