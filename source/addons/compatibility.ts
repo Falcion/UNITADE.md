@@ -24,37 +24,37 @@ export default class CompatibilityModule {
     }
 
     private getVersion(data: any): string {
-        if (data['version'] !== undefined) return `${data['version']}`;
-        if (data['barefiling'] !== undefined) return '2.4';
-        if (data['debug_mode'] !== undefined) return '2.1';
-        if (data['grouped_extensions'] !== undefined) return '2.0';
+        if (data.version !== undefined) return `${data.version}`;
+        if (data.barefiling !== undefined) return '2.4';
+        if (data.debug_mode !== undefined) return '2.1';
+        if (data.grouped_extensions !== undefined) return '2.0';
         return '1.*';
     }
 
     private async convert(data: any, version: string): Promise<boolean> {
         const settingsMap: { [key: string]: any } = {
             '1.*': {
-                extensions: data['extensions'].replace(',', '>'),
-                forced_extensions: data['force_extensions'].replace(',', '>'),
-                is_onload: Boolean(data['is_dynamic_on']),
+                extensions: data.extensions.replace(',', '>'),
+                forced_extensions: data.force_extensions.replace(',', '>'),
+                is_onload: Boolean(data.is_dynamic_on),
             },
             '2.0': {
-                extensions: data['extensions'].replace(',', '>'),
-                grouped_extensions: data['grouped_extensions'].replace(',', '>'),
+                extensions: data.extensions.replace(',', '>'),
+                grouped_extensions: data.grouped_extensions.replace(',', '>'),
             },
             '2.1': {
-                grouped_extensions: data['grouped_extensions'].replace(',', '>'),
-                extensions: data['extensions'].replace(';', '>'),
-                forced_extensions: data['forced_extensions'].replace(';', '>'),
-                ignore_extensions: data['ignore_extensions'].replace(';', '>'),
-                ignore_masks: data['ignore_masks'].replace(';', '>'),
+                grouped_extensions: data.grouped_extensions.replace(',', '>'),
+                extensions: data.extensions.replace(';', '>'),
+                forced_extensions: data.forced_extensions.replace(';', '>'),
+                ignore_extensions: data.ignore_extensions.replace(';', '>'),
+                ignore_masks: data.ignore_masks.replace(';', '>'),
             },
             '2.4': {
-                grouped_extensions: data['grouped_extensions'].replace(',', '>'),
-                extensions: data['extensions'].replace(';', '>'),
-                forced_extensions: data['forced_extensions'].replace(';', '>'),
-                ignore_extensions: data['ignore_extensions'].replace(';', '>'),
-                ignore_masks: data['ignore_masks'].replace(';', '>'),
+                grouped_extensions: data.grouped_extensions.replace(',', '>'),
+                extensions: data.extensions.replace(';', '>'),
+                forced_extensions: data.forced_extensions.replace(';', '>'),
+                ignore_extensions: data.ignore_extensions.replace(';', '>'),
+                ignore_masks: data.ignore_masks.replace(';', '>'),
             },
         };
 
