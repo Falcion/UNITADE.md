@@ -13,7 +13,7 @@ if you want to view the source, please visit the github repository of this plugi
 `;
 
 let assigner = {
-    name: 'main',
+    name: 'assigner',
     setup(build) {
         build.onEnd(() => {
             const main = fs.readFileSync('main.css', 'utf8');
@@ -27,7 +27,7 @@ let assigner = {
 }
 
 let manifest = {
-    name: 'main',
+    name: 'manifest',
     setup(build) {
         build.onEnd(() => {
             fs.writeFileSync('out/manifest.json', fs.readFileSync('manifest.json'), 'utf8');
@@ -36,16 +36,16 @@ let manifest = {
 }
 
 let autotest = {
-    name: 'main',
-    setuo(build) {
+    name: 'autotest',
+    setup(build) {
         build.onEnd(() => {
             const PUT_YOUR_PATH_HERE_IF_ENABLED = '';
-            const ENABLED = true;
+            const ENABLED = false;
 
             if (ENABLED) {
-                fs.copyFile('out/manifest.json', PUT_YOUR_PATH_HERE_IF_ENABLED);
-                fs.copyFile('out/main.js', PUT_YOUR_PATH_HERE_IF_ENABLED);
-                fs.copyFile('out/styles.css', PUT_YOUR_PATH_HERE_IF_ENABLED);
+                fs.copyFileSync('out/manifest.json', PUT_YOUR_PATH_HERE_IF_ENABLED);
+                fs.copyFileSync('out/main.js', PUT_YOUR_PATH_HERE_IF_ENABLED);
+                fs.copyFileSync('out/styles.css', PUT_YOUR_PATH_HERE_IF_ENABLED);
             }
         });
     }
