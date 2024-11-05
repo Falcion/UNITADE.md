@@ -224,7 +224,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                 this.__updateErrors();
             });
 
-        new Setting(containerEl)
+        const caseInsenstiveExtensions = new Setting(containerEl)
             .setName(this.plugin.locale.getLocaleItem('SETTINGS_CASE_INSENSITIVE')[0]!)
             .setDesc(this.plugin.locale.getLocaleItem('SETTINGS_CASE_INSENSITIVE')[1]!)
             .setTooltip(this.plugin.locale.getLocaleItem('SETTINGS_CASE_INSENSITIVE')[2]!)
@@ -244,6 +244,14 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
 
                 return toggle;
             });
+
+        const onCaseInsensWarning = document.createElement('div');
+        onCaseInsensWarning.style.fontSize = '80%';
+        onCaseInsensWarning.style.margin = '10px';
+        onCaseInsensWarning.style.color = 'darkRed';
+        onCaseInsensWarning.innerHTML = this.locale.getLocaleItem('SETTINGS_CASE_INSENSITIVE')[3]!;
+
+        caseInsenstiveExtensions.infoEl.appendChild(onCaseInsensWarning);
 
         configInput.inputEl.style.width = '100%';
         configInput.inputEl.style.height = '48px';

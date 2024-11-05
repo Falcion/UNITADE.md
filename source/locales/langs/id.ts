@@ -163,7 +163,8 @@ export const LOCALES_ID = {
     "SETTINGS_CASE_INSENSITIVE": {
         0: "Case insensitive mode:",
         1: "If turned on, plugin would registry every upper and lower case variations of extension to provide Windows-like experience for extension.",
-        2: "Unstable on UNIX-systems."
+        2: "Unstable on UNIX-systems.",
+        3: "CAUTION: this mode can potentially \"infinitly\" crash your Vault if you got too many extensions and/or massive extensions, be extra cautious when using this mode!"
     },
     "MODAL_EDIT_FENCE": {
         0: "Edit code fence"
