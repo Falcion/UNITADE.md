@@ -35,6 +35,22 @@ let manifest = {
     }
 }
 
+let autotest = {
+    name: 'main',
+    setuo(build) {
+        build.onEnd(() => {
+            const PUT_YOUR_PATH_HERE_IF_ENABLED = '';
+            const ENABLED = true;
+
+            if (ENABLED) {
+                fs.copyFile('out/manifest.json', PUT_YOUR_PATH_HERE_IF_ENABLED);
+                fs.copyFile('out/main.js', PUT_YOUR_PATH_HERE_IF_ENABLED);
+                fs.copyFile('out/styles.css', PUT_YOUR_PATH_HERE_IF_ENABLED);
+            }
+        });
+    }
+}
+
 const prod = (process.argv[2] === "production");
 
 const context = await esbuild.context({
@@ -63,7 +79,8 @@ const context = await esbuild.context({
             },
         },
         assigner,
-        manifest
+        manifest,
+        autotest
     ],
     bundle: true,
     external: [
