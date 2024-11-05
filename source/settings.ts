@@ -721,9 +721,9 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
         containerEl.createEl('h3', { text: this.locale.getLocaleItem('UNITADE_SETTINGS_COMMON')[3]! });
 
         new Setting(containerEl)
-            .setName('Enable code editor module:')
-            .setDesc('This mode will enable code editor functionalities like syntax highlighting, IntelliSence and etc.')
-            .setTooltip('May cause lags and other issues.')
+            .setName(this.locale.getLocaleItem('SETTINGS_CODE_EDITOR')[0]!)
+            .setDesc(this.locale.getLocaleItem('SETTINGS_CODE_EDITOR')[1]!)
+            .setTooltip(this.locale.getLocaleItem('SETTINGS_CODE_EDITOR')[2]!)
             .addToggle(toggle => {
                 toggle
                     .setValue(this.plugin.settings.code_editor_settings.enabled)
@@ -738,23 +738,23 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
 
                         await this.plugin.uptSettings(next);
 
-                        await this.__updateErrors();
+                        this.__updateErrors();
 
                         this.__uptCEConfig([
-                            useDefaultExtensions, editorExtensionsInput, codeExtensionsWarn, editorTheme, 
+                            useDefaultExtensions, editorExtensionsInput, codeExtensionsWarn, editorTheme,
                             editorFolding, editorWordWrapping, editorLineNumbers, editorMinimapping,
                             editorValidationSemantic, editorValidationSyntax, editorFontSize,
                             editorFontFamily, editorFontLigatures
-                            ], value);
+                        ], value);
                     })
 
                 return toggle;
             });
 
         const useDefaultExtensions = new Setting(containerEl)
-            .setName('Use default extensions:')
-            .setDesc('If disabled, code editor module will require to input its own extensions, otherwise, it would use "simple" extensions from config.')
-            .setTooltip('This block also can be replaced by grouped extensions.')
+            .setName(this.locale.getLocaleItem('CODE_EDITOR_USE_DEFAULT')[0]!)
+            .setDesc(this.locale.getLocaleItem('CODE_EDITOR_USE_DEFAULT')[1]!)
+            .setTooltip(this.locale.getLocaleItem('CODE_EDITOR_USE_DEFAULT')[2]!)
             .addToggle(toggle => {
                 toggle
                     .setValue(this.plugin.settings.code_editor_settings.use_default_extensions)
@@ -770,9 +770,9 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                         await this.plugin.uptSettings(next);
 
                         this.__uptCEConfig([editorExtensionsInput, codeExtensionsWarn], !value);
-                        
-                        if(this.plugin.settings.debug_mode)
-                                console.debug(`HIDE EDITOR EXTENSIONS? =${value ? 'NO.' : 'YES.'}`);
+
+                        if (this.plugin.settings.debug_mode)
+                            console.debug(`HIDE EDITOR EXTENSIONS? =${value ? 'NO.' : 'YES.'}`);
                     });
 
                 return toggle;
@@ -821,7 +821,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
         codeExtensionsText.style.fontSize = '80%';
         codeExtensionsText.style.margin = '10px';
         codeExtensionsText.style.color = 'green';
-        codeExtensionsText.innerHTML = 'Be aware, this extensions must be excluding from every other, otherwise error with rendering may occure, to "clone" extensions, use specified feature.';
+        codeExtensionsText.innerHTML = this.locale.getLocaleItem('CODE_EDITOR_USE_DEFAULT')[3]!;
 
         codeExtensionsWarn.infoEl.appendChild(codeExtensionsText);
 
@@ -830,10 +830,10 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
         editorExtensionsInput.inputEl.style.minHeight = '36px';
 
         const editorFolding = new Setting(containerEl)
-            .setName('Enable folding:')
-            .setDesc('A feature that allows you to hide (collapse) parts of your code to improve readability.')
+            .setName(this.locale.getLocaleItem('CODE_EDITOR_FOLDING')[0]!)
+            .setDesc(this.locale.getLocaleItem('CODE_EDITOR_FOLDING')[1]!)
             .addToggle(toggle => {
-               toggle
+                toggle
                     .setValue(this.plugin.settings.code_editor_settings.folding)
                     .onChange(async (value) => {
                         const next = {
@@ -846,13 +846,13 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
 
                         await this.plugin.uptSettings(next);
                     });
-                
+
                 return toggle;
             });
 
         const editorLineNumbers = new Setting(containerEl)
-            .setName('Line numbers:')
-            .setDesc('Feature to display line numbers in the editor.')
+            .setName(this.locale.getLocaleItem('CODE_EDITOR_LINE_NUMBERS')[0]!)
+            .setDesc(this.locale.getLocaleItem('CODE_EDITOR_LINE_NUMBERS')[1]!)
             .addToggle(toggle => {
                 toggle
                     .setValue(this.plugin.settings.code_editor_settings.line_numbers)
@@ -872,8 +872,8 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
             });
 
         const editorWordWrapping = new Setting(containerEl)
-            .setName('Word wrapping:')
-            .setDesc('Feature that allows text to automatically wrap to the next line if it exceeds the width of the editor.')
+            .setName(this.locale.getLocaleItem('CODE_EDITOR_WORD_WRAPPING')[0]!)
+            .setDesc(this.locale.getLocaleItem('CODE_EDITOR_WORD_WRAPPING')[1]!)
             .addToggle(toggle => {
                 toggle
                     .setValue(this.plugin.settings.code_editor_settings.word_wrapping)
@@ -893,10 +893,10 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
             });
 
         const editorMinimapping = new Setting(containerEl)
-            .setName('Enable minimapping:')
-            .setDesc('Feature that provides a thumbnail view of the entire document.')
+            .setName(this.locale.getLocaleItem('CODE_EDITOR_MINIMAPPING')[0]!)
+            .setDesc(this.locale.getLocaleItem('CODE_EDITOR_MINIMAPPING')[1]!)
             .addToggle(toggle => {
-                toggle 
+                toggle
                     .setValue(this.plugin.settings.code_editor_settings.minimapping)
                     .onChange(async (value) => {
                         const next = {
@@ -914,8 +914,8 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
             });
 
         const editorValidationSemantic = new Setting(containerEl)
-            .setName('Enable semantic validation:')
-            .setDesc('This process checks the code for logical errors and the correct use of variables, functions, and other elements. Semantic validation takes into account the context and meaning of the code.')
+            .setName(this.locale.getLocaleItem('CODE_EDITOR_SEMANTIC_VALIDATION')[0]!)
+            .setDesc(this.locale.getLocaleItem('CODE_EDITOR_SEMANTIC_VALIDATION')[1]!)
             .addToggle(toggle => {
                 toggle
                     .setValue(this.plugin.settings.code_editor_settings.validation_semantic)
@@ -935,8 +935,8 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
             });
 
         const editorValidationSyntax = new Setting(containerEl)
-            .setName('Enable syntax validation:')
-            .setDesc('This process checks code for errors related to its structure and syntax. It analyzes whether the code follows the rules of the programming language.')
+            .setName(this.locale.getLocaleItem('CODE_EDITOR_SYNTAX_VALIDATION')[0]!)
+            .setDesc(this.locale.getLocaleItem('CODE_EDITOR_SYNTAX_VALIDATION')[1]!)
             .addToggle(toggle => {
                 toggle
                     .setValue(this.plugin.settings.code_editor_settings.validation_syntax)
@@ -956,8 +956,8 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
             });
 
         const editorTheme = new Setting(containerEl)
-            .setName('Editor theme:')
-            .setDesc('Choose specific theme for code editor, visually affects syntax highlighting.')
+            .setName(this.locale.getLocaleItem('CODE_EDITOR_EDIT_THEME')[0]!)
+            .setDesc(this.locale.getLocaleItem('CODE_EDITOR_EDIT_THEME')[1]!)
             .addDropdown(dropdown => {
                 dropdown
                     .addOptions(CONSTANTS.themes)
@@ -971,22 +971,22 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                             },
                         };
 
-                        if(this.plugin.settings.debug_mode)
+                        if (this.plugin.settings.debug_mode)
                             console.debug('CAUGHT THEME FOR THE EDITOR:' + `${value};`);
 
                         await this.plugin.uptSettings(next);
 
                         this.__updateErrors();
-                        
+
                     });
 
                 return dropdown;
             });
 
-        containerEl.createEl('h4', { text: 'Font settings for code editor:' });
+        containerEl.createEl('h4', { text: this.locale.getLocaleItem('SETTINGS_CODE_EDITOR')[3]! });
 
         const editorFontSize = new Setting(containerEl)
-            .setName('Font size:')
+            .setName(this.locale.getLocaleItem('CODE_EDITOR_FONT_SIZE')[0]!)
             .addSlider(slider => {
                 slider
                     .setValue(this.plugin.settings.code_editor_settings.font_size)
@@ -1007,8 +1007,8 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
             });
 
         const editorFontFamily = new Setting(containerEl)
-            .setName('Font family:')
-            .setDesc('Write here existing font families and fonts themselves: input format like in any code editor.')
+            .setName(this.locale.getLocaleItem('CODE_EDITOR_FONT_FAMILY')[0]!)
+            .setDesc(this.locale.getLocaleItem('CODE_EDITOR_FONT_FAMILY')[1]!)
             .addTextArea(text => {
                 text
                     .setValue(this.plugin.settings.code_editor_settings.font_family)
@@ -1028,9 +1028,9 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
             });
 
         const editorFontLigatures = new Setting(containerEl)
-            .setName('Font ligatures:')
-            .setDesc('If your font supports ligatures, you can turn them on.')
-            .setTooltip('If ligatures are not supported by font, this would not work')
+            .setName(this.locale.getLocaleItem('CODE_EDITOR_FONT_LIGATURES')[0]!)
+            .setDesc(this.locale.getLocaleItem('CODE_EDITOR_FONT_LIGATURES')[1]!)
+            .setTooltip(this.locale.getLocaleItem('CODE_EDITOR_FONT_LIGATURES')[2]!)
             .addToggle(toggle => {
                 toggle
                     .setValue(this.plugin.settings.code_editor_settings.font_ligatures)
@@ -1156,15 +1156,15 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
         mbConfigInput.inputEl.style.display = mbConfigEnabled ? 'block' : 'none';
     }
 
-    private __uptCEConfig(configCodeEditorElements: (TextAreaComponent|Setting)[], configCodeEditorEnabled: boolean): void {
-        for(const configCodeEditorElement of configCodeEditorElements) {
-                if(configCodeEditorElement instanceof TextAreaComponent) {
-                    configCodeEditorElement.inputEl.style.display = configCodeEditorEnabled ? 'block' : 'none';
-                } else if(configCodeEditorElement instanceof Setting) {
-                    configCodeEditorElement.settingEl.style.display = configCodeEditorEnabled ? 'block' : 'none';
-                } else {
-                    throw new Error('Unknown type of throwable entity.');
-                }
+    private __uptCEConfig(configCodeEditorElements: (TextAreaComponent | Setting)[], configCodeEditorEnabled: boolean): void {
+        for (const configCodeEditorElement of configCodeEditorElements) {
+            if (configCodeEditorElement instanceof TextAreaComponent) {
+                configCodeEditorElement.inputEl.style.display = configCodeEditorEnabled ? 'block' : 'none';
+            } else if (configCodeEditorElement instanceof Setting) {
+                configCodeEditorElement.settingEl.style.display = configCodeEditorEnabled ? 'block' : 'none';
+            } else {
+                throw new Error('Unknown type of throwable entity.');
+            }
 
         }
     }
