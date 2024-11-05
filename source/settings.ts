@@ -224,6 +224,15 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                 this.__updateErrors();
             });
 
+        const configWarning = document.createElement('div');
+        configWarning.style.fontSize = '80%';
+        configWarning.style.margin = '10px';
+        configWarning.style.color = 'yellow';
+        configWarning.innerHTML = this.locale.getLocaleItem('SETTINGS_EXTENSIONS')[2]!;
+
+        this._config.infoEl.appendChild(configWarning);
+
+
         const caseInsenstiveExtensions = new Setting(containerEl)
             .setName(this.plugin.locale.getLocaleItem('SETTINGS_CASE_INSENSITIVE')[0]!)
             .setDesc(this.plugin.locale.getLocaleItem('SETTINGS_CASE_INSENSITIVE')[1]!)
