@@ -2,6 +2,37 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.0.1](https://github.com/mokkapps/changelog-generator-demo/compare/v3.0.0...v3.0.1) (2024-11-05)
+
+
+### Features
+
+* **modals:** now modals support code editor extensions integration ([590f81d](https://github.com/mokkapps/changelog-generator-demo/commits/590f81dbc221adbef9d733abbe60d55733500d57))
+
+
+### Build system
+
+* **esbuild-tracking:** write special .BAT script to disable worktree for esbuild ([7301437](https://github.com/mokkapps/changelog-generator-demo/commits/73014372429512064e4a6c458ac271be681039c4))
+* **esbuild:** add plugin to automatically copy files of plugin build to test folder ([969afd4](https://github.com/mokkapps/changelog-generator-demo/commits/969afd4b69646905166e019f2fd762fdcf0d3373))
+
+
+### Documentation
+
+* **settings:** add warning about case-insensitive mode in settings ([4a2b3f7](https://github.com/mokkapps/changelog-generator-demo/commits/4a2b3f71dd14a27580fbe561543be44343d59a11))
+* **settings:** add warning about errors spam in extensions input ([722e361](https://github.com/mokkapps/changelog-generator-demo/commits/722e361e51cb0fddfe707816505369b001d9c3a6))
+
+
+### Fixes
+
+* **compatibility-module:** fix skipping work process after getting undefined field in compatibility module ([8fe545d](https://github.com/mokkapps/changelog-generator-demo/commits/8fe545d447f9cf8ea5dee6b0f04a3c3280f75058))
+* **docs:** update some required information about plugin in README ([c1a65fb](https://github.com/mokkapps/changelog-generator-demo/commits/c1a65fbe8b95a83edd0389a99b9aaaf3ae07d51d)), closes [#73](https://github.com/Falcion/UNITADE.md/issues/73)
+* **locales-settings:** remove misinformation about separating symbols ([166b6ca](https://github.com/mokkapps/changelog-generator-demo/commits/166b6ca2c9a38a8ec8307fc8daeb7f4f0ae10e08)), closes [#73](https://github.com/Falcion/UNITADE.md/issues/73)
+* **locales:** sync locales and implement them in stale settings tab ([68b3824](https://github.com/mokkapps/changelog-generator-demo/commits/68b382494a37026f4a732a3cd04a34ab55e5e326))
+* **locales:** sync locales between languages and fix bug when settings appear null ([ea6f6f2](https://github.com/mokkapps/changelog-generator-demo/commits/ea6f6f25df0fc372afe5062034481886db625c03)), closes [#73](https://github.com/Falcion/UNITADE.md/issues/73)
+* **modals:** now modals are trying to apply new extensions in plugin and fix of semantics for separators ([19bd4e6](https://github.com/mokkapps/changelog-generator-demo/commits/19bd4e65107b3bb0b19c51e8e9f2e9642a3215cd))
+* **rendering-extensions:** sync default extensions and code extensions ([a8934ce](https://github.com/mokkapps/changelog-generator-demo/commits/a8934ce171ee94965ca16b869f899ae17ac7a9f8))
+* **settings:** now "use default extensions" and input are synchronized in settings tab ([aea3114](https://github.com/mokkapps/changelog-generator-demo/commits/aea311487557040916375da8677b39249d5e56f1)), closes [#73](https://github.com/Falcion/UNITADE.md/issues/73)
+
 ## [3.0.0](https://github.com/mokkapps/changelog-generator-demo/compare/v2.4.0...v3.0.0) (2024-11-03)
 
 

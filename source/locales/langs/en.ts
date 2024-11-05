@@ -33,12 +33,13 @@ export const LOCALES_EN = {
         0: "UNITADE's settings:",
         1: "Errors:",
         2: "Advanced block",
-        3: "Code editor block:",
+        3: "Code editor block",
         4: "Additionals",
     },
     "SETTINGS_EXTENSIONS": {
         0: "Extensions:",
-        1: "Enter the file extensions that should be registered with the vault and with which the application should start registering (taking into account): input must be separated by semicolons ('>')."
+        1: "Enter the file extensions that should be registered with the vault and with which the application should start registering (taking into account): input must be separated by \"greater-than sign\" ('>').",
+        2: "Be careful with typing extensions in this block, it may start to \"spam\" errors and notifications: to avoid this, you can turn on silencing errors feature in additionals block of settings."
     },
     "SETTINGS_MOBILE_SPECIFIC": {
         0: "Mobile-specific:",
@@ -163,9 +164,69 @@ export const LOCALES_EN = {
     "SETTINGS_CASE_INSENSITIVE": {
         0: "Case insensitive mode:",
         1: "If turned on, plugin would registry every upper and lower case variations of extension to provide Windows-like experience for extension.",
-        2: "Unstable on UNIX-systems."
+        2: "Unstable on UNIX-systems.",
+        3: "CAUTION: this mode can potentially \"infinitly\" crash your Vault if you got too many extensions and/or massive extensions, be extra cautious when using this mode!"
     },
     "MODAL_EDIT_FENCE": {
         0: "Edit code fence"
+    },
+    "SETTINGS_CODE_EDITOR": {
+        0: "Enable code editor module:",
+        1: "This mode will enable code editor functionalities like syntax highlighting, IntelliSence and etc.",
+        2: "May cause lags and other issues.",
+        3: "Font settings for code editor:"
+    },
+    "CODE_EDITOR_USE_DEFAULT": {
+        0: "Use default extensions:",
+        1: "If disabled, code editor module will require to input its own extensions, otherwise, it would use \"simple\" extensions from config.",
+        2: "This block also can be replaced by grouped extensions.",
+        3: "Be aware, this extensions must be excluding from every other, otherwise error with rendering may occure, to \"clone\" extensions, use specified feature.",
+    },
+    "CODE_EDITOR_FOLDING": {
+        0: "Enable folding:",
+        1: "A feature that allows you to hide (collapse) parts of your code to improve readability."
+    },
+    "CODE_EDITOR_LINE_NUMBERS": {
+        0: "Line numbers:",
+        1: "Feature to display line numbers in the editor."
+    },
+    "CODE_EDITOR_WORD_WRAPPING": {
+        0: "Word wrapping:",
+        1: "Feature that allows text to automatically wrap to the next line if it exceeds the width of the editor."
+    },
+    "CODE_EDITOR_MINIMAPPING": {
+        0: "Enable minimapping:",
+        1: "Feature that provides a thumbnail view of the entire document."
+    },
+    "CODE_EDITOR_SEMANTIC_VALIDATION": {
+        0: "Enable semantic validation:",
+        1: "This process checks the code for logical errors and the correct use of variables, functions, and other elements. Semantic validation takes into account the context and meaning of the code."
+    },
+    "CODE_EDITOR_SYNTAX_VALIDATION": {
+        0: "Enable syntax validation:",
+        1: "This process checks code for errors related to its structure and syntax. It analyzes whether the code follows the rules of the programming language."
+    },
+    "CODE_EDITOR_EDIT_THEME": {
+        0: "Editor theme:",
+        1: "Choose specific theme for code editor, visually affects syntax highlighting."
+    },
+    "CODE_EDITOR_FONT_SIZE": {
+        0: "Font size:"
+    },
+    "CODE_EDITOR_FONT_FAMILY": {
+        0: "Font family:",
+        1: "Write here existing font families and fonts themselves: input format like in any code editor."
+    },
+    "CODE_EDITOR_FONT_LIGATURES": {
+        0: "Font ligatures:",
+        1: "If your font supports ligatures, you can turn them on.",
+        2: "If ligatures are not supported by font, this would not work."
+    },
+    "MODAL_INCLUDE_IN_CODE_EDITOR": {
+        0: "Include in code editor module:",
+        1: "If enabled, created file would be treated with code editor module instead of just default vanilla extensions as markdown system.",
+        2: "If both modes are enabled, it can cause unstable behaviour.",
+        3: "If file is treated with both code editor module and default extensions-as-markdown system it can cause unstable behaviour with rendering system, use both modes if your file is an edge-case.",
+        4: "If code editor module uses default extensions array (with setting \"use default extensions\"), extension would be inserted in default extensions array, otherwise, it would be inserted in code editor extensions array."
     }
 };

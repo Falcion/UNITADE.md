@@ -33,8 +33,7 @@
 <!-- ABOUT THE PROJECT:
  -->
 
-About the project
------------------
+## About the project
 
 Unfortunately, Obsidian™ does not, for some reason, have the ability to edit any file extensions that the user would like to edit, and the plugins that exist for this application are an inconvenient format for the end user, for example, entering a full-fledged JSON in one line.
 
@@ -54,8 +53,7 @@ Project is created and “written” with help of:
 <!-- GETTING STARTED
  -->
 
-Getting started
----------------
+## Getting started
 
 Before asking questions, read this block because here is all the primary information on the project, which can answer your future not-yet asked questions.
 
@@ -102,13 +100,14 @@ Guidelines for installation of source code of this project:
 <!-- USAGE:
  -->
 
-Usage
------
+## Usage
 
 Usage of UNITADE plugin is very easy and comfortable for common user, by default, you can edit any plain text (.TXT) files in your vault, but if you want to add custom extensions, you can easy do it with plugin's settings, there is an instruction:
 
 1. Go to your vault's settings and seek for "community plugins" sector, if you have restricted mode, repeat first and second steps of official installation guide[^2];
-2. If you have installed plugin and app saw it, you can see element named "UNITADE": open it and seek for setting named “extensions” and type an array of extensions, separated by comma;
+2. If you have installed plugin and app saw it, you can see element named "UNITADE": open it and seek for setting named “extensions” and type an array of extensions, separated by "greater-than sign" (`>`);
+    - This method applies only if you want to read files as .MD extensions, for more information about settings, modes and other things in the plugin, read the wikipedia of plugin:
+    <https://github.com/Falcion/UNITADE.md/wiki>
 3. Now, you can edit extensions which you typed in settings.
 
 <p align="right"><a href="#readme-top" title="Back to the top of README">[^]</a></p>
@@ -116,8 +115,7 @@ Usage of UNITADE plugin is very easy and comfortable for common user, by default
 <!-- ROADMAP:
  -->
 
-Roadmap
--------
+## Roadmap
 
 <!-- 
   This roadmap is general and initial,
@@ -142,8 +140,7 @@ Roadmap
 <!-- CONTRIBUTING: 
  -->
 
-Contributing
-------------
+## Contributing
 
 Contributions are what make open source community such an interest place to be in, so any form of contribution are greatly appreciated.
 
@@ -154,6 +151,7 @@ If you want to contribute to this project, please, read contributioning policy a
 > For one-single file contributioning, use a more quicker way without forking the repository through website.
 
 More about it in this article:
+
 - [“Working with forks”](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork/) about syncing one-file fork;
 
 <p align="right"><a href="#readme-top" title="Back to the top of README">[^]</a></p>
@@ -161,10 +159,9 @@ More about it in this article:
 <!-- LICENSE:
  -->
 
-License
--------
+## License
 
-Project thanks the [Electron.js](https://github.com/electron/electron/) and [Angular.js](https://github.com/angular/angular/) for their amazing repository scripts and entire infrastructure, which partially were imported to this repository. 
+Project thanks the [Electron.js](https://github.com/electron/electron/) and [Angular.js](https://github.com/angular/angular/) for their amazing repository scripts and entire infrastructure, which partially were imported to this repository.
 
 > For individual licensing and credits information, seek correspondive files and/or sources.
 
@@ -181,8 +178,7 @@ Project itself is being distributed under the [MIT License](https://choosealicen
 <!-- CONTACT:
  -->
 
-Contact
--------
+## Contact
 
 For any legal purposes, you can contact developer/maintainer through its e-mail:
 
@@ -198,8 +194,7 @@ If the developer/maintainer didn't answered, or you have other questions in natu
 <!-- ACKNOWLEDGEMENTS:
  -->
 
-Acknowledgments
----------------
+## Acknowledgments
 
 - https://shields.io/
 - https://simpleicons.org/

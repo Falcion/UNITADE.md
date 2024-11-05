@@ -73,13 +73,13 @@ import { FenceEditModal } from './components/modals/codeblock-edit';
 import { ContextEditCodeblocks } from './components/contextEditCodeblock';
 
 declare module "obsidian" {
-	interface Workspace {
-		on(
-			name: "hover-link",
-			callback: (e: MouseEvent) => any,
-			ctx?: any,
-		): EventRef;
-	}
+    interface Workspace {
+        on(
+            name: "hover-link",
+            callback: (e: MouseEvent) => any,
+            ctx?: any,
+        ): EventRef;
+    }
 }
 
 export default class UNITADE_PLUGIN extends Plugin {
@@ -88,14 +88,14 @@ export default class UNITADE_PLUGIN extends Plugin {
     private _observer!: MutationObserver;
 
     public hover: {
-		linkText: string;
-		sourcePath: string;
-		event: MouseEvent;
-	} = {
-			linkText: "",
-			sourcePath: "",
-			event: new MouseEvent(""),
-		};
+        linkText: string;
+        sourcePath: string;
+        event: MouseEvent;
+    } = {
+            linkText: "",
+            sourcePath: "",
+            event: new MouseEvent(""),
+        };
 
     public get settings(): UNITADE_SETTINGS {
         return this._settings;
@@ -115,8 +115,8 @@ export default class UNITADE_PLUGIN extends Plugin {
         await this.ldSettings();
 
         window.MonacoEnvironment = {
-            getWorker (_: string, label: string) {
-              return getWorker(label);
+            getWorker(_: string, label: string) {
+                return getWorker(label);
             }
         }
 
@@ -237,87 +237,87 @@ export default class UNITADE_PLUGIN extends Plugin {
         this.registerEvent(this.__ctxFence());
 
         this._observer = new MutationObserver(async (mutation) => {
-			if (mutation.length !== 1) return;
-			if (mutation[0].addedNodes.length !== 1) return;
-			if (this.hover.linkText === null) return;
+            if (mutation.length !== 1) return;
+            if (mutation[0].addedNodes.length !== 1) return;
+            if (this.hover.linkText === null) return;
 
-			//@ts-expect-error Accessing runtime API
-			if (mutation[0].addedNodes[0].className !== "popover hover-popover") return;
-			const file = this.app.metadataCache.getFirstLinkpathDest(this.hover.linkText, this.hover.sourcePath);
-			if (!file) return;
+            //@ts-expect-error Accessing runtime API
+            if (mutation[0].addedNodes[0].className !== "popover hover-popover") return;
+            const file = this.app.metadataCache.getFirstLinkpathDest(this.hover.linkText, this.hover.sourcePath);
+            if (!file) return;
 
             let valid: boolean = false;
 
-            if(!this.settings.code_editor_settings.use_default_extensions)
+            if (!this.settings.code_editor_settings.use_default_extensions)
                 valid = this.settings.code_editor_settings.extensions.includes(file.extension);
             else
                 valid = this.settings.extensions.includes(file.extension);
 
-			if (valid === false) return;
-			const fileContent = await this.app.vault.read(file);
+            if (valid === false) return;
+            const fileContent = await this.app.vault.read(file);
 
-			const node: Node = mutation[0].addedNodes[0];
-			const contentEl = createDiv();
+            const node: Node = mutation[0].addedNodes[0];
+            const contentEl = createDiv();
 
-			new ContextEditor(
-				contentEl,
-				this,
-				fileContent,
-				file.extension,
-				false,
-				true
-			);
+            new ContextEditor(
+                contentEl,
+                this,
+                fileContent,
+                file.extension,
+                false,
+                true
+            );
 
-			const w = 700;
-			const h = 500;
-			const gep = 10;
-			if (node instanceof HTMLDivElement) {
-				const x = this.hover.event.clientX;
-				const y = this.hover.event.clientY;
-				const target = this.hover.event.target as HTMLElement;
-				const targetRect = target.getBoundingClientRect();
-				const targetTop = targetRect.top;
-				const targetBottom = targetRect.bottom;
-				const targeRight = targetRect.right
-				node.style.position = "absolute";
-				node.style.left = `${x + gep}px`;
+            const w = 700;
+            const h = 500;
+            const gep = 10;
+            if (node instanceof HTMLDivElement) {
+                const x = this.hover.event.clientX;
+                const y = this.hover.event.clientY;
+                const target = this.hover.event.target as HTMLElement;
+                const targetRect = target.getBoundingClientRect();
+                const targetTop = targetRect.top;
+                const targetBottom = targetRect.bottom;
+                const targeRight = targetRect.right
+                node.style.position = "absolute";
+                node.style.left = `${x + gep}px`;
 
-				const spaceBelow = window.innerHeight - y - gep * 3;
-				const spaceAbove = y - gep * 3;
-				if (spaceBelow > h) {
-					node.style.top = `${targetBottom + gep}px`;
-				} else if (spaceAbove > h) {
-					node.style.top = `${targetTop - h - gep}px`;
-				} else {
-					node.style.top = `${targetTop - (h / 2) - gep}px`;
-					node.style.left = `${targeRight + gep * 2}px`;
-				}
-			}
+                const spaceBelow = window.innerHeight - y - gep * 3;
+                const spaceAbove = y - gep * 3;
+                if (spaceBelow > h) {
+                    node.style.top = `${targetBottom + gep}px`;
+                } else if (spaceAbove > h) {
+                    node.style.top = `${targetTop - h - gep}px`;
+                } else {
+                    node.style.top = `${targetTop - (h / 2) - gep}px`;
+                    node.style.left = `${targeRight + gep * 2}px`;
+                }
+            }
 
-			contentEl.setCssProps({
-				"width": `${w}px`,
-				"height": `${h}px`,
-				"padding-top": "10px",
-				"padding-bottom": "10px",
-			});
+            contentEl.setCssProps({
+                "width": `${w}px`,
+                "height": `${h}px`,
+                "padding-top": "10px",
+                "padding-bottom": "10px",
+            });
 
-			node.empty();
-			node.appendChild(contentEl);
-		});
-        
+            node.empty();
+            node.appendChild(contentEl);
+        });
+
         this.registerEvent(this.app.workspace.on("hover-link", async (event: any) => {
-			const linkText: string = event.linktext;
-			const sourcePath: string = event.sourcePath;
+            const linkText: string = event.linktext;
+            const sourcePath: string = event.sourcePath;
 
-			if (!linkText || !sourcePath) return;
+            if (!linkText || !sourcePath) return;
 
-			this.hover.linkText = linkText;
-			this.hover.sourcePath = sourcePath;
-			this.hover.event = event.event;
-		}));
-        
+            this.hover.linkText = linkText;
+            this.hover.sourcePath = sourcePath;
+            this.hover.event = event.event;
+        }));
+
         this._observer.observe(document, { childList: true, subtree: true });
-        
+
         this.__apply();
     }
 
@@ -381,17 +381,17 @@ export default class UNITADE_PLUGIN extends Plugin {
 
     private __ctxFence(): EventRef {
         return this.app.workspace.on("editor-menu", (menu) => {
-                if (!ContextEditCodeblocks.create(this).isInFence()) {
-                    return;
-                }
-                menu.addItem((item) => {
-                    item.setTitle(this.locale.getLocaleItem("MODAL_EDIT_FENCE")[0]!)
-                        .setIcon("code")
-                        .onClick(() => {
-                            FenceEditModal.openOnCurrentCode(this);
-                        });
-                });
+            if (!ContextEditCodeblocks.create(this).isInFence()) {
+                return;
+            }
+            menu.addItem((item) => {
+                item.setTitle(this.locale.getLocaleItem("MODAL_EDIT_FENCE")[0]!)
+                    .setIcon("code")
+                    .onClick(() => {
+                        FenceEditModal.openOnCurrentCode(this);
+                    });
             });
+        });
     }
 
     ltReady(_app: App): void {
@@ -466,10 +466,9 @@ export default class UNITADE_PLUGIN extends Plugin {
      * @private
      * @returns {void}
      */
-    private __apply(): void 
-    {
+    private __apply(): void {
         /**@ts-expect-error: not part of public API, accessing through runtime. */
-        if (this.app.viewRegistry.viewByType['codeview'] === undefined || 
+        if (this.app.viewRegistry.viewByType['codeview'] === undefined ||
             /**@ts-expect-error: not part of public API, accessing through runtime. */
             this.app.viewRegistry.viewByType['codeview'] === null)
             this.registerView('codeview', leaf => new UNITADE_VIEW_CODE(leaf, this));
@@ -483,14 +482,16 @@ export default class UNITADE_PLUGIN extends Plugin {
         }
 
         if (this.is_mobile) {
-            this.__applyCfg(this.settings.mobile_settings.extensions ?? this.settings.extensions, 'markdown');                
+            if (!this.settings.code_editor_settings.use_default_extensions)
+                this.__applyCfg(this.settings.mobile_settings.extensions ?? this.settings.extensions, 'markdown');
         } else {
-            this.__applyCfg(this.settings.extensions, 'markdown');
+            if (!this.settings.code_editor_settings.use_default_extensions)
+                this.__applyCfg(this.settings.extensions, 'markdown');
         }
 
-        if(this.settings.code_editor_settings.enabled) {
-            if(this.settings.code_editor_settings.use_default_extensions) {
-                if(this.is_mobile)
+        if (this.settings.code_editor_settings.enabled) {
+            if (this.settings.code_editor_settings.use_default_extensions) {
+                if (this.is_mobile)
                     this.__applyCfg(this.settings.mobile_settings.extensions ?? this.settings.extensions, 'codeview');
                 else
                     this.__applyCfg(this.settings.extensions, 'codeview');
@@ -583,7 +584,7 @@ export default class UNITADE_PLUGIN extends Plugin {
                 continue;
 
             // If we ignore case difference (example: Windows systems)
-            if(this.settings.is_case_insensitive) {
+            if (this.settings.is_case_insensitive) {
                 const rnd_filetype = gencase(extension);
 
                 for (const type of rnd_filetype)

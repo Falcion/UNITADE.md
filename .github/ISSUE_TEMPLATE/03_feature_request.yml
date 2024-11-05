@@ -37,6 +37,7 @@ body:
         - Windows
         - macOS
         - Linux
+        - Mobile (specify)
         - Not important
   - type: checkboxes
     id: terms

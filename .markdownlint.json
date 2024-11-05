@@ -4,14 +4,11 @@
   "no-inline-html": {
     "allowed_elements": [
       "br",
-      "details",
+      "p",
+      "a",
+      "div",
       "img",
-      "li",
-      "summary",
-      "ul",
-      "unknown",
-      "Tabs",
-      "TabItem"
+      "h3"
     ]
   }
 }
