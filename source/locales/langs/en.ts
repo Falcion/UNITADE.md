@@ -38,7 +38,7 @@ export const LOCALES_EN = {
     },
     "SETTINGS_EXTENSIONS": {
         0: "Extensions:",
-        1: "Enter the file extensions that should be registered with the vault and with which the application should start registering (taking into account): input must be separated by semicolons ('>')."
+        1: "Enter the file extensions that should be registered with the vault and with which the application should start registering (taking into account): input must be separated by \"greater-than sign\" ('>')."
     },
     "SETTINGS_MOBILE_SPECIFIC": {
         0: "Mobile-specific:",
