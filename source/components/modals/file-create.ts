@@ -39,6 +39,7 @@ export class TFileCreate extends Modal {
     private _name: string;
 
     private _integration: boolean;
+    private _integration_code_editor: boolean;
 
     constructor(
         private plugin: UNITADE_PLUGIN,
@@ -51,6 +52,7 @@ export class TFileCreate extends Modal {
         this._name = '';
 
         this._integration = false;
+        this._integration_code_editor = false;
     }
 
     onOpen(): void {
@@ -122,6 +124,34 @@ export class TFileCreate extends Modal {
 
                 return toggle;
             });
+
+        const includeCodeEditor = new Setting(contentEl)
+            .setName(this.plugin.locale.getLocaleItem('MODAL_INCLUDE_IN_CODE_EDITOR')[0]!)
+            .setDesc(this.plugin.locale.getLocaleItem('MODAL_INCLUDE_IN_CODE_EDITOR')[1]!)
+            .setTooltip(this.plugin.locale.getLocaleItem('MODAL_INCLUDE_IN_CODE_EDITOR')[2]!)
+            .addToggle(toggle => {
+                toggle
+                    .setValue(this._integration_code_editor)
+                    .onChange(async (value) => {
+                        this._integration_code_editor = value;
+                    });
+
+                return toggle;
+            });
+
+        const onRfAttention = document.createElement('div');
+        onRfAttention.style.fontSize = '80%';
+        onRfAttention.style.margin = '10px';
+        onRfAttention.style.color = 'darkRed';
+        onRfAttention.innerHTML = this.plugin.locale.getLocaleItem('MODAL_INCLUDE_IN_CODE_EDITOR')[3]!;
+
+        const onRfInfo = document.createElement('div');
+        onRfInfo.style.fontWeight = 'bold';
+        onRfInfo.style.fontSize = '80%';
+        onRfInfo.innerHTML = this.plugin.locale.getLocaleItem('MODAL_INCLUDE_IN_CODE_EDITOR')[4]!;
+
+        includeCodeEditor.nameEl.parentElement!.appendChild(onRfAttention);
+        includeCodeEditor.nameEl.parentElement!.appendChild(onRfInfo);
     }
 
     onClose() {
@@ -133,19 +163,42 @@ export class TFileCreate extends Modal {
     private async __submit() {
         this.close();
 
+        const extensions = this._name.split('.').slice(1).join('>');
+
         if (this._integration) {
             const next = {
                 ...this.plugin.settings,
             };
 
-            const extensions = this._name.split('.').slice(1).join(';');
+            next.extensions += `>${extensions}`;
 
-            next.extensions += `;${extensions}`;
+            this.plugin.uptSettings(next);
+        }
+
+        if (this._integration_code_editor) {
+            const next = {
+                ...this.plugin.settings,
+            };
+
+            if (this.plugin.settings.code_editor_settings.use_default_extensions)
+                next.extensions += `>${extensions}`;
+            else
+                next.code_editor_settings.extensions += `>${extensions}`;
 
             this.plugin.uptSettings(next);
         }
 
         await this.app.vault.create(this._pathgen(), '');
+
+        try {
+            this.plugin.apply();
+        } catch (error) {
+            if (this.plugin.settings.debug_mode)
+                console.debug(error);
+            else {
+                return;
+            }
+        }
     }
 
     private _pathgen(): string {

@@ -38,6 +38,7 @@ export class TFilesEdit extends Modal {
     private _new_extension: string = 'md';
 
     private _integration: boolean;
+    private _integration_code_editor: boolean;
 
     constructor(
         private plugin: UNITADE_PLUGIN,
@@ -48,6 +49,7 @@ export class TFilesEdit extends Modal {
         this.target ??= [this.plugin.app.vault.getRoot()];
 
         this._integration = false;
+        this._integration_code_editor = false;
     }
 
     onOpen(): void {
@@ -119,6 +121,34 @@ export class TFilesEdit extends Modal {
 
                 return toggle;
             });
+
+        const includeCodeEditor = new Setting(contentEl)
+            .setName(this.plugin.locale.getLocaleItem('MODAL_INCLUDE_IN_CODE_EDITOR')[0]!)
+            .setDesc(this.plugin.locale.getLocaleItem('MODAL_INCLUDE_IN_CODE_EDITOR')[1]!)
+            .setTooltip(this.plugin.locale.getLocaleItem('MODAL_INCLUDE_IN_CODE_EDITOR')[2]!)
+            .addToggle(toggle => {
+                toggle
+                    .setValue(this._integration_code_editor)
+                    .onChange(async (value) => {
+                        this._integration_code_editor = value;
+                    });
+
+                return toggle;
+            });
+
+        const onRfAttention = document.createElement('div');
+        onRfAttention.style.fontSize = '80%';
+        onRfAttention.style.margin = '10px';
+        onRfAttention.style.color = 'darkRed';
+        onRfAttention.innerHTML = this.plugin.locale.getLocaleItem('MODAL_INCLUDE_IN_CODE_EDITOR')[3]!;
+
+        const onRfInfo = document.createElement('div');
+        onRfInfo.style.fontWeight = 'bold';
+        onRfInfo.style.fontSize = '80%';
+        onRfInfo.innerHTML = this.plugin.locale.getLocaleItem('MODAL_INCLUDE_IN_CODE_EDITOR')[4]!;
+
+        includeCodeEditor.nameEl.parentElement!.appendChild(onRfAttention);
+        includeCodeEditor.nameEl.parentElement!.appendChild(onRfInfo);
     }
 
     onClose() {
@@ -135,7 +165,20 @@ export class TFilesEdit extends Modal {
                 ...this.plugin.settings,
             };
 
-            next.extensions += `;${this._new_extension}`;
+            next.extensions += `>${this._new_extension}`;
+
+            this.plugin.uptSettings(next);
+        }
+
+        if (this._integration_code_editor) {
+            const next = {
+                ...this.plugin.settings,
+            };
+
+            if (this.plugin.settings.code_editor_settings.use_default_extensions)
+                next.extensions += `>${this._new_extension}`;
+            else
+                next.code_editor_settings.extensions += `>${this._new_extension}`;
 
             this.plugin.uptSettings(next);
         }
@@ -148,6 +191,16 @@ export class TFilesEdit extends Modal {
 
             await this.app.vault.rename(file, this.__pathgen(filepath, name));
         });
+
+        try {
+            this.plugin.apply();
+        } catch (error) {
+            if (this.plugin.settings.debug_mode)
+                console.debug(error);
+            else {
+                return;
+            }
+        }
     }
 
     private __pathgen(path: string, name: string): string {

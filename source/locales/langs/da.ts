@@ -221,5 +221,12 @@ export const LOCALES_DA = {
         0: "Font ligatures:",
         1: "If your font supports ligatures, you can turn them on.",
         2: "If ligatures are not supported by font, this would not work."
+    },
+    "MODAL_INCLUDE_IN_CODE_EDITOR": {
+        0: "Include in code editor module:",
+        1: "If enabled, created file would be treated with code editor module instead of just default vanilla extensions as markdown system.",
+        2: "If both modes are enabled, it can cause unstable behaviour.",
+        3: "If file is treated with both code editor module and default extensions-as-markdown system it can cause unstable behaviour with rendering system, use both modes if your file is an edge-case.",
+        4: "If code editor module uses default extensions array (with setting \"use default extensions\"), extension would be inserted in default extensions array, otherwise, it would be inserted in code editor extensions array."
     }
 };
