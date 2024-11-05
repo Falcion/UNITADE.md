@@ -829,6 +829,8 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
         editorExtensionsInput.inputEl.style.height = '48px';
         editorExtensionsInput.inputEl.style.minHeight = '36px';
 
+        this.__uptCEConfig([editorExtensionsInput, codeExtensionsWarn], !this.plugin.settings.code_editor_settings.use_default_extensions);
+
         const editorFolding = new Setting(containerEl)
             .setName(this.locale.getLocaleItem('CODE_EDITOR_FOLDING')[0]!)
             .setDesc(this.locale.getLocaleItem('CODE_EDITOR_FOLDING')[1]!)
