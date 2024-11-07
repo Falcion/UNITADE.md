@@ -37,7 +37,7 @@
 
 Unfortunately, Obsidian™ does not, for some reason, have the ability to edit any file extensions that the user would like to edit, and the plugins that exist for this application are an inconvenient format for the end user, for example, entering a full-fledged JSON in one line.
 
-Plugin UNITADE presents a simple, user-friendly solution of this file extension problem: you can not only open and registry any extension in OBSIDIAN, but also, force-open them in your vault.
+Plugin UNITADE presents a simple yet advanced and user-friendly solution of this file extension problem: you can not only open and registry any extension in OBSIDIAN, but also, force-open them in your vault, render them as code just like in other code editing software (like "VS Code" for example) and many other infrastructure and functionalities, including compatibility modules for stale versions of plugin.
 
 <!-- BUILT WITH:
  -->
@@ -48,7 +48,7 @@ Project is created and “written” with help of:
 
 ![JAVASCRIPT](https://img.shields.io/badge/-javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)\
 ![TYPESCRIPT](https://img.shields.io/badge/-typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)\
-![OBSIDIAN](https://img.shields.io/badge/-obsidian-7C3AED?style=for-the-badge&logo=obsidian&logoColor=white)
+![OBSIDIAN](https://img.shields.io/badge/-obsidian-7C3AED?style=for-the-badge&logo=obsidian&logoColor=white)\
 
 <!-- GETTING STARTED
  -->
@@ -169,9 +169,6 @@ Project itself is being distributed under the [MIT License](https://choosealicen
 
 > Entirery of project's infrastructure is taken from repository template project:\
 > https://github.com/Falcion/Patternugit.git
-
-- modals idea and correspondive codebase was taken from project:\
-  [OBSIDIAN custom file extension](https://github.com/MeepTech/obsidian-custom-file-extensions-plugin)
 
 <p align="right"><a href="#readme-top" title="Back to the top of README">[^]</a></p>
 
