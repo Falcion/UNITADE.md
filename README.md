@@ -24,7 +24,7 @@
     <br/>
     <a href="https://github.com/Falcion/UNITADE.md/compare/">Contribute to us</a>
     /
-    <a href="https://github.com/Falcion/UNITADE.md/tags/">View tags</a>
+    <a href="https://github.com/Falcion/UNITADE.md/wiki/">Read wiki</a>
     /
     <a href="https://github.com/Falcion/UNITADE.md/issues/">Report a bug</a>
     </p>
