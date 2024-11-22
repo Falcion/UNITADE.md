@@ -136,7 +136,7 @@ export const LOCALES_EN = {
     },
     "SETTINGS_COMPATIBILITY": {
         0: "Compatibility module:",
-        1: "If turned on, plugin on it's start would try to parse configs of it's past versions to new config with old data: may be unstable, turned off by default."
+        1: "If turned on, plugin on it's start would try to parse configs of it's past versions to new config with old data: may be unstable, turned on by default."
     },
     "SETTINGS_COMPATIBILITY_BUTTON": {
         0: "Make config compatible",
