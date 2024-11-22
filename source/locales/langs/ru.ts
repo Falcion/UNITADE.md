@@ -28,6 +28,7 @@
  * JSON for translation of
  * `ru: "Pусский"`
  * Contributed by: @Axialer
+ * - Reviewed by: @angelomira
  */
 export const LOCALES_RU = {
     "UNITADE_SETTINGS_COMMON": {
