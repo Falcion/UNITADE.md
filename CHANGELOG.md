@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.0.2](https://github.com/mokkapps/changelog-generator-demo/compare/v3.0.1...v3.0.2) (2024-11-22)
+
+
+### Features
+
+* **localization:** add Russian translation for plugin ([7aa036c](https://github.com/mokkapps/changelog-generator-demo/commits/7aa036cacaf1a3573c050ed1d5132e59462d3cea))
+
+
+### Fixes
+
+* **locales:** fix misinterpretation of plugin's work, fix of [#82](https://github.com/Falcion/UNITADE.md/issues/82) ([3d59600](https://github.com/mokkapps/changelog-generator-demo/commits/3d596003cfbc2797ad317a90b8149b5886eb74ff))
+
 ### [3.0.1](https://github.com/mokkapps/changelog-generator-demo/compare/v3.0.0...v3.0.1) (2024-11-05)
 
 
