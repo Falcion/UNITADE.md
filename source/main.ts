@@ -580,6 +580,13 @@ export default class UNITADE_PLUGIN extends Plugin {
         const extensions_arr: string[] = extensions.split('>').map(s => s.trim());
 
         for (const extension of extensions_arr) {
+            if (this.settings.safe_mode && view === 'markdown' && CONSTANTS.unsafeExtensions.contains(extension.toLowerCase())) {
+                if (this.settings.debug_mode)
+                    console.debug('[UNITADE]: Skipped unsafe extension:', extension);
+
+                continue;
+            }
+
             if (this.settings.is_ignore && this.settings.ignore_extensions.split('>').includes(extension))
                 continue;
 
