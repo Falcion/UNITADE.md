@@ -198,7 +198,7 @@
   ],
   "dependencies": {
     "codemirror": "^6.0.1",
-    "esbuild": "^0.20.2",
+    "esbuild": "^0.25.0",
     "esbuild-plugin-glsl": "^1.2.2",
     "esbuild-sass-plugin": "^3.3.1",
     "monaco-editor": "^0.43.0",
