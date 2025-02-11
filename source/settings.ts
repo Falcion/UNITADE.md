@@ -125,7 +125,7 @@ export const DEFAULT_SETTINGS: UNITADE_SETTINGS = {
         minimapping: true,
         validation_semantic: true,
         validation_syntax: true,
-        theme: 'AUTO',
+        theme: 'auto',
         font_size: 14,
         font_family: "'Cascadia Code', 'Fira Code', Consolas, 'Courier New', monospace",
         font_ligatures: true,
