@@ -37,10 +37,16 @@ export default class CompatibilityModule {
                 extensions: data.extensions?.replaceAll(',', '>') ?? '',
                 forced_extensions: data.forced_extensions?.replaceAll(',', '>') ?? '',
                 is_onload: Boolean(data.is_dynamic_on),
+                mobile_settings: {
+                    extensions: data.mobile_settings.extensions?.replaceAll(',', '>') ?? '',
+                }
             },
             '2.0': {
                 extensions: data.extensions?.replaceAll(',', '>') ?? '',
                 grouped_extensions: data.grouped_extensions?.replaceAll(',', '>') ?? '',
+                mobile_settings: {
+                    extensions: data.mobile_settings.extensions?.replaceAll(',', '>') ?? '',
+                }
             },
             '2.1': {
                 grouped_extensions: data.grouped_extensions?.replaceAll(';', '>') ?? '',
@@ -48,6 +54,9 @@ export default class CompatibilityModule {
                 forced_extensions: data.forced_extensions?.replaceAll(';', '>') ?? '',
                 ignore_extensions: data.ignore_extensions?.replaceAll(';', '>') ?? '',
                 ignore_masks: data.ignore_masks?.replaceAll(';', '>') ?? '',
+                mobile_settings: {
+                    extensions: data.mobile_settings.extensions?.replaceAll(';', '>') ?? '',
+                }
             },
             '2.4': {
                 grouped_extensions: data.grouped_extensions?.replaceAll(',', '>') ?? '',
@@ -55,6 +64,9 @@ export default class CompatibilityModule {
                 forced_extensions: data.forced_extensions?.replaceAll(';', '>') ?? '',
                 ignore_extensions: data.ignore_extensions?.replaceAll(';', '>') ?? '',
                 ignore_masks: data.ignore_masks?.replaceAll(';', '>') ?? '',
+                mobile_settings: {
+                    extensions: data.mobile_settings.extensions?.replaceAll(';', '>') ?? '',
+                }
             },
         };
 
