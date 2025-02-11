@@ -230,5 +230,12 @@ export const LOCALES_RU = {
         2: "Если оба режима включены, это может привести к нестабильному поведению.",
         3: "Если файл обрабатывается как модулем редактора кода, так и стандартным Markdown, это может вызвать нестабильное поведение системы рендеринга. Используйте оба режима только для крайних случаев.",
         4: "Если модуль редактора кода использует реестр стандартных расширений (с настройкой \"использовать стандартные расширения\"), расширение будет добавлено в реестр стандартных расширений. В противном случае оно будет добавлено в реестр расширений редактора кода."
+    },
+    "SAFE_MODE": {
+        0: "Safe mode:",
+        1: "If enabled, the plugin will check if this extension will be damaged when opened via Markdown view.",
+        2: "DISABLE AT YOUR OWN RISK: you will be able to work with all extensions in Markdown representation, but with the risk of damaging files.",
+        3: "Safe-mod is {1}!",
+        4: "Disables defensive tactics for non-text extensions behaviour."
     }
 };

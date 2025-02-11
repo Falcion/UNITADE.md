@@ -228,5 +228,12 @@ export const LOCALES_AR = {
         2: "If both modes are enabled, it can cause unstable behaviour.",
         3: "If file is treated with both code editor module and default extensions-as-markdown system it can cause unstable behaviour with rendering system, use both modes if your file is an edge-case.",
         4: "If code editor module uses default extensions array (with setting \"use default extensions\"), extension would be inserted in default extensions array, otherwise, it would be inserted in code editor extensions array."
+    },
+    "SAFE_MODE": {
+        0: "Safe mode:",
+        1: "If enabled, the plugin will check if this extension will be damaged when opened via Markdown view.",
+        2: "DISABLE AT YOUR OWN RISK: you will be able to work with all extensions in Markdown representation, but with the risk of damaging files.",
+        3: "Safe-mod is {1}!",
+        4: "Disables defensive tactics for non-text extensions behaviour."
     }
 };

@@ -64,6 +64,7 @@ export interface UNITADE_SETTINGS {
     silence_errors: boolean,
     manifest_version: string,
     compatibility_module: boolean,
+    safe_mode: boolean,
 
     code_editor_settings: {
         enabled: boolean,
@@ -114,6 +115,7 @@ export const DEFAULT_SETTINGS: UNITADE_SETTINGS = {
     manifest_version: '',
 
     compatibility_module: true,
+    safe_mode: true,
 
     code_editor_settings: {
         enabled: true,
@@ -125,7 +127,7 @@ export const DEFAULT_SETTINGS: UNITADE_SETTINGS = {
         minimapping: true,
         validation_semantic: true,
         validation_syntax: true,
-        theme: 'AUTO',
+        theme: 'auto',
         font_size: 14,
         font_family: "'Cascadia Code', 'Fira Code', Consolas, 'Courier New', monospace",
         font_ligatures: true,
@@ -231,7 +233,6 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
         configWarning.innerHTML = this.locale.getLocaleItem('SETTINGS_EXTENSIONS')[2]!;
 
         this._config.infoEl.appendChild(configWarning);
-
 
         const caseInsenstiveExtensions = new Setting(containerEl)
             .setName(this.plugin.locale.getLocaleItem('SETTINGS_CASE_INSENSITIVE')[0]!)
@@ -460,6 +461,35 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
         frcExtInp.inputEl.style.width = '100%';
         frcExtInp.inputEl.style.height = '48px';
         frcExtInp.inputEl.style.minHeight = '36px';
+
+        const safeModeToggle = new Setting(containerEl)
+            .setName(this.plugin.locale.getLocaleItem('SAFE_MODE')[0]!)
+            .setDesc(this.plugin.locale.getLocaleItem('SAFE_MODE')[1]!)
+            .setTooltip(this.plugin.locale.getLocaleItem('SAFE_MODE')[4]!)
+            .addToggle(toggle => {
+                toggle
+                    .setValue(this.plugin.settings.safe_mode)
+                    .onChange(async (value) => {
+                        const next = {
+                            ...this.plugin.settings,
+                            safe_mode: value,
+                        };
+
+                        await this.plugin.uptSettings(next);
+
+                        this.__updateErrors();
+                    });
+
+                return toggle;
+            });
+
+        const safeModeToggleWarning = document.createElement('div');
+        safeModeToggleWarning.style.fontSize = '80%';
+        safeModeToggleWarning.style.margin = '10px';
+        safeModeToggleWarning.style.color = 'darkRed';
+        safeModeToggleWarning.innerHTML = this.locale.getLocaleItem('SAFE_MODE')[2]!;
+
+        safeModeToggle.infoEl.appendChild(safeModeToggleWarning);
 
         const onRfAttention = document.createElement('div');
         onRfAttention.style.fontSize = '80%';
