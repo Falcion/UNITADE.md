@@ -125,7 +125,7 @@
     "@commitlint/config-conventional": "^19.5.0",
     "@electron/lint-roller": "^1.13.0",
     "@npmcli/package-json": "^5.2.1",
-    "@octokit/rest": "^20.1.1",
+    "@octokit/rest": "^21.1.0",
     "@types/codemirror": "^5.60.15",
     "@types/extend": "^3.0.4",
     "@types/fs-extra": "^11.0.4",
