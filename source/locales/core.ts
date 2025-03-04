@@ -29,6 +29,7 @@ import { LOCALES_CZ } from "./langs/cz";
 import { LOCALES_DA } from "./langs/da";
 import { LOCALES_DE } from "./langs/de";
 import { LOCALES_EN } from "./langs/en";
+import { LOCALES_EN_GB } from "./langs/en_gb";
 import { LOCALES_ES } from "./langs/es";
 import { LOCALES_FR } from "./langs/fr";
 import { LOCALES_HI } from "./langs/hi";
@@ -66,6 +67,7 @@ export default class LocalesModule {
 
     static localesList: { [id: string]: Locales } = {
         en: LOCALES_EN,
+        "en-GB": LOCALES_EN_GB,
         zh: LOCALES_ZH,
         "zh-TW": LOCALES_ZH_TW,
         ru: LOCALES_RU,
