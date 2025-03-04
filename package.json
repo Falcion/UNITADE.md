@@ -203,6 +203,7 @@
     "esbuild-sass-plugin": "^3.3.1",
     "monaco-editor": "^0.43.0",
     "obsidian": "^1.7.2",
+    "obsidian-typings": "^2.35.0",
     "terser": "^5.36.0"
   },
   "capabilities": {

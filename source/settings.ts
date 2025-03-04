@@ -84,6 +84,20 @@ export interface UNITADE_SETTINGS {
 
     SYS_FONTSIZE_MAX: number,
     SYS_FONTSIZE_MIN: number,
+
+    status_bar: {
+        enabled: boolean,
+        registered_extensions: {
+            enabled: boolean,
+            include_extensions: boolean,
+            include_extensions_grouped: boolean,
+            include_code_editor_extensions: boolean,
+        },
+        registered_views: boolean,
+        current_processor: boolean,
+        current_display: boolean,
+        cursor_position: boolean,
+    }
 }
 
 export const DEFAULT_SETTINGS: UNITADE_SETTINGS = {
@@ -135,6 +149,20 @@ export const DEFAULT_SETTINGS: UNITADE_SETTINGS = {
 
     SYS_FONTSIZE_MAX: 32,
     SYS_FONTSIZE_MIN: 5,
+
+    status_bar: {
+        enabled: true,
+        registered_extensions: {
+            enabled: false,
+            include_extensions: true,
+            include_extensions_grouped: true,
+            include_code_editor_extensions: false,
+        },
+        registered_views: false,
+        current_processor: true,
+        current_display: true,
+        cursor_position: true,
+    }
 }
 
 export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
@@ -575,7 +603,6 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                         if (this.plugin.settings.barefiling) {
                             this.plugin.tryApply('', 'markdown');
                         } else {
-                            /**@ts-expect-error: not part of public API, accessing through runtime. */
                             this.plugin.app.viewRegistry.unregisterExtensions(['']);
                         }
                     })

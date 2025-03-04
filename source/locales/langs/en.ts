@@ -235,5 +235,15 @@ export const LOCALES_EN = {
         2: "DISABLE AT YOUR OWN RISK: you will be able to work with all extensions in Markdown representation, but with the risk of damaging files.",
         3: "Safe-mod is {1}!",
         4: "Disables defensive tactics for non-text extensions behaviour."
+    },
+    "STATUS_BAR": {
+        0: "NONE",
+        1: "🛠 Worker: {0} ",
+        // exts. -> extensions
+        2: "exts.: {0}, views: {1} ",
+        // col. -> columns
+        3: "col.: {0}, line: {1} ",
+        // rend. -> "rendered as"
+        4: "📋 Render: {0} "
     }
 };

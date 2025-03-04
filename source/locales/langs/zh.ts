@@ -136,7 +136,7 @@ export const LOCALES_ZH = {
     },
     "SETTINGS_COMPATIBILITY": {
         0: "Compatibility module:",
-        1: "If turned on, plugin on it's start would try to parse configs of it's past versions to new config with old data: may be unstable, turned off by default."
+        1: "If turned on, plugin on it's start would try to parse configs of it's past versions to new config with old data: may be unstable, turned on by default."
     },
     "SETTINGS_COMPATIBILITY_BUTTON": {
         0: "Make config compatible",
@@ -235,5 +235,15 @@ export const LOCALES_ZH = {
         2: "DISABLE AT YOUR OWN RISK: you will be able to work with all extensions in Markdown representation, but with the risk of damaging files.",
         3: "Safe-mod is {1}!",
         4: "Disables defensive tactics for non-text extensions behaviour."
+    },
+    "STATUS_BAR": {
+        0: "NONE",
+        1: "🛠 Worker: {0} ",
+        // exts. -> extensions
+        2: "exts.: {0}, views: {1} ",
+        // col. -> columns
+        3: "col.: {0}, line: {1} ",
+        // rend. -> "rendered as"
+        4: "📋 Render: {0} "
     }
 };

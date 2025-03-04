@@ -35,6 +35,27 @@ export class UNITADE_VIEW_CODE extends TextFileView {
         this.addCtrlKeyWheelEvents();
         this.addKeyEvents();
 
+        this.plugin.statusBarConfig.update({
+            cursor_columns: this.monacoEditor.getPosition() ? this.monacoEditor.getPosition()!.column : 0,
+            cursor_lines: this.monacoEditor.getPosition() ? this.monacoEditor.getPosition()!.lineNumber : 0,
+            processor: this.monacoEditor.getModel() ? this.monacoEditor.getModel()!.id : this.plugin.locale.getLocaleItem('STATUS_BAR')[0]!,
+            display: this.monacoEditor.getModel()?.getLanguageId() ? this.monacoEditor.getModel()?.getLanguageId() : this.plugin.locale.getLocaleItem('STATUS_BAR')[0]!,
+        });
+
+        this.plugin.updateStatusBar();
+
+        this.monacoEditor.onDidChangeCursorPosition(() => {
+            const cursor = this.monacoEditor.getPosition();
+
+            if (cursor)
+                this.plugin.statusBarConfig.update({
+                    cursor_columns: cursor.column,
+                    cursor_lines: cursor.lineNumber
+                });
+
+            this.plugin.updateStatusBar();
+        });
+
         await super.onLoadFile(file);
     }
 
@@ -42,7 +63,7 @@ export class UNITADE_VIEW_CODE extends TextFileView {
         window.removeEventListener('keydown', this.__keyHandler, true);
 
         await super.onUnloadFile(file);
-        
+
         this.monacoEditor.dispose();
     }
 
@@ -101,10 +122,10 @@ export class UNITADE_VIEW_CODE extends TextFileView {
             [']', 'editor.action.indentLines'],
             ['d', 'editor.action.copyLinesDownAction'],
         ]);
-        
+
         if (event.ctrlKey) {
             const trigger_name = KEYMAP.get(event.key);
-            
+
             if (trigger_name)
                 this.monacoEditor.trigger('', trigger_name, null);
         }
@@ -141,7 +162,7 @@ export class UNITADE_VIEW_CODE extends TextFileView {
             }
 
             await this.plugin.uptSettings(next);
-            
+
             this.monacoEditor!.updateOptions({
                 fontSize: this.plugin.settings.code_editor_settings.font_size,
             });

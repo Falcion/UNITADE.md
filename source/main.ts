@@ -74,6 +74,8 @@ import { UNITADE_VIEW_CODE } from './components/views/view_monaco';
 import { ContextEditor } from './components/contexts/contextEditor';
 import { FenceEditModal } from './components/modals/codeblock-edit';
 import { ContextEditCodeblocks } from './components/contextEditCodeblock';
+import StatusBarConfig from './externals/samples/statusBarConfig';
+import StatusBarParser from './externals/samples/statusBarParser';
 
 declare module "obsidian" {
     interface Workspace {
@@ -89,6 +91,9 @@ export default class UNITADE_PLUGIN extends Plugin {
     private _settings: UNITADE_SETTINGS = DEFAULT_SETTINGS;
     private _locale: LocalesModule = new LocalesModule();
     private _observer!: MutationObserver;
+
+    private _statusBar!: HTMLElement;
+    public statusBarConfig: StatusBarConfig = new StatusBarConfig(this._locale);
 
     public hover: {
         linkText: string;
@@ -116,6 +121,9 @@ export default class UNITADE_PLUGIN extends Plugin {
         super.onload();
 
         await this.ldSettings();
+
+        if (this.settings.status_bar.enabled)
+            this._statusBar = this.addStatusBarItem();
 
         window.MonacoEnvironment = {
             getWorker(_: string, label: string) {
@@ -228,7 +236,6 @@ export default class UNITADE_PLUGIN extends Plugin {
         })
 
         if (this._settings.markdown_overcharge)
-            /**@ts-expect-error: viewRegistry exists in runtime, but not in Obsidian's public API */
             this.app.viewRegistry.unregisterExtensions(['md']);
 
         this.addSettingTab(new UNITADE_SETTINGS_TAB(this.app, this));
@@ -239,8 +246,85 @@ export default class UNITADE_PLUGIN extends Plugin {
         this.registerEvent(this.__ctxEditExts());
         this.registerEvent(this.__ctxFence());
 
-        this.registerEvent(this.app.workspace.on("editor-change", () => this.refreshOutline()));
-        this.registerEvent(this.app.workspace.on("active-leaf-change", () => this.refreshOutline()));
+        this.registerEvent(this.app.workspace.on("editor-change", (editor) => {
+            this.refreshOutline();
+
+            if (this.settings.debug_mode && this.settings.status_bar.cursor_position)
+                console.debug('[UNITADE] CHECKED CURSOR POSITION OF EDITOR-CHANGE EVENT:', editor.getCursor());
+
+            this.statusBarConfig.update({
+                cursor_columns: editor.getCursor().ch,
+                cursor_lines: editor.getCursor().line,
+            });
+
+            this.updateStatusBar();
+        }));
+
+        this.registerEvent(this.app.workspace.on("active-leaf-change", async (leaf) => {
+            if (!leaf)
+                return;
+
+            this.refreshOutline();
+
+            const editor = this.app.workspace.activeEditor?.editor;
+            let registered_extensions: number = 0;
+
+            const {
+                extensions,
+                grouped_extensions,
+                code_editor_settings
+            } = this.settings;
+
+            const globalExtensionsByView = parsegroup(grouped_extensions);
+
+            if (!globalExtensionsByView['codeview'])
+                globalExtensionsByView['codeview'] = [];
+            if (!globalExtensionsByView['markdown'])
+                globalExtensionsByView['markdown'] = [];
+
+            if (code_editor_settings.enabled)
+                globalExtensionsByView['codeview'].concat(code_editor_settings.use_default_extensions
+                    ? extensions.split('>')
+                    : code_editor_settings.extensions.split('>'));
+            else
+                globalExtensionsByView['markdown'].concat(extensions.split('>'));
+
+            const viewType = leaf.getViewState().type;
+
+            if (this.settings.status_bar.registered_extensions.include_extensions)
+                registered_extensions += globalExtensionsByView['markdown'].length;
+            if (this.settings.status_bar.registered_extensions.include_code_editor_extensions)
+                registered_extensions += globalExtensionsByView['codeview'].length;
+            if (this.settings.status_bar.registered_extensions.include_extensions_grouped) {
+                const views = Object.keys(globalExtensionsByView).filter(view => (view !== 'markdown' && view !== 'codeview'));
+
+                for (const view in views)
+                    try {
+                        registered_extensions += globalExtensionsByView[view].length;
+                    } catch {
+                        registered_extensions += 0;
+                    }
+            }
+
+            if (!editor)
+                return;
+
+            const cursor = editor.getCursor();
+
+            if (this.settings.debug_mode && this.settings.status_bar.cursor_position)
+                console.debug('[UNITADE] CHECKED CURSOR POSITION OF LEAF-CHANGE EVENT:', cursor);
+
+            this.statusBarConfig.update({
+                cursor_columns: cursor.ch,
+                cursor_lines: cursor.line,
+                display: viewType,
+                processor: 'obsidian',
+                registered_views: Object.keys(this.app.viewRegistry.viewByType).length,
+                registered_extensions: registered_extensions
+            });
+
+            this.updateStatusBar();
+        }));
 
         if (this.settings.debug_mode)
             console.debug('[UNITADE]: Initializing custom markdown postprocessor.');
@@ -373,6 +457,28 @@ export default class UNITADE_PLUGIN extends Plugin {
         this.app.metadataCache.trigger("changed", activeFile.path);
     }
 
+    //#region Status bar update
+    public updateStatusBar(): void {
+        const data: string[] = new StatusBarParser(this._locale, this.statusBarConfig).generateText();
+
+        let text: string = '';
+
+        if (this.settings.status_bar.current_processor)
+            text += data[0];
+        if (this.settings.status_bar.registered_extensions)
+            text += data[1].split(',')[0];
+        if (this.settings.status_bar.registered_views)
+            text += data[1].split(',')[1];
+        if (this.settings.status_bar.cursor_position)
+            text += data[2];
+        if (this.settings.status_bar.current_display)
+            text += data[3];
+
+        this._statusBar.setText(text);
+    }
+    //#endregion
+
+    //#region Modals block
     private __ctxEditExt(): EventRef {
         return this.app.workspace.on('file-menu', (menu, file) => {
             menu
@@ -445,7 +551,9 @@ export default class UNITADE_PLUGIN extends Plugin {
             });
         });
     }
+    //#endregion
 
+    //#region Working with leafs
     ltReady(_app: App): void {
         try {
             _app.workspace.off('layout-ready', () => { this.ltReady(_app); });
@@ -464,6 +572,7 @@ export default class UNITADE_PLUGIN extends Plugin {
             console.warn('CAUGHT AN ERROR VIA LEAF-ITERATE EVENT.');
         }
     }
+    //#endregion
 
     async onunload(): Promise<void> {
         super.onunload();
@@ -492,6 +601,9 @@ export default class UNITADE_PLUGIN extends Plugin {
         }
 
         this.leafRef(this.app);
+
+        if (this.settings.status_bar.enabled)
+            this._statusBar.remove();
     }
 
     async ldSettings(): Promise<void> {
@@ -519,9 +631,7 @@ export default class UNITADE_PLUGIN extends Plugin {
      * @returns {void}
      */
     private __apply(): void {
-        /**@ts-expect-error: not part of public API, accessing through runtime. */
         if (this.app.viewRegistry.viewByType['codeview'] === undefined ||
-            /**@ts-expect-error: not part of public API, accessing through runtime. */
             this.app.viewRegistry.viewByType['codeview'] === null)
             this.registerView('codeview', leaf => new UNITADE_VIEW_CODE(leaf, this));
 
@@ -592,7 +702,6 @@ export default class UNITADE_PLUGIN extends Plugin {
         if (!this.settings.markdown_overcharge && ['md', 'mdown', 'markdown'].includes(filetype))
             return;
 
-        /**@ts-expect-error: not part of public API, accessing through runtime. */
         if (this.app.viewRegistry.isExtensionRegistered(filetype))
             return;
 
@@ -626,7 +735,6 @@ export default class UNITADE_PLUGIN extends Plugin {
         this.settings.errors = {};
 
         if (this.settings.debug_mode)
-            /**@ts-expect-error: not part of public API, accessing through runtime. */
             console.info(this.app.viewRegistry.typeByExtension);
 
         const extensions_arr: string[] = extensions.split('>').map(s => s.trim());
@@ -668,9 +776,7 @@ export default class UNITADE_PLUGIN extends Plugin {
     }
 
     public unapplyRegistry(): void {
-        /**@ts-expect-error: not part of public API, accessing through runtime. */
         for (const extensionKey in this.app.viewRegistry.typeByExtension) {
-            /**@ts-expect-error: not part of public API, accessing through runtime. */
             this.app.viewRegistry.unregisterExtensions([extensionKey]);
         }
     }
@@ -682,7 +788,6 @@ export default class UNITADE_PLUGIN extends Plugin {
             if (markdown_charge || extension !== 'md')
                 if (!this._settings.errors[extension]) {
                     try {
-                        /**@ts-expect-error: not part of public API, accessing through runtime. */
                         this.app.viewRegistry.unregisterExtensions([extension]);
                     } catch (err: any) {
                         const _msg = formatString(this.locale.getLocaleItem('ERROR_REGISTRY_EXTENSION')[2]!, extension);
