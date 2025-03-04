@@ -29,7 +29,7 @@ export class FenceEditModal extends Modal {
 			"--dialog-width": "90vw",
 			"--dialog-height": "90vh",
 		});
-        
+
 		this.modalEl.style.height = "var(--dialog-height)";
 
 		const closeButton = this.modalEl.querySelector<HTMLDivElement>(".modal-close-button");
@@ -48,10 +48,10 @@ export class FenceEditModal extends Modal {
 		const context = ContextEditCodeblocks.create(plugin);
 
 		if (!context.isInFence()) {
-			if(plugin.settings.silence_errors)
-                console.debug('SILENCED ERROR: Notice("Not valid codeblock");');
-            else
-                new Notice("Not valid codeblock");
+			if (plugin.settings.silence_errors)
+				console.debug('SILENCED ERROR: Notice("Not valid codeblock");');
+			else
+				new Notice("Not valid codeblock");
 
 			return;
 		}
@@ -59,12 +59,12 @@ export class FenceEditModal extends Modal {
 		const fenceData = context.getFenceData();
 
 		if (!fenceData) return;
-        else
-            new FenceEditModal(
-                plugin,
-                fenceData.content,
-                fenceData.language,
-                (value) => context.replaceFenceContent(value)
-            ).open();
+		else
+			new FenceEditModal(
+				plugin,
+				fenceData.content,
+				fenceData.language,
+				(value) => context.replaceFenceContent(value)
+			).open();
 	}
 }

@@ -32,7 +32,7 @@ import {
 
 import { UNITADE_SETTINGS } from "./../settings";
 
-import * as monaco from 'monaco-editor'
+import * as monaco from 'monaco-editor';
 
 /**
  * Determines whether the provided file is an instance of `TFile` from the Obsidian API.

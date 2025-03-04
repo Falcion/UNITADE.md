@@ -1,11 +1,9 @@
 {
-    "extends": "./tsconfig.json",
-    "compilerOptions": {
-        "rootDir": ".",
-        "noEmit": true,
-        "skipLibCheck": true
-    },
-    "include": [
-        "scripts/**/*"
-    ]
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"rootDir": ".",
+		"noEmit": true,
+		"skipLibCheck": true
+	},
+	"include": ["scripts/**/*"]
 }
