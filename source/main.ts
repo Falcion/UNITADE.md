@@ -27,6 +27,7 @@
 import {
     App,
     EventRef,
+    MarkdownPostProcessorContext,
     Platform,
     Plugin,
     WorkspaceLeaf,
@@ -55,7 +56,9 @@ import {
 } from './components/modals/folder-edit';
 
 import {
+    asTFile,
     getWorker,
+    isTFile,
     isTFolder
 } from './utils/utils';
 
@@ -236,6 +239,16 @@ export default class UNITADE_PLUGIN extends Plugin {
         this.registerEvent(this.__ctxEditExts());
         this.registerEvent(this.__ctxFence());
 
+        this.registerEvent(this.app.workspace.on("editor-change", () => this.refreshOutline()));
+        this.registerEvent(this.app.workspace.on("active-leaf-change", () => this.refreshOutline()));
+
+        if (this.settings.debug_mode)
+            console.debug('[UNITADE]: Initializing custom markdown postprocessor.');
+
+        this.registerMarkdownPostProcessor((el: HTMLElement, ctx: MarkdownPostProcessorContext) => {
+            this.injectHeadingsIntoOutline(ctx);
+        });
+
         this._observer = new MutationObserver(async (mutation) => {
             if (mutation.length !== 1) return;
             if (mutation[0].addedNodes.length !== 1) return;
@@ -319,6 +332,45 @@ export default class UNITADE_PLUGIN extends Plugin {
         this._observer.observe(document, { childList: true, subtree: true });
 
         this.__apply();
+    }
+
+    injectHeadingsIntoOutline(ctx: MarkdownPostProcessorContext) {
+        const file = ctx.sourcePath;
+        if (!file) return;
+
+        const abstractFile = this.app.vault.getAbstractFileByPath(file);
+
+        if (!isTFile(abstractFile)) return;
+
+        console.debug(abstractFile);
+
+        const cache = this.app.metadataCache.getFileCache(asTFile(abstractFile));
+        if (!cache) return;
+
+        //@ts-expect-error Not part of public API, access through runtime
+        const headings = ctx.getSectionInfo ? ctx.getSectionInfo(ctx.containerEl) ?? [] : [];
+
+        if (!Array.isArray(headings))
+            return;
+
+        this.app.metadataCache.trigger("changed", file, {
+            sections: headings.map((h: any) => ({
+                type: "heading",
+                level: h.level,
+                position: h.position,
+                heading: h.text
+            }))
+        });
+    }
+
+    refreshOutline() {
+        const activeFile = this.app.workspace.getActiveFile();
+        /* Since outline has any meaning only files-as-markdown:
+         * so read only default "vanilla" extensions system.   
+         */
+        if (!activeFile || !this.settings.extensions.split('>').includes(activeFile.extension)) return;
+
+        this.app.metadataCache.trigger("changed", activeFile.path);
     }
 
     private __ctxEditExt(): EventRef {
