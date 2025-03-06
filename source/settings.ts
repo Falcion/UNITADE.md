@@ -622,10 +622,10 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
 
                         await this.plugin.uptSettings(next);
 
-                        await this.__uptIgnConfig(
+                        this.__uptIgnConfig(
                             [ignoreExtInp, ignoreMskInp],
                             [ignoreExtMsg, ignoreMskMsg],
-                            this.plugin.settings.is_ignore,
+                            this.plugin.settings.is_ignore
                         );
 
                         this.__updateErrors();
@@ -814,7 +814,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
 
                         this.__updateErrors();
 
-                        this.__uptCEConfig([
+                        this._uptMSConfig([
                             useDefaultExtensions, editorExtensionsInput, codeExtensionsWarn, editorTheme,
                             editorFolding, editorWordWrapping, editorLineNumbers, editorMinimapping,
                             editorValidationSemantic, editorValidationSyntax, editorFontSize,
@@ -843,7 +843,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
 
                         await this.plugin.uptSettings(next);
 
-                        this.__uptCEConfig([editorExtensionsInput, codeExtensionsWarn], !value);
+                        this._uptMSConfig([editorExtensionsInput, codeExtensionsWarn], !value);
 
                         if (this.plugin.settings.debug_mode)
                             console.debug(`HIDE EDITOR EXTENSIONS? =${value ? 'NO.' : 'YES.'}`);
@@ -903,7 +903,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
         editorExtensionsInput.inputEl.style.height = '48px';
         editorExtensionsInput.inputEl.style.minHeight = '36px';
 
-        this.__uptCEConfig([editorExtensionsInput, codeExtensionsWarn], !this.plugin.settings.code_editor_settings.use_default_extensions);
+        this._uptMSConfig([editorExtensionsInput, codeExtensionsWarn], !this.plugin.settings.code_editor_settings.use_default_extensions);
 
         const editorFolding = new Setting(containerEl)
             .setName(this.locale.getLocaleItem('CODE_EDITOR_FOLDING')[0]!)
@@ -1226,18 +1226,273 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
             });
 
         //#endregion
+        //#region UI/UX
+        containerEl.createEl('h3', { text: this.locale.getLocaleItem('UNITADE_SETTINGS_COMMON2')[0]! });
+
+        new Setting(containerEl)
+            .setName(this.locale.getLocaleItem('SETTINGS_STATUS_BAR')[0]!)
+            .setDesc(this.locale.getLocaleItem('SETTINGS_STATUS_BAR')[1]!)
+            .addToggle(toggle => {
+                toggle
+                    .setValue(this.plugin.settings.status_bar.enabled)
+                    .onChange(async (value) => {
+                        const next = {
+                            ...this.plugin.settings,
+                            status_bar: {
+                                ...this.plugin.settings.status_bar,
+                                enabled: value
+                            },
+                        };
+
+                        await this.plugin.uptSettings(next);
+
+                        this.__updateErrors();
+
+                        this._uptMSConfig([
+                            registerExtensions,
+                            registeredViews,
+                            displayCurrentWorker,
+                            displayCurrentLanguage,
+                            displayCursorPosition
+                        ], value);
+
+                        /* Hide specifically only if register extensions status bar settings
+                           are enabled, so we need only to show them when register extensions is true and
+                           always hide specifically.
+                        */
+                        if (value === true && this.plugin.settings.status_bar.registered_extensions.enabled) {
+                            this._uptMSConfig([
+                                registerExtensionsVanilla,
+                                registerExtensionsGrouped,
+                                registerExtensionsCodeEditor
+                            ], value);
+                        }
+                        if (value === false)
+                            this._uptMSConfig([
+                                registerExtensionsVanilla,
+                                registerExtensionsGrouped,
+                                registerExtensionsCodeEditor
+                            ], value);
+                    });
+
+                return toggle;
+            });
+
+        const registerExtensions = new Setting(containerEl)
+            .setName(this.locale.getLocaleItem('SETTINGS_STATUS_BAR_EXTS')[0]!)
+            .setDesc(this.locale.getLocaleItem('SETTINGS_STATUS_BAR_EXTS')[1]!)
+            .addToggle(toggle => {
+                toggle
+                    .setValue(this.plugin.settings.status_bar.registered_extensions.enabled)
+                    .onChange(async (value) => {
+                        const next = {
+                            ...this.plugin.settings,
+                            status_bar: {
+                                ...this.plugin.settings.status_bar,
+                                registered_extensions: {
+                                    ...this.plugin.settings.status_bar.registered_extensions,
+                                    enabled: value,
+                                },
+                            },
+                        };
+
+                        await this.plugin.uptSettings(next);
+
+                        this.__updateErrors();
+
+                        this._uptMSConfig([
+                            registerExtensionsVanilla,
+                            registerExtensionsGrouped,
+                            registerExtensionsCodeEditor
+                        ], value);
+                    });
+
+                return toggle;
+            });
+
+        const registerExtensionsVanilla = new Setting(containerEl)
+            .setName(this.locale.getLocaleItem('SETTINGS_STATUS_BAR_EXTS_DEFAULT')[0]!)
+            .setDesc(this.locale.getLocaleItem('SETTINGS_STATUS_BAR_EXTS_DEFAULT')[1]!)
+            .addToggle(toggle => {
+                toggle
+                    .setValue(this.plugin.settings.status_bar.registered_extensions.include_extensions)
+                    .onChange(async (value) => {
+                        const next = {
+                            ...this.plugin.settings,
+                            status_bar: {
+                                ...this.plugin.settings.status_bar,
+                                registered_extensions: {
+                                    ...this.plugin.settings.status_bar.registered_extensions,
+                                    include_extensions: value,
+                                },
+                            },
+                        };
+
+                        await this.plugin.uptSettings(next);
+
+                        this.__updateErrors();
+                    });
+
+                return toggle;
+            });
+
+        const registerExtensionsGrouped = new Setting(containerEl)
+            .setName(this.locale.getLocaleItem('SETTINGS_STATUS_BAR_EXTS_GROUPED')[0]!)
+            .setDesc(this.locale.getLocaleItem('SETTINGS_STATUS_BAR_EXTS_GROUPED')[1]!)
+            .addToggle(toggle => {
+                toggle
+                    .setValue(this.plugin.settings.status_bar.registered_extensions.include_extensions_grouped)
+                    .onChange(async (value) => {
+                        const next = {
+                            ...this.plugin.settings,
+                            status_bar: {
+                                ...this.plugin.settings.status_bar,
+                                registered_extensions: {
+                                    ...this.plugin.settings.status_bar.registered_extensions,
+                                    include_extensions_grouped: value,
+                                },
+                            },
+                        };
+
+                        await this.plugin.uptSettings(next);
+
+                        this.__updateErrors();
+                    });
+
+                return toggle;
+            });
+
+        const registerExtensionsCodeEditor = new Setting(containerEl)
+            .setName(this.locale.getLocaleItem('SETTINGS_STATUS_BAR_EXTS_CODE_EDITOR')[0]!)
+            .setDesc(this.locale.getLocaleItem('SETTINGS_STATUS_BAR_EXTS_CODE_EDITOR')[1]!)
+            .addToggle(toggle => {
+                toggle
+                    .setValue(this.plugin.settings.status_bar.registered_extensions.include_code_editor_extensions)
+                    .onChange(async (value) => {
+                        const next = {
+                            ...this.plugin.settings,
+                            status_bar: {
+                                ...this.plugin.settings.status_bar,
+                                registered_extensions: {
+                                    ...this.plugin.settings.status_bar.registered_extensions,
+                                    include_code_editor_extensions: value,
+                                },
+                            },
+                        };
+
+                        await this.plugin.uptSettings(next);
+
+                        this.__updateErrors();
+                    });
+
+                return toggle;
+            });
+
+        const registeredViews = new Setting(containerEl)
+            .setName(this.locale.getLocaleItem('SETTINGS_STATUS_BAR_VIEWS')[0]!)
+            .setDesc(this.locale.getLocaleItem('SETTINGS_STATUS_BAR_VIEWS')[1]!)
+            .addToggle(toggle => {
+                toggle
+                    .setValue(this.plugin.settings.status_bar.registered_views)
+                    .onChange(async (value) => {
+                        const next = {
+                            ...this.plugin.settings,
+                            status_bar: {
+                                ...this.plugin.settings.status_bar,
+                                registered_views: value,
+                            },
+                        };
+
+                        await this.plugin.uptSettings(next);
+
+                        this.__updateErrors();
+                    });
+
+                return toggle;
+            });
+
+        const displayCurrentWorker = new Setting(containerEl)
+            .setName(this.locale.getLocaleItem('SETTINGS_STATUS_BAR_PROCESSOR')[0]!)
+            .setDesc(this.locale.getLocaleItem('SETTINGS_STATUS_BAR_PROCESSOR')[1]!)
+            .addToggle(toggle => {
+                toggle
+                    .setValue(this.plugin.settings.status_bar.current_processor)
+                    .onChange(async (value) => {
+                        const next = {
+                            ...this.plugin.settings,
+                            status_bar: {
+                                ...this.plugin.settings.status_bar,
+                                current_processor: value,
+                            },
+                        };
+
+                        await this.plugin.uptSettings(next);
+
+                        this.__updateErrors();
+                    });
+
+                return toggle;
+            });
+
+        const displayCurrentLanguage = new Setting(containerEl)
+            .setName(this.locale.getLocaleItem('SETTINGS_STATUS_BAR_LANGUAGE_MODEL')[0]!)
+            .setDesc(this.locale.getLocaleItem('SETTINGS_STATUS_BAR_LANGUAGE_MODEL')[1]!)
+            .addToggle(toggle => {
+                toggle
+                    .setValue(this.plugin.settings.status_bar.current_display)
+                    .onChange(async (value) => {
+                        const next = {
+                            ...this.plugin.settings,
+                            status_bar: {
+                                ...this.plugin.settings.status_bar,
+                                current_display: value,
+                            },
+                        };
+
+                        await this.plugin.uptSettings(next);
+
+                        this.__updateErrors();
+                    });
+
+                return toggle;
+            });
+
+        const displayCursorPosition = new Setting(containerEl)
+            .setName(this.locale.getLocaleItem('SETTINGS_STATUS_BAR_CURSOR_POSITION')[0]!)
+            .setDesc(this.locale.getLocaleItem('SETTINGS_STATUS_BAR_CURSOR_POSITION')[1]!)
+            .addToggle(toggle => {
+                toggle
+                    .setValue(this.plugin.settings.status_bar.cursor_position)
+                    .onChange(async (value) => {
+                        const next = {
+                            ...this.plugin.settings,
+                            status_bar: {
+                                ...this.plugin.settings.status_bar,
+                                cursor_position: value,
+                            },
+                        };
+
+                        await this.plugin.uptSettings(next);
+
+                        this.__updateErrors();
+                    });
+
+                return toggle;
+            });
     }
 
+    // update mobile config
     private __uptMbConfig(mbConfigInput: TextAreaComponent, mbConfigEnabled: boolean): void {
         mbConfigInput.inputEl.style.display = mbConfigEnabled ? 'block' : 'none';
     }
 
-    private __uptCEConfig(configCodeEditorElements: (TextAreaComponent | Setting)[], configCodeEditorEnabled: boolean): void {
-        for (const configCodeEditorElement of configCodeEditorElements) {
+    // update module system config
+    private _uptMSConfig(configModuleElements: (TextAreaComponent | Setting)[], configModuleEnabled: boolean): void {
+        for (const configCodeEditorElement of configModuleElements) {
             if (configCodeEditorElement instanceof TextAreaComponent) {
-                configCodeEditorElement.inputEl.style.display = configCodeEditorEnabled ? 'block' : 'none';
+                configCodeEditorElement.inputEl.style.display = configModuleEnabled ? 'block' : 'none';
             } else if (configCodeEditorElement instanceof Setting) {
-                configCodeEditorElement.settingEl.style.display = configCodeEditorEnabled ? 'block' : 'none';
+                configCodeEditorElement.settingEl.style.display = configModuleEnabled ? 'block' : 'none';
             } else {
                 throw new Error('Unknown type of throwable entity.');
             }

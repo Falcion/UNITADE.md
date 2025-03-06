@@ -231,11 +231,50 @@ export const LOCALES_RU = {
         3: "Если файл обрабатывается как модулем редактора кода, так и стандартным Markdown, это может вызвать нестабильное поведение системы рендеринга. Используйте оба режима только для крайних случаев.",
         4: "Если модуль редактора кода использует реестр стандартных расширений (с настройкой \"использовать стандартные расширения\"), расширение будет добавлено в реестр стандартных расширений. В противном случае оно будет добавлено в реестр расширений редактора кода."
     },
-    "SAFE_MODE": {
-        0: "Safe mode:",
-        1: "If enabled, the plugin will check if this extension will be damaged when opened via Markdown view.",
-        2: "DISABLE AT YOUR OWN RISK: you will be able to work with all extensions in Markdown representation, but with the risk of damaging files.",
-        3: "Safe-mod is {1}!",
-        4: "Disables defensive tactics for non-text extensions behaviour."
+    "STATUS_BAR": {
+        0: "NONE",
+        1: "🛠 Worker: {0} ",
+        2: "exts.: {0}, views: {1} ",
+        3: "col.: {0}, line: {1} ",
+        4: "📋 Render: {0} "
+    },
+    "UNITADE_SETTINGS_COMMON2": {
+        0: "UI/UX"
+    },
+    "SETTINGS_STATUS_BAR": {
+        0: "Enable status bar",
+        1: "Upon enabling, allows you not only to see status bar about current instance of file, but also which data to display."
+    },
+    "SETTINGS_STATUS_BAR_EXTS": {
+        0: "Count registered extensions",
+        1: "Implement counter for registered extensions in statur bar or not."
+    },
+    "SETTINGS_STATUS_BAR_EXTS_DEFAULT": {
+        0: "Count default extensions",
+        1: "Add to the counter in status bar default extensions (as markdown) to the final sum. If default extensions go to the code editor module, they are not part of the final sum."
+    },
+    "SETTINGS_STATUS_BAR_EXTS_GROUPED": {
+        0: "Count grouped extensions",
+        1: "Add to the counter in status bar grouped (exclusive) extensions to the final sum. Grouped extensions as markdown or code editor are not included in this sum."
+    },
+    "SETTINGS_STATUS_BAR_EXTS_CODE_EDITOR": {
+        0: "Count code editor extensions",
+        1: "Add to the counter in the status bar code editor (exclusive) extensions to the final sum. If default as code editor extensions enabled, they are part of this final sum."
+    },
+    "SETTINGS_STATUS_BAR_VIEWS": {
+        0: "Count views",
+        1: "Enable counter in the status bar which displays amount of registered views in the opened Vault."
+    },
+    "SETTINGS_STATUS_BAR_PROCESSOR": {
+        0: "Show current processor/worker",
+        1: "Displays language worker (code editor) or registered processor for opened file."
+    },
+    "SETTINGS_STATUS_BAR_LANGUAGE_MODEL": {
+        0: "Show current language model",
+        1: "Displays current view within which opened file is rendered."
+    },
+    "SETTINGS_STATUS_BAR_CURSOR_POSITION": {
+        0: "Show cursor position",
+        1: "Displays line and column for text cursor (caret) position in opened file, resets upon opening new files."
     }
 };

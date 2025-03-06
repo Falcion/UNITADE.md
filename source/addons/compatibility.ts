@@ -10,7 +10,6 @@ export default class CompatibilityModule {
     constructor(app: App, plugin: UNITADE_PLUGIN) {
         this._app = app;
         this._plugin = plugin;
-        /**@ts-expect-error: not part of public API, accessing through runtime. */
         this.current_manifest = this._app.plugins.manifests['unitade'];
     }
 

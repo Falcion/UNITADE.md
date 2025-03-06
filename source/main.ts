@@ -233,14 +233,20 @@ export default class UNITADE_PLUGIN extends Plugin {
                     }
                 }
             }
-        })
+        });
+
+        this.app.workspace.on('layout-ready', () => {
+            this.updateStatusBar();
+        });
 
         if (this._settings.markdown_overcharge)
             this.app.viewRegistry.unregisterExtensions(['md']);
 
         this.addSettingTab(new UNITADE_SETTINGS_TAB(this.app, this));
 
-        this.app.workspace.layoutReady ? this.ltReady(this.app) : this.app.workspace.on('layout-change', () => { this.ltReady(this.app); });
+        this.app.workspace.layoutReady ? this.ltReady(this.app) : this.app.workspace.on('layout-change', () => {
+            this.ltReady(this.app);
+        });
 
         this.registerEvent(this.__ctxEditExt());
         this.registerEvent(this.__ctxEditExts());
@@ -283,11 +289,11 @@ export default class UNITADE_PLUGIN extends Plugin {
                 globalExtensionsByView['markdown'] = [];
 
             if (code_editor_settings.enabled)
-                globalExtensionsByView['codeview'].concat(code_editor_settings.use_default_extensions
+                globalExtensionsByView['codeview'] = globalExtensionsByView['codeview'].concat(code_editor_settings.use_default_extensions
                     ? extensions.split('>')
                     : code_editor_settings.extensions.split('>'));
-            else
-                globalExtensionsByView['markdown'].concat(extensions.split('>'));
+
+            globalExtensionsByView['markdown'] = globalExtensionsByView['markdown'].concat(extensions.split('>'));
 
             const viewType = leaf.getViewState().type;
 
@@ -465,14 +471,17 @@ export default class UNITADE_PLUGIN extends Plugin {
 
         if (this.settings.status_bar.current_processor)
             text += data[0];
-        if (this.settings.status_bar.registered_extensions)
-            text += data[1].split(',')[0];
+        if (this.settings.status_bar.registered_extensions.enabled)
+            text += (data[1].split(',')[0] + '');
         if (this.settings.status_bar.registered_views)
             text += data[1].split(',')[1];
         if (this.settings.status_bar.cursor_position)
             text += data[2];
         if (this.settings.status_bar.current_display)
             text += data[3];
+
+        if (this.settings.debug_mode)
+            console.debug('[UNITADE] STATUS BAR UPDATE: ' + text);
 
         this._statusBar.setText(text);
     }
