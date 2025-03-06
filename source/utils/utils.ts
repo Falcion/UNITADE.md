@@ -526,3 +526,8 @@ export function genEditorSettings(
 export function getTheme(): string {
     return document.body.classList.contains("theme-dark") === true ? "vs-dark" : "vs";
 }
+
+export function getThemeObsidian(): string {
+    return document.body.classList.contains("theme-dark") === true ? "dark" : "light";
+}
+
