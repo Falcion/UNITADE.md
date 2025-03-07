@@ -123,8 +123,7 @@ export default class UNITADE_PLUGIN extends Plugin {
 
         await this.ldSettings();
 
-        if (this.settings.status_bar.enabled)
-            this._statusBar = this.addStatusBarItem();
+        this._statusBar = this.addStatusBarItem();
 
         window.MonacoEnvironment = {
             getWorker(_: string, label: string) {
@@ -560,25 +559,27 @@ export default class UNITADE_PLUGIN extends Plugin {
 
     //#region Status bar update
     public updateStatusBar(): void {
-        const data: string[] = new StatusBarParser(this._locale, this.statusBarConfig).generateText();
+        if (this.settings.status_bar.enabled) {
+            const data: string[] = new StatusBarParser(this._locale, this.statusBarConfig).generateText();
 
-        let text: string = '';
+            let text: string = '';
 
-        if (this.settings.status_bar.current_processor)
-            text += data[0];
-        if (this.settings.status_bar.registered_extensions.enabled)
-            text += (data[1].split(',')[0] + '');
-        if (this.settings.status_bar.registered_views)
-            text += data[1].split(',')[1];
-        if (this.settings.status_bar.cursor_position)
-            text += data[2];
-        if (this.settings.status_bar.current_display)
-            text += data[3];
+            if (this.settings.status_bar.current_processor)
+                text += data[0];
+            if (this.settings.status_bar.registered_extensions.enabled)
+                text += (data[1].split(',')[0] + '');
+            if (this.settings.status_bar.registered_views)
+                text += data[1].split(',')[1];
+            if (this.settings.status_bar.cursor_position)
+                text += data[2];
+            if (this.settings.status_bar.current_display)
+                text += data[3];
 
-        if (this.settings.debug_mode)
-            console.debug('[UNITADE] STATUS BAR UPDATE: ' + text);
+            if (this.settings.debug_mode)
+                console.debug('[UNITADE] STATUS BAR UPDATE: ' + text);
 
-        this._statusBar.setText(text);
+            this._statusBar.setText(text);
+        }
     }
     //#endregion
 
