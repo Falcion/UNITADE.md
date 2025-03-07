@@ -24,19 +24,28 @@
  * Any code and/or API associated with OBSIDIAN behaves as stated in their distribution policy.
  */
 
+import { LOCALES_AM } from "./langs/am";
 import { LOCALES_AR } from "./langs/ar";
+import { LOCALES_BE } from "./langs/be";
+import { LOCALES_CA } from "./langs/ca";
 import { LOCALES_CZ } from "./langs/cz";
 import { LOCALES_DA } from "./langs/da";
 import { LOCALES_DE } from "./langs/de";
 import { LOCALES_EN } from "./langs/en";
 import { LOCALES_EN_GB } from "./langs/en_gb";
 import { LOCALES_ES } from "./langs/es";
+import { LOCALES_FA } from "./langs/fa";
 import { LOCALES_FR } from "./langs/fr";
+import { LOCALES_HE } from "./langs/he";
 import { LOCALES_HI } from "./langs/hi";
+import { LOCALES_HU } from "./langs/hu";
 import { LOCALES_ID } from "./langs/id";
 import { LOCALES_IT } from "./langs/it";
 import { LOCALES_JA } from "./langs/ja";
+import { LOCALES_KH } from "./langs/kh";
 import { LOCALES_KO } from "./langs/ko";
+import { LOCALES_MS } from "./langs/ms";
+import { LOCALES_NE } from "./langs/ne";
 import { LOCALES_NL } from "./langs/nl";
 import { LOCALES_NO } from "./langs/no";
 import { LOCALES_PL } from "./langs/pl";
@@ -45,6 +54,7 @@ import { LOCALES_PT_BR } from "./langs/pt_br";
 import { LOCALES_RO } from "./langs/ro";
 import { LOCALES_RU } from "./langs/ru";
 import { LOCALES_SQ } from "./langs/sq";
+import { LOCALES_TH } from "./langs/th";
 import { LOCALES_TR } from "./langs/tr";
 import { LOCALES_UK } from "./langs/uk";
 import { LOCALES_ZH } from "./langs/zh";
@@ -66,6 +76,16 @@ export default class LocalesModule {
     private _lang: string;
 
     static localesList: { [id: string]: Locales } = {
+        am: LOCALES_AM,
+        be: LOCALES_BE,
+        ca: LOCALES_CA,
+        fa: LOCALES_FA,
+        he: LOCALES_HE,
+        hu: LOCALES_HU,
+        kh: LOCALES_KH,
+        ms: LOCALES_MS,
+        ne: LOCALES_NE,
+        th: LOCALES_TH,
         en: LOCALES_EN,
         "en-GB": LOCALES_EN_GB,
         zh: LOCALES_ZH,
