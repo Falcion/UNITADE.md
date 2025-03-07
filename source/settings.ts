@@ -78,6 +78,7 @@ export interface UNITADE_SETTINGS {
         validation_semantic: boolean,
         validation_syntax: boolean,
         theme: string,
+        force_vanilla_paste: boolean,
         font_size: number,
         font_family: string,
         font_ligatures: boolean;
@@ -143,6 +144,7 @@ export const DEFAULT_SETTINGS: UNITADE_SETTINGS = {
         validation_semantic: true,
         validation_syntax: true,
         theme: 'auto',
+        force_vanilla_paste: false,
         font_size: 14,
         font_family: "'Cascadia Code', 'Fira Code', Consolas, 'Courier New', monospace",
         font_ligatures: true,
@@ -789,7 +791,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                             useDefaultExtensions, editorExtensionsInput, codeExtensionsWarn, editorTheme,
                             editorFolding, editorWordWrapping, editorLineNumbers, editorMinimapping,
                             editorValidationSemantic, editorValidationSyntax, editorFontSize,
-                            editorFontFamily, editorFontLigatures
+                            editorFontFamily, editorFontLigatures, forceVanillaPaste
                         ], value);
                     })
 
@@ -1025,6 +1027,33 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
 
                 return dropdown;
             });
+
+        const forceVanillaPaste = new Setting(containerEl)
+            .setName(this.locale.getLocaleItem('SETTINGS_FORCE_VANILLA_PASTE')[0]!)
+            .setDesc(this.locale.getLocaleItem('SETTINGS_FORCE_VANILLA_PASTE')[1]!)
+            .addToggle(toggle => {
+                toggle
+                    .setValue(this.plugin.settings.code_editor_settings.force_vanilla_paste)
+                    .onChange(async (value) => {
+                        const next = {
+                            ...this.plugin.settings,
+                            code_editor_settings: {
+                                ...this.plugin.settings.code_editor_settings,
+                                force_vanilla_paste: value
+                            }
+                        };
+
+                        this.plugin.uptSettings(next);
+                    });
+
+                return toggle;
+            });
+
+        const forceVanillaPasteText = document.createElement('div');
+        forceVanillaPasteText.addClasses(['unitade-addition-text', `unitade-attention-${getThemeObsidian()}`]);
+        forceVanillaPasteText.innerHTML = this.locale.getLocaleItem('SETTINGS_FORCE_VANILLA_PASTE')[2]!;
+
+        forceVanillaPaste.infoEl.appendChild(forceVanillaPasteText);
 
         containerEl.createEl('h4', { text: this.locale.getLocaleItem('SETTINGS_CODE_EDITOR')[3]! });
 

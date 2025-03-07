@@ -202,7 +202,7 @@
 		"esbuild": "^0.25.0",
 		"esbuild-plugin-glsl": "^1.2.2",
 		"esbuild-sass-plugin": "^3.3.1",
-		"monaco-editor": "^0.43.0",
+		"monaco-editor": "^0.52.2",
 		"obsidian": "^1.7.2",
 		"obsidian-typings": "^2.35.0",
 		"terser": "^5.36.0"

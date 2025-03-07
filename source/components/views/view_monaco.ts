@@ -106,6 +106,10 @@ export class UNITADE_VIEW_CODE extends TextFileView {
 
     private addKeyEvents = () => {
         window.addEventListener('keydown', this.__keyHandler, true);
+
+        if (this.plugin.settings.code_editor_settings.force_vanilla_paste)
+            this.monacoEditor.addCommand(
+                monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyV, () => this.pasteFromClipboard());
     }
 
     private addCtrlKeyWheelEvents = () => {
@@ -121,6 +125,7 @@ export class UNITADE_VIEW_CODE extends TextFileView {
             ['[', 'editor.action.outdentLines'],
             [']', 'editor.action.indentLines'],
             ['d', 'editor.action.copyLinesDownAction'],
+            ['v', 'editor.action.clipboardPasteAction']
         ]);
 
         if (event.ctrlKey) {
@@ -148,6 +153,40 @@ export class UNITADE_VIEW_CODE extends TextFileView {
             }
         }
     }
+
+    private async pasteFromClipboard() {
+        try {
+            const text = await navigator.clipboard.readText();
+
+            if (text) {
+                const position = this.monacoEditor.getPosition();
+                const endColumn = position!.column + text.length;
+
+                this.monacoEditor.executeEdits("", [
+                    {
+                        range: new monaco.Range(
+                            position!.lineNumber, position!.column,
+                            position!.lineNumber, position!.column
+                        ),
+                        text,
+                    },
+                ]);
+
+                this.monacoEditor.setPosition({
+                    lineNumber: position!.lineNumber,
+                    column: endColumn
+                });
+
+                this.monacoEditor.setSelection(new monaco.Selection(
+                    position!.lineNumber, endColumn,
+                    position!.lineNumber, endColumn
+                ));
+            }
+        } catch (error) {
+            console.error("Clipboard paste failed:", error);
+        }
+    }
+
 
     private __mousewheelHandler = async (event: WheelEvent) => {
         if (event.ctrlKey) {

@@ -309,5 +309,10 @@ export const LOCALES_EN = {
     "PROMPT_LOCALES": {
         0: "Input",
         1: "Submit"
+    },
+    "SETTINGS_FORCE_VANILLA_PASTE": {
+        0: "Force vanilla paste keybind",
+        1: "In new versions of OBSIDIAN, code editor can paste data only with CTRL+SHIFT+V combination, this setting is created for this versions, returning custom CTRL+V paste function.",
+        2: "CAUTION! This setting needs to be enabled only if default CTRL+V doesn't work."
     }
 };
