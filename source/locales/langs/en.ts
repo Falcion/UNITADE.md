@@ -288,5 +288,26 @@ export const LOCALES_EN = {
         2: "Reset",
         3: "Settings won't be saved.",
         4: "CAUTION: upon clicking, your preferred settings won't be saved in any other way, use with your own risk."
+    },
+    "COMMAND_TOGGLE_SAFE": {
+        0: "Toggle safe mode"
+    },
+    "COMMAND_TOGGLE_CASE_INSENSITIVE": {
+        0: "Toggle case insensitive mode",
+    },
+    "COMMAND_TOGGLE_MD_OVERCHARGE": {
+        0: "Toggle markdown overcharge"
+    },
+    "COMMAND_ADD_DEFAULT_EXTENSIONS": {
+        0: "Add extensions to the extensions as markdown",
+        1: "Enter your extensions"
+    },
+    "COMMAND_ADD_CODE_EXTENSIONS": {
+        0: "Add extensions to the extensions as code editor",
+        1: "Enter your extensions"
+    },
+    "PROMPT_LOCALES": {
+        0: "Input",
+        1: "Submit"
     }
 };

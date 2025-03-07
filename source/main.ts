@@ -76,6 +76,7 @@ import { FenceEditModal } from './components/modals/codeblock-edit';
 import { ContextEditCodeblocks } from './components/contextEditCodeblock';
 import StatusBarConfig from './externals/samples/statusBarConfig';
 import StatusBarParser from './externals/samples/statusBarParser';
+import { PromptUserInput } from './components/modals/prompt-user-input';
 
 declare module "obsidian" {
     interface Workspace {
@@ -130,6 +131,100 @@ export default class UNITADE_PLUGIN extends Plugin {
                 return getWorker(label);
             }
         }
+
+        //#region Commands
+        this.addCommand({
+            id: 'unitade-toggle-safe-mode',
+            name: this.locale.getLocaleItem('COMMAND_TOGGLE_SAFE')[0]!,
+            hotkeys: [{ modifiers: ['Mod', 'Shift'], key: 's' }],
+            callback: () => {
+                const next = {
+                    ...this.settings,
+                    safe_mode: !this.settings.safe_mode,
+                };
+
+                this.uptSettings(next);
+            }
+        });
+
+        this.addCommand({
+            id: 'unitade-toggle-case-insensitive',
+            name: this.locale.getLocaleItem('COMMAND_TOGGLE_CASE_INSENSITIVE')[0]!,
+            hotkeys: [{ modifiers: ['Mod', 'Shift'], key: 'c' }],
+            callback: () => {
+                const next = {
+                    ...this.settings,
+                    is_case_insensitive: !this.settings.is_case_insensitive
+                };
+
+                this.uptSettings(next);
+            }
+        });
+
+        this.addCommand({
+            id: 'unitade-toggle-markdown-overcharge',
+            name: this.locale.getLocaleItem('COMMAND_TOGGLE_MD_OVERCHARGE')[0]!,
+            hotkeys: [{ modifiers: ['Mod', 'Shift'], key: 'm' }],
+            callback: () => {
+                const next = {
+                    ...this.settings,
+                    markdown_overcharge: !this.settings.markdown_overcharge
+                };
+
+                this.uptSettings(next);
+            }
+        });
+
+        this.addCommand({
+            id: 'unitade-add-markdown-extensions',
+            name: this.locale.getLocaleItem('COMMAND_ADD_DEFAULT_EXTENSIONS')[0]!,
+            callback: () => {
+                new PromptUserInput(this.app, this.locale.getLocaleItem('COMMAND_ADD_DEFAULT_EXTENSIONS')[1]!, this.locale, (result) => {
+                    const extensions: string = result;
+                    if (!extensions) return;
+
+                    const data = extensions.split('>').filter(x => !this.settings.extensions.split('>').includes(x));
+
+                    if (data.length > 0) {
+
+                        const next = {
+                            ...this.settings,
+                            extensions: (this.settings.extensions + `>${data.join('>')}`)
+                        };
+
+                        this.uptSettings(next);
+                    }
+                }).open();
+            }
+        });
+
+        this.addCommand({
+            id: 'unitade-add-code-extensions',
+            name: this.locale.getLocaleItem('COMMAND_ADD_CODE_EXTENSIONS')[0]!,
+            callback: () => {
+                console.log('Called add code extensions modal!');
+                new PromptUserInput(this.app, this.locale.getLocaleItem('COMMAND_ADD_CODE_EXTENSIONS')[1]!, this.locale, (result) => {
+                    const extensions: string = result;
+                    if (!extensions) return;
+
+                    const data = extensions.split('>').filter(x => !this.settings.code_editor_settings.extensions.split('>').includes(x));
+
+                    if (data.length > 0) {
+
+                        const next = {
+                            ...this.settings,
+                            code_editor_settings: {
+                                ...this.settings.code_editor_settings,
+                                extensions: (this.settings.code_editor_settings.extensions + `>${data.join('>')}`)
+                            }
+                        };
+
+                        this.uptSettings(next);
+                    }
+                }).open();
+            }
+        });
+        //#endregion
 
         this.app.vault.on('create', async (file) => {
             const filename: string[] = file.name.split('.').splice(1);
