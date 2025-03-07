@@ -579,6 +579,8 @@ export default class UNITADE_PLUGIN extends Plugin {
                 console.debug('[UNITADE] STATUS BAR UPDATE: ' + text);
 
             this._statusBar.setText(text);
+        } else {
+            this._statusBar.setText('');
         }
     }
     //#endregion
