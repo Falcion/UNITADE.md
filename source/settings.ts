@@ -1192,6 +1192,31 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                 return button;
             });
 
+        //
+
+        const resetToDefaults = new Setting(containerEl)
+            .setName(this.locale.getLocaleItem('SETTINGS_RESET_TO_DEFAULTS')[0]!)
+            .setDesc(this.locale.getLocaleItem('SETTINGS_RESET_TO_DEFAULTS')[1]!)
+            .addButton(button => {
+                button
+                    .setButtonText(this.locale.getLocaleItem('SETTINGS_RESET_TO_DEFAULTS')[2]!)
+                    .setIcon('list-restart')
+                    .setWarning()
+                    .setTooltip(this.locale.getLocaleItem('SETTINGS_RESET_TO_DEFAULTS')[3]!)
+                    .onClick(async (event) => {
+                        if (this.plugin.settings.debug_mode)
+                            console.debug('[UNITADE]: Reset settings to defaults:', event);
+
+                        this.plugin.uptSettings(DEFAULT_SETTINGS);
+                    });
+            });
+
+        const resetToDefaultsWarn = document.createElement('div');
+        resetToDefaultsWarn.addClasses(['unitade-addition-text', `unitade-attention-${getThemeObsidian()}`]);
+        resetToDefaultsWarn.innerHTML = this.locale.getLocaleItem('SETTINGS_RESET_TO_DEFAULTS')[4]!;
+
+        resetToDefaults.infoEl.appendChild(resetToDefaultsWarn);
+
         //#endregion
         //#region UI/UX
         containerEl.createEl('h3', { text: this.locale.getLocaleItem('UNITADE_SETTINGS_COMMON2')[0]! });

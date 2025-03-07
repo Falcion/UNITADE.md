@@ -281,5 +281,12 @@ export const LOCALES_EN = {
     "SETTINGS_STATUS_BAR_CURSOR_POSITION": {
         0: "Show cursor position",
         1: "Displays line and column for text cursor (caret) position in opened file, resets upon opening new files."
+    },
+    "SETTINGS_RESET_TO_DEFAULTS": {
+        0: "Reset to defaults",
+        1: "Reset settings to their default values.",
+        2: "Reset",
+        3: "Settings won't be saved.",
+        4: "CAUTION: upon clicking, your preferred settings won't be saved in any other way, use with your own risk."
     }
 };
