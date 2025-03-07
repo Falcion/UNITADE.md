@@ -1033,6 +1033,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
             .addSlider(slider => {
                 slider
                     .setValue(this.plugin.settings.code_editor_settings.font_size)
+                    .setDynamicTooltip()
                     .setLimits(this.plugin.settings.SYS_FONTSIZE_MIN, this.plugin.settings.SYS_FONTSIZE_MAX, 1)
                     .onChange(async (value) => {
                         const next = {
