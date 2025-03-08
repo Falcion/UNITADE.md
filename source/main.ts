@@ -333,7 +333,7 @@ export default class UNITADE_PLUGIN extends Plugin {
             this.updateStatusBar();
 
         if (this._settings.markdown_overcharge)
-            //@ts-expect-error part of private API
+
             this.app.viewRegistry.unregisterExtensions(['md']);
 
         this.addSettingTab(new UNITADE_SETTINGS_TAB(this.app, this));
@@ -419,7 +419,7 @@ export default class UNITADE_PLUGIN extends Plugin {
                 cursor_lines: cursor.line,
                 display: viewType,
                 processor: 'obsidian',
-                //@ts-expect-error part of private API
+
                 registered_views: Object.keys(this.app.viewRegistry.viewByType).length,
                 registered_extensions: registered_extensions
             });
@@ -739,9 +739,9 @@ export default class UNITADE_PLUGIN extends Plugin {
      * @returns {void}
      */
     private __apply(): void {
-        //@ts-expect-error part of private API
+
         if (this.app.viewRegistry.viewByType['codeview'] === undefined ||
-            //@ts-expect-error part of private API
+
             this.app.viewRegistry.viewByType['codeview'] === null)
             this.registerView('codeview', leaf => new UNITADE_VIEW_CODE(leaf, this));
 
@@ -812,14 +812,14 @@ export default class UNITADE_PLUGIN extends Plugin {
         if (!this.settings.markdown_overcharge && ['md', 'mdown', 'markdown'].includes(filetype))
             return;
 
-        //@ts-expect-error part of private API
+
         if (this.app.viewRegistry.isExtensionRegistered(filetype))
             return;
 
         try {
             this.registerExtensions([filetype], view);
         } catch (err: any) {
-            //@ts-expect-error part of private API
+
             const curr: string | undefined = this.app.viewRegistry.getTypeByExtension(filetype);
 
             let _msg: string;
@@ -846,7 +846,7 @@ export default class UNITADE_PLUGIN extends Plugin {
         this.settings.errors = {};
 
         if (this.settings.debug_mode)
-            //@ts-expect-error part of private API
+
             console.info(this.app.viewRegistry.typeByExtension);
 
         const extensions_arr: string[] = extensions.split('>').map(s => s.trim());
@@ -888,9 +888,9 @@ export default class UNITADE_PLUGIN extends Plugin {
     }
 
     public unapplyRegistry(): void {
-        //@ts-expect-error part of private API
+
         for (const extensionKey in this.app.viewRegistry.typeByExtension) {
-            //@ts-expect-error part of private API
+
             this.app.viewRegistry.unregisterExtensions([extensionKey]);
         }
     }
@@ -902,7 +902,6 @@ export default class UNITADE_PLUGIN extends Plugin {
             if (markdown_charge || extension !== 'md')
                 if (!this._settings.errors[extension]) {
                     try {
-                        //@ts-expect-error part of private API
                         this.app.viewRegistry.unregisterExtensions([extension]);
                     } catch (err: any) {
                         const _msg = formatString(this.locale.getLocaleItem('ERROR_REGISTRY_EXTENSION')[2]!, extension);

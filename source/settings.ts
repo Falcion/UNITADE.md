@@ -586,7 +586,6 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                         if (this.plugin.settings.barefiling) {
                             this.plugin.tryApply('', 'markdown');
                         } else {
-                            //@ts-expect-error part of private API
                             this.plugin.app.viewRegistry.unregisterExtensions(['']);
                         }
                     })
