@@ -27,6 +27,7 @@
 import {
     App,
     EventRef,
+    MarkdownPostProcessorContext,
     Platform,
     Plugin,
     WorkspaceLeaf,
@@ -55,7 +56,9 @@ import {
 } from './components/modals/folder-edit';
 
 import {
+    asTFile,
     getWorker,
+    isTFile,
     isTFolder
 } from './utils/utils';
 
@@ -71,6 +74,9 @@ import { UNITADE_VIEW_CODE } from './components/views/view_monaco';
 import { ContextEditor } from './components/contexts/contextEditor';
 import { FenceEditModal } from './components/modals/codeblock-edit';
 import { ContextEditCodeblocks } from './components/contextEditCodeblock';
+import StatusBarConfig from './externals/samples/statusBarConfig';
+import StatusBarParser from './externals/samples/statusBarParser';
+import { PromptUserInput } from './components/modals/prompt-user-input';
 
 declare module "obsidian" {
     interface Workspace {
@@ -86,6 +92,9 @@ export default class UNITADE_PLUGIN extends Plugin {
     private _settings: UNITADE_SETTINGS = DEFAULT_SETTINGS;
     private _locale: LocalesModule = new LocalesModule();
     private _observer!: MutationObserver;
+
+    private _statusBar!: HTMLElement;
+    public statusBarConfig: StatusBarConfig = new StatusBarConfig(this._locale);
 
     public hover: {
         linkText: string;
@@ -114,11 +123,107 @@ export default class UNITADE_PLUGIN extends Plugin {
 
         await this.ldSettings();
 
+        this._statusBar = this.addStatusBarItem();
+
         window.MonacoEnvironment = {
             getWorker(_: string, label: string) {
                 return getWorker(label);
             }
         }
+
+        //#region Commands
+        this.addCommand({
+            id: 'unitade-toggle-safe-mode',
+            name: this.locale.getLocaleItem('COMMAND_TOGGLE_SAFE')[0]!,
+            hotkeys: [{ modifiers: ['Mod', 'Shift'], key: 's' }],
+            callback: () => {
+                const next = {
+                    ...this.settings,
+                    safe_mode: !this.settings.safe_mode,
+                };
+
+                this.uptSettings(next);
+            }
+        });
+
+        this.addCommand({
+            id: 'unitade-toggle-case-insensitive',
+            name: this.locale.getLocaleItem('COMMAND_TOGGLE_CASE_INSENSITIVE')[0]!,
+            hotkeys: [{ modifiers: ['Mod', 'Shift'], key: 'c' }],
+            callback: () => {
+                const next = {
+                    ...this.settings,
+                    is_case_insensitive: !this.settings.is_case_insensitive
+                };
+
+                this.uptSettings(next);
+            }
+        });
+
+        this.addCommand({
+            id: 'unitade-toggle-markdown-overcharge',
+            name: this.locale.getLocaleItem('COMMAND_TOGGLE_MD_OVERCHARGE')[0]!,
+            hotkeys: [{ modifiers: ['Mod', 'Shift'], key: 'm' }],
+            callback: () => {
+                const next = {
+                    ...this.settings,
+                    markdown_overcharge: !this.settings.markdown_overcharge
+                };
+
+                this.uptSettings(next);
+            }
+        });
+
+        this.addCommand({
+            id: 'unitade-add-markdown-extensions',
+            name: this.locale.getLocaleItem('COMMAND_ADD_DEFAULT_EXTENSIONS')[0]!,
+            callback: () => {
+                new PromptUserInput(this.app, this.locale.getLocaleItem('COMMAND_ADD_DEFAULT_EXTENSIONS')[1]!, this.locale, (result) => {
+                    const extensions: string = result;
+                    if (!extensions) return;
+
+                    const data = extensions.split('>').filter(x => !this.settings.extensions.split('>').includes(x));
+
+                    if (data.length > 0) {
+
+                        const next = {
+                            ...this.settings,
+                            extensions: (this.settings.extensions + `>${data.join('>')}`)
+                        };
+
+                        this.uptSettings(next);
+                    }
+                }).open();
+            }
+        });
+
+        this.addCommand({
+            id: 'unitade-add-code-extensions',
+            name: this.locale.getLocaleItem('COMMAND_ADD_CODE_EXTENSIONS')[0]!,
+            callback: () => {
+                console.log('Called add code extensions modal!');
+                new PromptUserInput(this.app, this.locale.getLocaleItem('COMMAND_ADD_CODE_EXTENSIONS')[1]!, this.locale, (result) => {
+                    const extensions: string = result;
+                    if (!extensions) return;
+
+                    const data = extensions.split('>').filter(x => !this.settings.code_editor_settings.extensions.split('>').includes(x));
+
+                    if (data.length > 0) {
+
+                        const next = {
+                            ...this.settings,
+                            code_editor_settings: {
+                                ...this.settings.code_editor_settings,
+                                extensions: (this.settings.code_editor_settings.extensions + `>${data.join('>')}`)
+                            }
+                        };
+
+                        this.uptSettings(next);
+                    }
+                }).open();
+            }
+        });
+        //#endregion
 
         this.app.vault.on('create', async (file) => {
             const filename: string[] = file.name.split('.').splice(1);
@@ -222,19 +327,112 @@ export default class UNITADE_PLUGIN extends Plugin {
                     }
                 }
             }
-        })
+        });
+
+        if (this.app.workspace.layoutReady)
+            this.updateStatusBar();
 
         if (this._settings.markdown_overcharge)
-            /**@ts-expect-error: viewRegistry exists in runtime, but not in Obsidian's public API */
+
             this.app.viewRegistry.unregisterExtensions(['md']);
 
         this.addSettingTab(new UNITADE_SETTINGS_TAB(this.app, this));
 
-        this.app.workspace.layoutReady ? this.ltReady(this.app) : this.app.workspace.on('layout-change', () => { this.ltReady(this.app); });
+        this.app.workspace.layoutReady ? this.ltReady(this.app) : this.app.workspace.on('layout-change', () => {
+            this.ltReady(this.app);
+        });
 
         this.registerEvent(this.__ctxEditExt());
         this.registerEvent(this.__ctxEditExts());
         this.registerEvent(this.__ctxFence());
+
+        this.registerEvent(this.app.workspace.on("editor-change", (editor) => {
+            this.refreshOutline();
+
+            if (this.settings.debug_mode && this.settings.status_bar.cursor_position)
+                console.debug('[UNITADE] CHECKED CURSOR POSITION OF EDITOR-CHANGE EVENT:', editor.getCursor());
+
+            this.statusBarConfig.update({
+                cursor_columns: editor.getCursor().ch,
+                cursor_lines: editor.getCursor().line,
+            });
+
+            this.updateStatusBar();
+        }));
+
+        this.registerEvent(this.app.workspace.on("active-leaf-change", async (leaf) => {
+            if (!leaf)
+                return;
+
+            this.refreshOutline();
+
+            const editor = this.app.workspace.activeEditor?.editor;
+            let registered_extensions: number = 0;
+
+            const {
+                extensions,
+                grouped_extensions,
+                code_editor_settings
+            } = this.settings;
+
+            const globalExtensionsByView = parsegroup(grouped_extensions);
+
+            if (!globalExtensionsByView['codeview'])
+                globalExtensionsByView['codeview'] = [];
+            if (!globalExtensionsByView['markdown'])
+                globalExtensionsByView['markdown'] = [];
+
+            if (code_editor_settings.enabled)
+                globalExtensionsByView['codeview'] = globalExtensionsByView['codeview'].concat(code_editor_settings.use_default_extensions
+                    ? extensions.split('>')
+                    : code_editor_settings.extensions.split('>'));
+
+            globalExtensionsByView['markdown'] = globalExtensionsByView['markdown'].concat(extensions.split('>'));
+
+            const viewType = leaf.getViewState().type;
+
+            if (this.settings.status_bar.registered_extensions.include_extensions)
+                registered_extensions += globalExtensionsByView['markdown'].length;
+            if (this.settings.status_bar.registered_extensions.include_code_editor_extensions)
+                registered_extensions += globalExtensionsByView['codeview'].length;
+            if (this.settings.status_bar.registered_extensions.include_extensions_grouped) {
+                const views = Object.keys(globalExtensionsByView).filter(view => (view !== 'markdown' && view !== 'codeview'));
+
+                for (const view in views)
+                    try {
+                        registered_extensions += globalExtensionsByView[view].length;
+                    } catch {
+                        registered_extensions += 0;
+                    }
+            }
+
+            if (!editor)
+                return;
+
+            const cursor = editor.getCursor();
+
+            if (this.settings.debug_mode && this.settings.status_bar.cursor_position)
+                console.debug('[UNITADE] CHECKED CURSOR POSITION OF LEAF-CHANGE EVENT:', cursor);
+
+            this.statusBarConfig.update({
+                cursor_columns: cursor.ch,
+                cursor_lines: cursor.line,
+                display: viewType,
+                processor: 'obsidian',
+
+                registered_views: Object.keys(this.app.viewRegistry.viewByType).length,
+                registered_extensions: registered_extensions
+            });
+
+            this.updateStatusBar();
+        }));
+
+        if (this.settings.debug_mode)
+            console.debug('[UNITADE]: Initializing custom markdown postprocessor.');
+
+        this.registerMarkdownPostProcessor((el: HTMLElement, ctx: MarkdownPostProcessorContext) => {
+            this.injectHeadingsIntoOutline(ctx);
+        });
 
         this._observer = new MutationObserver(async (mutation) => {
             if (mutation.length !== 1) return;
@@ -321,6 +519,74 @@ export default class UNITADE_PLUGIN extends Plugin {
         this.__apply();
     }
 
+    injectHeadingsIntoOutline(ctx: MarkdownPostProcessorContext) {
+        const file = ctx.sourcePath;
+        if (!file) return;
+
+        const abstractFile = this.app.vault.getAbstractFileByPath(file);
+
+        if (!isTFile(abstractFile)) return;
+
+        console.debug(abstractFile);
+
+        const cache = this.app.metadataCache.getFileCache(asTFile(abstractFile));
+        if (!cache) return;
+
+        //@ts-expect-error Not part of public API, access through runtime
+        const headings = ctx.getSectionInfo ? ctx.getSectionInfo(ctx.containerEl) ?? [] : [];
+
+        if (!Array.isArray(headings))
+            return;
+
+        this.app.metadataCache.trigger("changed", file, {
+            sections: headings.map((h: any) => ({
+                type: "heading",
+                level: h.level,
+                position: h.position,
+                heading: h.text
+            }))
+        });
+    }
+
+    refreshOutline() {
+        const activeFile = this.app.workspace.getActiveFile();
+        /* Since outline has any meaning only files-as-markdown:
+         * so read only default "vanilla" extensions system.   
+         */
+        if (!activeFile || !this.settings.extensions.split('>').includes(activeFile.extension)) return;
+
+        this.app.metadataCache.trigger("changed", activeFile.path);
+    }
+
+    //#region Status bar update
+    public updateStatusBar(): void {
+        if (this.settings.status_bar.enabled) {
+            const data: string[] = new StatusBarParser(this._locale, this.statusBarConfig).generateText();
+
+            let text: string = '';
+
+            if (this.settings.status_bar.current_processor)
+                text += data[0];
+            if (this.settings.status_bar.registered_extensions.enabled)
+                text += (data[1].split(',')[0] + '');
+            if (this.settings.status_bar.registered_views)
+                text += data[1].split(',')[1];
+            if (this.settings.status_bar.cursor_position)
+                text += data[2];
+            if (this.settings.status_bar.current_display)
+                text += data[3];
+
+            if (this.settings.debug_mode)
+                console.debug('[UNITADE] STATUS BAR UPDATE: ' + text);
+
+            this._statusBar.setText(text);
+        } else {
+            this._statusBar.setText('');
+        }
+    }
+    //#endregion
+
+    //#region Modals block
     private __ctxEditExt(): EventRef {
         return this.app.workspace.on('file-menu', (menu, file) => {
             menu
@@ -393,7 +659,9 @@ export default class UNITADE_PLUGIN extends Plugin {
             });
         });
     }
+    //#endregion
 
+    //#region Working with leafs
     ltReady(_app: App): void {
         try {
             _app.workspace.off('layout-ready', () => { this.ltReady(_app); });
@@ -412,6 +680,7 @@ export default class UNITADE_PLUGIN extends Plugin {
             console.warn('CAUGHT AN ERROR VIA LEAF-ITERATE EVENT.');
         }
     }
+    //#endregion
 
     async onunload(): Promise<void> {
         super.onunload();
@@ -440,6 +709,9 @@ export default class UNITADE_PLUGIN extends Plugin {
         }
 
         this.leafRef(this.app);
+
+        if (this.settings.status_bar.enabled)
+            this._statusBar.remove();
     }
 
     async ldSettings(): Promise<void> {
@@ -467,9 +739,9 @@ export default class UNITADE_PLUGIN extends Plugin {
      * @returns {void}
      */
     private __apply(): void {
-        /**@ts-expect-error: not part of public API, accessing through runtime. */
+
         if (this.app.viewRegistry.viewByType['codeview'] === undefined ||
-            /**@ts-expect-error: not part of public API, accessing through runtime. */
+
             this.app.viewRegistry.viewByType['codeview'] === null)
             this.registerView('codeview', leaf => new UNITADE_VIEW_CODE(leaf, this));
 
@@ -540,15 +812,15 @@ export default class UNITADE_PLUGIN extends Plugin {
         if (!this.settings.markdown_overcharge && ['md', 'mdown', 'markdown'].includes(filetype))
             return;
 
-        /**@ts-expect-error: not part of public API, accessing through runtime. */
+
         if (this.app.viewRegistry.isExtensionRegistered(filetype))
             return;
 
         try {
             this.registerExtensions([filetype], view);
         } catch (err: any) {
-            /**@ts-expect-error: not part of public API, accessing through runtime. */
-            const curr: string = this.app.viewRegistry.getTypeByExtension(filetype);
+
+            const curr: string | undefined = this.app.viewRegistry.getTypeByExtension(filetype);
 
             let _msg: string;
 
@@ -574,7 +846,7 @@ export default class UNITADE_PLUGIN extends Plugin {
         this.settings.errors = {};
 
         if (this.settings.debug_mode)
-            /**@ts-expect-error: not part of public API, accessing through runtime. */
+
             console.info(this.app.viewRegistry.typeByExtension);
 
         const extensions_arr: string[] = extensions.split('>').map(s => s.trim());
@@ -616,9 +888,9 @@ export default class UNITADE_PLUGIN extends Plugin {
     }
 
     public unapplyRegistry(): void {
-        /**@ts-expect-error: not part of public API, accessing through runtime. */
+
         for (const extensionKey in this.app.viewRegistry.typeByExtension) {
-            /**@ts-expect-error: not part of public API, accessing through runtime. */
+
             this.app.viewRegistry.unregisterExtensions([extensionKey]);
         }
     }
@@ -630,7 +902,6 @@ export default class UNITADE_PLUGIN extends Plugin {
             if (markdown_charge || extension !== 'md')
                 if (!this._settings.errors[extension]) {
                     try {
-                        /**@ts-expect-error: not part of public API, accessing through runtime. */
                         this.app.viewRegistry.unregisterExtensions([extension]);
                     } catch (err: any) {
                         const _msg = formatString(this.locale.getLocaleItem('ERROR_REGISTRY_EXTENSION')[2]!, extension);

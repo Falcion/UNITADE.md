@@ -26,9 +26,9 @@
 
 /**
  * JSON for translation of
- * `de: "Deutsch"`
+ * `en-GB: "English (Great Britain)"`
  */
-export const LOCALES_DE = {
+export const LOCALES_EN_GB = {
     "UNITADE_SETTINGS_COMMON": {
         "0": "UNITADE's settings:",
         "1": "Errors:",

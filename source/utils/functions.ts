@@ -101,8 +101,8 @@ export function parsegroup(input: string): { [key: string]: string[] } {
  * const result = formatString("Hello, {0} {1}!", "John", "Doe");
  * console.log(result); // "Hello, John Doe!"
  */
-export function formatString(template: string, ...args: string[]): string {
+export function formatString(template: string, ...args: any[]): string {
     return template.replace(/{(\d+)}/g, (match, index) => {
-        return typeof args[index] !== 'undefined' ? args[index] : match;
+        return typeof args[index] !== 'undefined' ? args[index].toString() : match;
     });
 }

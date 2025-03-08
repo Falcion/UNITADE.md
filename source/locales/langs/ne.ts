@@ -26,9 +26,9 @@
 
 /**
  * JSON for translation of
- * `de: "Deutsch"`
+ * `ne: "नेपाली"`
  */
-export const LOCALES_DE = {
+export const LOCALES_NE = {
     "UNITADE_SETTINGS_COMMON": {
         "0": "UNITADE's settings:",
         "1": "Errors:",

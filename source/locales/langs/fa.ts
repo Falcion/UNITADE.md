@@ -26,9 +26,9 @@
 
 /**
  * JSON for translation of
- * `en: "English"`
+ * `fa: "قارسي"`
  */
-export const LOCALES_EN = {
+export const LOCALES_FA = {
     "UNITADE_SETTINGS_COMMON": {
         0: "UNITADE's settings:",
         1: "Errors:",

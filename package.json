@@ -1,249 +1,251 @@
 {
-  "name": "unitade",
-  "displayName": "UNITADE.md",
-  "private": true,
-  "version": "3.1.0",
-  "description": "A plugin for note-taking app Obsidian™ which allows you to treat any file extension as markdown note-file",
-  "main": "main.ts",
-  "markdown": "github",
-  "directories": {
-    "doc": "docs",
-    "lib": "lib"
-  },
-  "os": [
-    "linux",
-    "win32",
-    "win64"
-  ],
-  "readme": "https://github.com/Falcion/UNITADE.md#readme",
-  "scripts": {
-    "lint": "node ./script/lint.js && npm run lint:docs",
-    "lint:js": "node ./script/lint.js --js",
-    "lint:clang-format": "python3 script/pytohn/run-clang-format.py -r -c shell/ || (echo \"\\nCode not formatted correctly.\" && exit 1)",
-    "lint:clang-tidy": "python3 ./script/python/run-clang-tidy.py",
-    "lint:cpp": "node ./script/lint.js --cc",
-    "lint:objc": "node ./script/lint.js --objc",
-    "lint:py": "node ./script/lint.js --py",
-    "lint:gn": "node ./script/lint.js --gn",
-    "lint:docs": "remark docs -qf && npm run lint:js-in-markdown && npm run ct-typescript-definitions && npm run lint:ts-check-js-in-markdown && npm run lint:docs-fiddles && npm run lint:docs-relative-links && npm run lint:markdown",
-    "lint:docs-fiddles": "standard \"docs/fiddles/**/*.js\"",
-    "lint:docs-relative-links": "electron-lint-markdown-links --root docs \"**/*.md\"",
-    "lint:markdown": "node ./script/lint.js --md",
-    "lint:ts-check-js-in-markdown": "electron-lint-markdown-ts-check --root docs \"**/*.md\" --ignore \"breaking-changes.md\"",
-    "lint:js-in-markdown": "electron-lint-markdown-standard --root docs \"**/*.md\"",
-    "create-api-json": "node script/js/create-api-json.js",
-    "ct-typescript-definitions": "npm run create-api-json && electron-typescript-definitions",
-    "gn-typescript-definitions": "npm run ct-typescript-definitions && shx cp environment.d.ts",
-    "pre-flight": "pre-flight",
-    "gn-check": "node ./script/js/gn-check.js",
-    "gn-format": "python3 script/python/run-gn-format.py",
-    "preversion": "npm i --force",
-    "precommit": "lint-staged",
-    "preinstall": "node -e 'process.exit(0)'",
-    "pretest": "npm run ct-typescript-definitions",
-    "prepack": "check-for-leaks",
-    "prepare": "husky .husky/ && cd scripts/python && python3 -m venv venv",
-    "update-analytics": "ts-node scripts/js/analytics-workflow.ts",
-    "test": "node ./script/spec-runner.js",
-    "start": "tsc && node out/environment.js",
-    "buildtsc": "tsc",
-    "install": "npm run start",
-    "pack": "python scripts/python/pack.py",
-    "release": "standard-version",
-    "release:minor": "standard-version --release-as minor",
-    "release:patch": "standard-version --release-as patch",
-    "release:major": "standard-version --release-as major",
-    "generate-version-json": "node scripts/js/generate-version-json.js",
-    "cli": ".\\gh.cli.sh",
-    "build": "tsc -noEmit -skipLibCheck --esModuleInterop --downlevelIteration source/main.ts && node esbuild.config.mjs production"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Falcion/UNITADE.md.git"
-  },
-  "keywords": [
-    "plugin",
-    "markdown",
-    "files",
-    "typescript",
-    "file-format",
-    "obsidian",
-    "obsidian-plugin"
-  ],
-  "author": {
-    "name": "Falcion",
-    "email": "io.falcion@outlook.com",
-    "url": "https://github.com/Falcion/"
-  },
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/Falcion/UNITADE.md/issues",
-    "email": "io.falcion@outlook.com"
-  },
-  "homepage": "https://github.com/Falcion/UNITADE.md#readme",
-  "prettier": {
-    "tabWidth": 4,
-    "useTabs": true,
-    "bracketSpacing": true,
-    "singleQuote": false,
-    "endOfLine": "crlf",
-    "trailingComma": "all",
-    "semi": true
-  },
-  "lint-staged": {
-    "*.{js,ts}": [
-      "node scripts/lint.js --js --fix --only --"
-    ],
-    "*.{js,ts,d.ts}": [
-      "ts-node scripts/gen-filenames.ts"
-    ],
-    "*.{cc,mm,c,h}": [
-      "python3 scripts/run-clang-format.py -r -c --fix"
-    ],
-    "*.md": [
-      "npm run lint:docs"
-    ],
-    "*.{gn,gni}": [
-      "npm run gn-check",
-      "npm run gn-format"
-    ],
-    "*.py": [
-      "node scripts/lint.js --py --fix --only --"
-    ],
-    "{*.patch,.patches}": [
-      "node scripts/lint.js --patches --only --",
-      "ts-node scripts/js/check-patch-diff.ts"
-    ]
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-customizable"
-    }
-  },
-  "devDependencies": {
-    "@commitlint/cli": "^19.5.0",
-    "@commitlint/config-conventional": "^19.5.0",
-    "@electron/lint-roller": "^1.13.0",
-    "@npmcli/package-json": "^5.2.1",
-    "@octokit/rest": "^21.1.0",
-    "@types/codemirror": "^5.60.15",
-    "@types/extend": "^3.0.4",
-    "@types/fs-extra": "^11.0.4",
-    "@types/minimist": "^1.2.5",
-    "@types/node": "^20.16.14",
-    "@typescript-eslint/eslint-plugin": "^7.18.0",
-    "@typescript-eslint/parser": "^7.18.0",
-    "axios": "^1.7.7",
-    "chai": "^5.1.1",
-    "check-for-leaks": "^1.2.1",
-    "colors": "^1.4.0",
-    "dotenv": "^16.4.5",
-    "dotenv-safe": "^9.1.0",
-    "esbuild-plugin-node-externals": "^1.0.1",
-    "eslint": "^8.57.1",
-    "eslint-config-standard": "^17.1.0",
-    "eslint-plugin": "^1.0.1",
-    "eslint-plugin-import": "^2.31.0",
-    "eslint-plugin-markdownlint": "^0.5.0",
-    "eslint-plugin-node": "^11.1.0",
-    "extend": "^3.0.2",
-    "folder-hash": "^4.0.4",
-    "fs-extra": "^11.2.0",
-    "husky": "^9.1.6",
-    "inquirer": "^9.3.7",
-    "lint": "^1.1.2",
-    "lint-staged": "^15.2.10",
-    "markdownlint": "^0.33.0",
-    "markdownlint-cli2": "^0.14.0",
-    "minimist": "^1.2.8",
-    "mocha": "^10.7.3",
-    "npm-update": "^3.0.1",
-    "prettier": "^3.3.3",
-    "remark": "^15.0.1",
-    "standard-version": "^9.5.0",
-    "temp": "^0.9.4",
-    "ts-loader": "^9.5.1",
-    "ts-node": "^10.9.2",
-    "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.6.3",
-    "unicorn": "^0.0.1",
-    "url": "^0.11.4"
-  },
-  "badges": [
-    {
-      "description": "contributors",
-      "href": "https://github.com/Falcion/UNITADE.md/graphs/contributors",
-      "url": "https://img.shields.io/github/contributors/Falcion/UNITADE.md"
-    },
-    {
-      "description": "stargazers",
-      "href": "https://github.com/Falcion/UNITADE.md/stargazers",
-      "url": "https://img.shields.io/github/stars/Falcion/UNITADE.md"
-    },
-    {
-      "description": "forks",
-      "href": "https://github.com/Falcion/UNITADE.md/forks",
-      "url": "https://img.shields.io/github/forks/Falcion/UNITADE.md"
-    },
-    {
-      "description": "issues",
-      "href": "https://github.com/Falcion/UNITADE.md/issues",
-      "url": "https://img.shields.io/github/issues/Falcion/UNITADE.md"
-    },
-    {
-      "description": "last-commit",
-      "href": "https://github.com/Falcion/UNITADE.md/commits",
-      "url": "https://img.shields.io/github/last-commit/Falcion/UNITADE.md"
-    }
-  ],
-  "dependencies": {
-    "codemirror": "^6.0.1",
-    "esbuild": "^0.25.0",
-    "esbuild-plugin-glsl": "^1.2.2",
-    "esbuild-sass-plugin": "^3.3.1",
-    "monaco-editor": "^0.43.0",
-    "obsidian": "^1.7.2",
-    "terser": "^5.36.0"
-  },
-  "capabilities": {
-    "untrustedWorkspaces": {
-      "supported": "limited",
-      "description": "Creates an environment for your projects"
-    },
-    "virtualWorkspaces": true
-  },
-  "release": {
-    "tagFormat": "${version}",
-    "dryRun": true,
-    "branches": [
-      "+([0-9])?(.{+([0-9]),x}).x",
-      "main",
-      "main-update",
-      "next",
-      "next-major",
-      {
-        "name": "beta",
-        "prerelease": true
-      },
-      {
-        "name": "alpha",
-        "prerelease": true
-      }
-    ]
-  },
-  "packageManager": "npm@10.7.0",
-  "module": "unitade",
-  "dist": {
-    "tarball": "https://api.github.com/repos/Falcion/UNITADE.md/tarball/main"
-  },
-  "engines": {
-    "npm": ">=10.0.0",
-    "node": ">=16.0.0"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "sh .husky/pre-commit",
-      "commit-msg": "sh .husky/commit-msg"
-    }
-  }
+	"name": "unitade",
+	"displayName": "UNITADE.md",
+	"private": true,
+	"version": "3.2.0",
+	"description": "A plugin for note-taking app Obsidian™ which allows you to treat any file extension as markdown note-file",
+	"main": "main.ts",
+	"markdown": "github",
+	"directories": {
+		"doc": "docs",
+		"lib": "lib"
+	},
+	"os": [
+		"linux",
+		"win32",
+		"win64"
+	],
+	"readme": "https://github.com/Falcion/UNITADE.md#readme",
+	"scripts": {
+		"lint": "node ./script/lint.js && npm run lint:docs",
+		"lint:js": "node ./script/lint.js --js",
+		"lint:clang-format": "python3 script/pytohn/run-clang-format.py -r -c shell/ || (echo \"\\nCode not formatted correctly.\" && exit 1)",
+		"lint:clang-tidy": "python3 ./script/python/run-clang-tidy.py",
+		"lint:cpp": "node ./script/lint.js --cc",
+		"lint:objc": "node ./script/lint.js --objc",
+		"lint:py": "node ./script/lint.js --py",
+		"lint:gn": "node ./script/lint.js --gn",
+		"lint:docs": "remark docs -qf && npm run lint:js-in-markdown && npm run ct-typescript-definitions && npm run lint:ts-check-js-in-markdown && npm run lint:docs-fiddles && npm run lint:docs-relative-links && npm run lint:markdown",
+		"lint:docs-fiddles": "standard \"docs/fiddles/**/*.js\"",
+		"lint:docs-relative-links": "electron-lint-markdown-links --root docs \"**/*.md\"",
+		"lint:markdown": "node ./script/lint.js --md",
+		"lint:ts-check-js-in-markdown": "electron-lint-markdown-ts-check --root docs \"**/*.md\" --ignore \"breaking-changes.md\"",
+		"lint:js-in-markdown": "electron-lint-markdown-standard --root docs \"**/*.md\"",
+		"create-api-json": "node script/js/create-api-json.js",
+		"ct-typescript-definitions": "npm run create-api-json && electron-typescript-definitions",
+		"gn-typescript-definitions": "npm run ct-typescript-definitions && shx cp environment.d.ts",
+		"pre-flight": "pre-flight",
+		"gn-check": "node ./script/js/gn-check.js",
+		"gn-format": "python3 script/python/run-gn-format.py",
+		"preversion": "npm i --force",
+		"precommit": "lint-staged",
+		"preinstall": "node -e 'process.exit(0)'",
+		"pretest": "npm run ct-typescript-definitions",
+		"prepack": "check-for-leaks",
+		"prepare": "husky .husky/ && cd scripts/python && python3 -m venv venv",
+		"update-analytics": "ts-node scripts/js/analytics-workflow.ts",
+		"test": "node ./script/spec-runner.js",
+		"start": "tsc && node out/environment.js",
+		"buildtsc": "tsc",
+		"install": "npm run start",
+		"pack": "python scripts/python/pack.py",
+		"release": "standard-version",
+		"release:minor": "standard-version --release-as minor",
+		"release:patch": "standard-version --release-as patch",
+		"release:major": "standard-version --release-as major",
+		"generate-version-json": "node scripts/js/generate-version-json.js",
+		"cli": ".\\gh.cli.sh",
+		"build": "tsc -noEmit && node esbuild.config.mjs production",
+		"build-nocheck": "tsc -noEmit -skipLibCheck --esModuleInterop --noCheck --downlevelIteration source/main.ts && node esbuild.config.mjs production"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Falcion/UNITADE.md.git"
+	},
+	"keywords": [
+		"plugin",
+		"markdown",
+		"files",
+		"typescript",
+		"file-format",
+		"obsidian",
+		"obsidian-plugin"
+	],
+	"author": {
+		"name": "Falcion",
+		"email": "io.falcion@outlook.com",
+		"url": "https://github.com/Falcion/"
+	},
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/Falcion/UNITADE.md/issues",
+		"email": "io.falcion@outlook.com"
+	},
+	"homepage": "https://github.com/Falcion/UNITADE.md#readme",
+	"prettier": {
+		"tabWidth": 4,
+		"useTabs": true,
+		"bracketSpacing": true,
+		"singleQuote": false,
+		"endOfLine": "crlf",
+		"trailingComma": "all",
+		"semi": true
+	},
+	"lint-staged": {
+		"*.{js,ts}": [
+			"node scripts/lint.js --js --fix --only --"
+		],
+		"*.{js,ts,d.ts}": [
+			"ts-node scripts/gen-filenames.ts"
+		],
+		"*.{cc,mm,c,h}": [
+			"python3 scripts/run-clang-format.py -r -c --fix"
+		],
+		"*.md": [
+			"npm run lint:docs"
+		],
+		"*.{gn,gni}": [
+			"npm run gn-check",
+			"npm run gn-format"
+		],
+		"*.py": [
+			"node scripts/lint.js --py --fix --only --"
+		],
+		"{*.patch,.patches}": [
+			"node scripts/lint.js --patches --only --",
+			"ts-node scripts/js/check-patch-diff.ts"
+		]
+	},
+	"config": {
+		"commitizen": {
+			"path": "./node_modules/cz-customizable"
+		}
+	},
+	"devDependencies": {
+		"@commitlint/cli": "^19.5.0",
+		"@commitlint/config-conventional": "^19.5.0",
+		"@electron/lint-roller": "^1.13.0",
+		"@npmcli/package-json": "^5.2.1",
+		"@octokit/rest": "^21.1.0",
+		"@types/codemirror": "^5.60.15",
+		"@types/extend": "^3.0.4",
+		"@types/fs-extra": "^11.0.4",
+		"@types/minimist": "^1.2.5",
+		"@types/node": "^20.16.14",
+		"@typescript-eslint/eslint-plugin": "^7.18.0",
+		"@typescript-eslint/parser": "^7.18.0",
+		"axios": "^1.7.7",
+		"chai": "^5.1.1",
+		"check-for-leaks": "^1.2.1",
+		"colors": "^1.4.0",
+		"dotenv": "^16.4.5",
+		"dotenv-safe": "^9.1.0",
+		"esbuild-plugin-node-externals": "^1.0.1",
+		"eslint": "^8.57.1",
+		"eslint-config-standard": "^17.1.0",
+		"eslint-plugin": "^1.0.1",
+		"eslint-plugin-import": "^2.31.0",
+		"eslint-plugin-markdownlint": "^0.5.0",
+		"eslint-plugin-node": "^11.1.0",
+		"extend": "^3.0.2",
+		"folder-hash": "^4.0.4",
+		"fs-extra": "^11.2.0",
+		"husky": "^9.1.6",
+		"inquirer": "^9.3.7",
+		"lint": "^1.1.2",
+		"lint-staged": "^15.2.10",
+		"markdownlint": "^0.33.0",
+		"markdownlint-cli2": "^0.14.0",
+		"minimist": "^1.2.8",
+		"mocha": "^10.7.3",
+		"npm-update": "^3.0.1",
+		"prettier": "^3.3.3",
+		"remark": "^15.0.1",
+		"standard-version": "^9.5.0",
+		"temp": "^0.9.4",
+		"ts-loader": "^9.5.1",
+		"ts-node": "^10.9.2",
+		"tsconfig-paths": "^4.2.0",
+		"typescript": "^5.6.3",
+		"unicorn": "^0.0.1",
+		"url": "^0.11.4"
+	},
+	"badges": [
+		{
+			"description": "contributors",
+			"href": "https://github.com/Falcion/UNITADE.md/graphs/contributors",
+			"url": "https://img.shields.io/github/contributors/Falcion/UNITADE.md"
+		},
+		{
+			"description": "stargazers",
+			"href": "https://github.com/Falcion/UNITADE.md/stargazers",
+			"url": "https://img.shields.io/github/stars/Falcion/UNITADE.md"
+		},
+		{
+			"description": "forks",
+			"href": "https://github.com/Falcion/UNITADE.md/forks",
+			"url": "https://img.shields.io/github/forks/Falcion/UNITADE.md"
+		},
+		{
+			"description": "issues",
+			"href": "https://github.com/Falcion/UNITADE.md/issues",
+			"url": "https://img.shields.io/github/issues/Falcion/UNITADE.md"
+		},
+		{
+			"description": "last-commit",
+			"href": "https://github.com/Falcion/UNITADE.md/commits",
+			"url": "https://img.shields.io/github/last-commit/Falcion/UNITADE.md"
+		}
+	],
+	"dependencies": {
+		"codemirror": "^6.0.1",
+		"esbuild": "^0.25.0",
+		"esbuild-plugin-glsl": "^1.2.2",
+		"esbuild-sass-plugin": "^3.3.1",
+		"monaco-editor": "^0.52.2",
+		"obsidian": "^1.7.2",
+		"obsidian-typings": "^2.35.0",
+		"terser": "^5.36.0"
+	},
+	"capabilities": {
+		"untrustedWorkspaces": {
+			"supported": "limited",
+			"description": "Creates an environment for your projects"
+		},
+		"virtualWorkspaces": true
+	},
+	"release": {
+		"tagFormat": "${version}",
+		"dryRun": true,
+		"branches": [
+			"+([0-9])?(.{+([0-9]),x}).x",
+			"main",
+			"main-update",
+			"next",
+			"next-major",
+			{
+				"name": "beta",
+				"prerelease": true
+			},
+			{
+				"name": "alpha",
+				"prerelease": true
+			}
+		]
+	},
+	"packageManager": "npm@10.7.0",
+	"module": "unitade",
+	"dist": {
+		"tarball": "https://api.github.com/repos/Falcion/UNITADE.md/tarball/main"
+	},
+	"engines": {
+		"npm": ">=10.0.0",
+		"node": ">=16.0.0"
+	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "sh .husky/pre-commit",
+			"commit-msg": "sh .husky/commit-msg"
+		}
+	}
 }

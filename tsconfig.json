@@ -17,7 +17,8 @@
 		"esModuleInterop": true,
 		"strict": true,
 		"sourceMap": false,
-		"allowJs": true
+		"allowJs": true,
+		"types": ["obsidian-typings", "monaco-editor"]
 	},
 	"exclude": ["node_modules", "out", "git", "venv"],
 	"include": ["**/*.ts", "**/*.d.ts"]

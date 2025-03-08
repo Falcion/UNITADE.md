@@ -35,6 +35,7 @@ import UNITADE_PLUGIN from './main';
 import LocalesModule from './locales/core';
 import CompatibilityModule from './addons/compatibility';
 import CONSTANTS from './utils/constants';
+import { getThemeObsidian } from './utils/utils';
 
 export interface UNITADE_SETTINGS {
     markdown_overcharge: boolean,
@@ -77,6 +78,7 @@ export interface UNITADE_SETTINGS {
         validation_semantic: boolean,
         validation_syntax: boolean,
         theme: string,
+        force_vanilla_paste: boolean,
         font_size: number,
         font_family: string,
         font_ligatures: boolean;
@@ -84,6 +86,20 @@ export interface UNITADE_SETTINGS {
 
     SYS_FONTSIZE_MAX: number,
     SYS_FONTSIZE_MIN: number,
+
+    status_bar: {
+        enabled: boolean,
+        registered_extensions: {
+            enabled: boolean,
+            include_extensions: boolean,
+            include_extensions_grouped: boolean,
+            include_code_editor_extensions: boolean,
+        },
+        registered_views: boolean,
+        current_processor: boolean,
+        current_display: boolean,
+        cursor_position: boolean,
+    }
 }
 
 export const DEFAULT_SETTINGS: UNITADE_SETTINGS = {
@@ -128,6 +144,7 @@ export const DEFAULT_SETTINGS: UNITADE_SETTINGS = {
         validation_semantic: true,
         validation_syntax: true,
         theme: 'auto',
+        force_vanilla_paste: false,
         font_size: 14,
         font_family: "'Cascadia Code', 'Fira Code', Consolas, 'Courier New', monospace",
         font_ligatures: true,
@@ -135,6 +152,20 @@ export const DEFAULT_SETTINGS: UNITADE_SETTINGS = {
 
     SYS_FONTSIZE_MAX: 32,
     SYS_FONTSIZE_MIN: 5,
+
+    status_bar: {
+        enabled: true,
+        registered_extensions: {
+            enabled: false,
+            include_extensions: true,
+            include_extensions_grouped: true,
+            include_code_editor_extensions: false,
+        },
+        registered_views: false,
+        current_processor: true,
+        current_display: true,
+        cursor_position: true,
+    }
 }
 
 export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
@@ -227,9 +258,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
             });
 
         const configWarning = document.createElement('div');
-        configWarning.style.fontSize = '80%';
-        configWarning.style.margin = '10px';
-        configWarning.style.color = 'yellow';
+        configWarning.addClasses(['unitade-addition-text', `unitade-warning-${getThemeObsidian()}`]);
         configWarning.innerHTML = this.locale.getLocaleItem('SETTINGS_EXTENSIONS')[2]!;
 
         this._config.infoEl.appendChild(configWarning);
@@ -256,16 +285,12 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
             });
 
         const onCaseInsensWarning = document.createElement('div');
-        onCaseInsensWarning.style.fontSize = '80%';
-        onCaseInsensWarning.style.margin = '10px';
-        onCaseInsensWarning.style.color = 'darkRed';
+        onCaseInsensWarning.addClasses(['unitade-addition-text', `unitade-attention-${getThemeObsidian()}`]);
         onCaseInsensWarning.innerHTML = this.locale.getLocaleItem('SETTINGS_CASE_INSENSITIVE')[3]!;
 
         caseInsenstiveExtensions.infoEl.appendChild(onCaseInsensWarning);
 
-        configInput.inputEl.style.width = '100%';
-        configInput.inputEl.style.height = '48px';
-        configInput.inputEl.style.minHeight = '36px';
+        configInput.inputEl.addClass('unitade-input-style');
 
         this._configMobile = new Setting(containerEl)
             .setName(this.locale.getLocaleItem('SETTINGS_MOBILE_SPECIFIC')[0]!)
@@ -327,9 +352,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                 this.__updateErrors();
             });
 
-        mobileConfigInp.inputEl.style.width = '100%';
-        mobileConfigInp.inputEl.style.height = '48px';
-        mobileConfigInp.inputEl.style.minHeight = '36px';
+        mobileConfigInp.inputEl.addClass('unitade-input-style');
 
         this.__uptMbConfig(mobileConfigInp, this.plugin.settings.mobile_settings.enable);
 
@@ -420,9 +443,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
             .setDesc(this.locale.getLocaleItem('SETTINGS_FORCED_EXTENSIONS')[1]!)
 
         const forcedWarn = document.createElement('div');
-        forcedWarn.style.fontSize = '80%';
-        forcedWarn.style.margin = '10px';
-        forcedWarn.style.color = 'green';
+        forcedWarn.addClasses(['unitade-addition-text', `unitade-commentary-${getThemeObsidian()}`]);
         forcedWarn.innerHTML = this.locale.getLocaleItem('SETTINGS_FORCED_EXTENSIONS')[2]!
 
         forcedMsg.nameEl.appendChild(forcedWarn);
@@ -458,9 +479,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                 this.__updateErrors();
             });
 
-        frcExtInp.inputEl.style.width = '100%';
-        frcExtInp.inputEl.style.height = '48px';
-        frcExtInp.inputEl.style.minHeight = '36px';
+        frcExtInp.inputEl.addClass('unitade-input-style');
 
         const safeModeToggle = new Setting(containerEl)
             .setName(this.plugin.locale.getLocaleItem('SAFE_MODE')[0]!)
@@ -484,22 +503,17 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
             });
 
         const safeModeToggleWarning = document.createElement('div');
-        safeModeToggleWarning.style.fontSize = '80%';
-        safeModeToggleWarning.style.margin = '10px';
-        safeModeToggleWarning.style.color = 'darkRed';
+        safeModeToggleWarning.addClasses(['unitade-addition-text', `unitade-attention-${getThemeObsidian()}`]);
         safeModeToggleWarning.innerHTML = this.locale.getLocaleItem('SAFE_MODE')[2]!;
 
         safeModeToggle.infoEl.appendChild(safeModeToggleWarning);
 
         const onRfAttention = document.createElement('div');
-        onRfAttention.style.fontSize = '80%';
-        onRfAttention.style.margin = '10px';
-        onRfAttention.style.color = 'darkRed';
+        onRfAttention.addClasses(['unitade-addition-text', `unitade-attention-${getThemeObsidian()}`]);
         onRfAttention.innerHTML = this.locale.getLocaleItem('SETTINGS_WARNING_MSG')[0]!;
 
         const onRfInfo = document.createElement('div');
-        onRfInfo.style.fontWeight = 'bold';
-        onRfInfo.style.fontSize = '80%';
+        onRfInfo.addClass('unitade-info-style');
         onRfInfo.innerHTML = this.locale.getLocaleItem('SETTINGS_ONLOAD_REGISTRY')[2]!;
 
         const onRfStg = new Setting(containerEl)
@@ -525,14 +539,11 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
         onRfStg.nameEl.parentElement!.appendChild(onRfInfo);
 
         const onRuAttention = document.createElement('div');
-        onRuAttention.style.fontSize = '80%';
-        onRuAttention.style.margin = '10px';
-        onRuAttention.style.color = 'darkRed';
+        onRuAttention.addClasses(['unitade-addition-text', `unitade-attention-${getThemeObsidian()}`]);
         onRuAttention.innerHTML = this.locale.getLocaleItem('SETTINGS_WARNING_MSG')[0]!;
 
         const onRuInfo = document.createElement('div');
-        onRuInfo.style.fontWeight = 'bold';
-        onRuInfo.style.fontSize = '80%';
+        onRuInfo.addClass('unitade-info-style');
         onRuInfo.innerHTML = this.locale.getLocaleItem('SETTINGS_ONLOAD_UNSAFE')[2]!
 
         const onRuStg = new Setting(containerEl)
@@ -575,7 +586,6 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                         if (this.plugin.settings.barefiling) {
                             this.plugin.tryApply('', 'markdown');
                         } else {
-                            /**@ts-expect-error: not part of public API, accessing through runtime. */
                             this.plugin.app.viewRegistry.unregisterExtensions(['']);
                         }
                     })
@@ -595,10 +605,10 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
 
                         await this.plugin.uptSettings(next);
 
-                        await this.__uptIgnConfig(
+                        this.__uptIgnConfig(
                             [ignoreExtInp, ignoreMskInp],
                             [ignoreExtMsg, ignoreMskMsg],
-                            this.plugin.settings.is_ignore,
+                            this.plugin.settings.is_ignore
                         );
 
                         this.__updateErrors();
@@ -608,9 +618,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
             });
 
         const ignoreWarn = document.createElement('div');
-        ignoreWarn.style.fontSize = '80%';
-        ignoreWarn.style.margin = '10px';
-        ignoreWarn.style.color = 'yellow';
+        ignoreWarn.addClasses(['unitade-addition-text', `unitade-warning-${getThemeObsidian()}`]);
         ignoreWarn.innerHTML = this.locale.getLocaleItem('SETTINGS_IGNORE_MSG')[0]!;
 
         this._configIgnore.nameEl.appendChild(ignoreWarn);
@@ -650,9 +658,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                 this.__updateErrors();
             });
 
-        ignoreExtInp.inputEl.style.width = '100%';
-        ignoreExtInp.inputEl.style.height = '48px';
-        ignoreExtInp.inputEl.style.minHeight = '36px';
+        ignoreExtInp.inputEl.addClass('unitade-input-style');
 
         const ignoreMskMsg = new Setting(containerEl)
             .setName(this.locale.getLocaleItem('SETTINGS_IGNORE_FILES')[0]!)
@@ -689,9 +695,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                 await this.__updateErrors();
             });
 
-        ignoreMskInp.inputEl.style.width = '100%';
-        ignoreMskInp.inputEl.style.height = '48px';
-        ignoreMskInp.inputEl.style.minHeight = '36px';
+        ignoreMskInp.inputEl.addClass('unitade-input-style');
 
         this.__uptIgnConfig(
             [ignoreExtInp, ignoreMskInp],
@@ -721,9 +725,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
             });
 
         const groupedWarn = document.createElement('div');
-        groupedWarn.style.fontSize = '80%';
-        groupedWarn.style.margin = '10px';
-        groupedWarn.style.color = 'yellow';
+        groupedWarn.addClasses(['unitade-addition-text', `unitade-warning-${getThemeObsidian()}`]);
         groupedWarn.innerHTML = this.locale.getLocaleItem('SETTINGS_GROUP_MSG')[0]!;
 
         groupMsg.nameEl.appendChild(groupedWarn);
@@ -759,9 +761,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                 this.__updateErrors();
             });
 
-        groupExtInp.inputEl.style.width = '100%';
-        groupExtInp.inputEl.style.height = '48px';
-        groupExtInp.inputEl.style.minHeight = '36px';
+        groupExtInp.inputEl.addClass('unitade-input-style');
         //#endregion
         //#region Code editor settings tab
 
@@ -787,11 +787,11 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
 
                         this.__updateErrors();
 
-                        this.__uptCEConfig([
+                        this._uptMSConfig([
                             useDefaultExtensions, editorExtensionsInput, codeExtensionsWarn, editorTheme,
                             editorFolding, editorWordWrapping, editorLineNumbers, editorMinimapping,
                             editorValidationSemantic, editorValidationSyntax, editorFontSize,
-                            editorFontFamily, editorFontLigatures
+                            editorFontFamily, editorFontLigatures, forceVanillaPaste
                         ], value);
                     })
 
@@ -816,7 +816,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
 
                         await this.plugin.uptSettings(next);
 
-                        this.__uptCEConfig([editorExtensionsInput, codeExtensionsWarn], !value);
+                        this._uptMSConfig([editorExtensionsInput, codeExtensionsWarn], !value);
 
                         if (this.plugin.settings.debug_mode)
                             console.debug(`HIDE EDITOR EXTENSIONS? =${value ? 'NO.' : 'YES.'}`);
@@ -865,18 +865,14 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
             .setDesc('');
 
         const codeExtensionsText = document.createElement('div');
-        codeExtensionsText.style.fontSize = '80%';
-        codeExtensionsText.style.margin = '10px';
-        codeExtensionsText.style.color = 'green';
+        codeExtensionsText.addClasses(['unitade-addition-text', `unitade-commentary-${getThemeObsidian()}`]);
         codeExtensionsText.innerHTML = this.locale.getLocaleItem('CODE_EDITOR_USE_DEFAULT')[3]!;
 
         codeExtensionsWarn.infoEl.appendChild(codeExtensionsText);
 
-        editorExtensionsInput.inputEl.style.width = '100%';
-        editorExtensionsInput.inputEl.style.height = '48px';
-        editorExtensionsInput.inputEl.style.minHeight = '36px';
+        editorExtensionsInput.inputEl.addClass('unitade-input-style');
 
-        this.__uptCEConfig([editorExtensionsInput, codeExtensionsWarn], !this.plugin.settings.code_editor_settings.use_default_extensions);
+        this._uptMSConfig([editorExtensionsInput, codeExtensionsWarn], !this.plugin.settings.code_editor_settings.use_default_extensions);
 
         const editorFolding = new Setting(containerEl)
             .setName(this.locale.getLocaleItem('CODE_EDITOR_FOLDING')[0]!)
@@ -1032,6 +1028,33 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                 return dropdown;
             });
 
+        const forceVanillaPaste = new Setting(containerEl)
+            .setName(this.locale.getLocaleItem('SETTINGS_FORCE_VANILLA_PASTE')[0]!)
+            .setDesc(this.locale.getLocaleItem('SETTINGS_FORCE_VANILLA_PASTE')[1]!)
+            .addToggle(toggle => {
+                toggle
+                    .setValue(this.plugin.settings.code_editor_settings.force_vanilla_paste)
+                    .onChange(async (value) => {
+                        const next = {
+                            ...this.plugin.settings,
+                            code_editor_settings: {
+                                ...this.plugin.settings.code_editor_settings,
+                                force_vanilla_paste: value
+                            }
+                        };
+
+                        this.plugin.uptSettings(next);
+                    });
+
+                return toggle;
+            });
+
+        const forceVanillaPasteText = document.createElement('div');
+        forceVanillaPasteText.addClasses(['unitade-addition-text', `unitade-attention-${getThemeObsidian()}`]);
+        forceVanillaPasteText.innerHTML = this.locale.getLocaleItem('SETTINGS_FORCE_VANILLA_PASTE')[2]!;
+
+        forceVanillaPaste.infoEl.appendChild(forceVanillaPasteText);
+
         containerEl.createEl('h4', { text: this.locale.getLocaleItem('SETTINGS_CODE_EDITOR')[3]! });
 
         const editorFontSize = new Setting(containerEl)
@@ -1039,6 +1062,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
             .addSlider(slider => {
                 slider
                     .setValue(this.plugin.settings.code_editor_settings.font_size)
+                    .setDynamicTooltip()
                     .setLimits(this.plugin.settings.SYS_FONTSIZE_MIN, this.plugin.settings.SYS_FONTSIZE_MAX, 1)
                     .onChange(async (value) => {
                         const next = {
@@ -1198,19 +1222,299 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                 return button;
             });
 
+        //
+
+        const resetToDefaults = new Setting(containerEl)
+            .setName(this.locale.getLocaleItem('SETTINGS_RESET_TO_DEFAULTS')[0]!)
+            .setDesc(this.locale.getLocaleItem('SETTINGS_RESET_TO_DEFAULTS')[1]!)
+            .addButton(button => {
+                button
+                    .setButtonText(this.locale.getLocaleItem('SETTINGS_RESET_TO_DEFAULTS')[2]!)
+                    .setIcon('list-restart')
+                    .setWarning()
+                    .setTooltip(this.locale.getLocaleItem('SETTINGS_RESET_TO_DEFAULTS')[3]!)
+                    .onClick(async (event) => {
+                        if (this.plugin.settings.debug_mode)
+                            console.debug('[UNITADE]: Reset settings to defaults:', event);
+
+                        this.plugin.uptSettings(DEFAULT_SETTINGS);
+                    });
+            });
+
+        const resetToDefaultsWarn = document.createElement('div');
+        resetToDefaultsWarn.addClasses(['unitade-addition-text', `unitade-attention-${getThemeObsidian()}`]);
+        resetToDefaultsWarn.innerHTML = this.locale.getLocaleItem('SETTINGS_RESET_TO_DEFAULTS')[4]!;
+
+        resetToDefaults.infoEl.appendChild(resetToDefaultsWarn);
+
         //#endregion
+        //#region UI/UX
+        containerEl.createEl('h3', { text: this.locale.getLocaleItem('UNITADE_SETTINGS_COMMON2')[0]! });
+
+        new Setting(containerEl)
+            .setName(this.locale.getLocaleItem('SETTINGS_STATUS_BAR')[0]!)
+            .setDesc(this.locale.getLocaleItem('SETTINGS_STATUS_BAR')[1]!)
+            .addToggle(toggle => {
+                toggle
+                    .setValue(this.plugin.settings.status_bar.enabled)
+                    .onChange(async (value) => {
+                        const next = {
+                            ...this.plugin.settings,
+                            status_bar: {
+                                ...this.plugin.settings.status_bar,
+                                enabled: value
+                            },
+                        };
+
+                        await this.plugin.uptSettings(next);
+
+                        this.__updateErrors();
+
+                        this._uptMSConfig([
+                            registerExtensions,
+                            registeredViews,
+                            displayCurrentWorker,
+                            displayCurrentLanguage,
+                            displayCursorPosition
+                        ], value);
+
+                        /* Hide specifically only if register extensions status bar settings
+                           are enabled, so we need only to show them when register extensions is true and
+                           always hide specifically.
+                        */
+                        if (value === true && this.plugin.settings.status_bar.registered_extensions.enabled) {
+                            this._uptMSConfig([
+                                registerExtensionsVanilla,
+                                registerExtensionsGrouped,
+                                registerExtensionsCodeEditor
+                            ], value);
+                        }
+                        if (value === false)
+                            this._uptMSConfig([
+                                registerExtensionsVanilla,
+                                registerExtensionsGrouped,
+                                registerExtensionsCodeEditor
+                            ], value);
+                    });
+
+                return toggle;
+            });
+
+        const registerExtensions = new Setting(containerEl)
+            .setName(this.locale.getLocaleItem('SETTINGS_STATUS_BAR_EXTS')[0]!)
+            .setDesc(this.locale.getLocaleItem('SETTINGS_STATUS_BAR_EXTS')[1]!)
+            .addToggle(toggle => {
+                toggle
+                    .setValue(this.plugin.settings.status_bar.registered_extensions.enabled)
+                    .onChange(async (value) => {
+                        const next = {
+                            ...this.plugin.settings,
+                            status_bar: {
+                                ...this.plugin.settings.status_bar,
+                                registered_extensions: {
+                                    ...this.plugin.settings.status_bar.registered_extensions,
+                                    enabled: value,
+                                },
+                            },
+                        };
+
+                        await this.plugin.uptSettings(next);
+
+                        this.__updateErrors();
+
+                        this._uptMSConfig([
+                            registerExtensionsVanilla,
+                            registerExtensionsGrouped,
+                            registerExtensionsCodeEditor
+                        ], value);
+                    });
+
+                return toggle;
+            });
+
+        const registerExtensionsVanilla = new Setting(containerEl)
+            .setName(this.locale.getLocaleItem('SETTINGS_STATUS_BAR_EXTS_DEFAULT')[0]!)
+            .setDesc(this.locale.getLocaleItem('SETTINGS_STATUS_BAR_EXTS_DEFAULT')[1]!)
+            .addToggle(toggle => {
+                toggle
+                    .setValue(this.plugin.settings.status_bar.registered_extensions.include_extensions)
+                    .onChange(async (value) => {
+                        const next = {
+                            ...this.plugin.settings,
+                            status_bar: {
+                                ...this.plugin.settings.status_bar,
+                                registered_extensions: {
+                                    ...this.plugin.settings.status_bar.registered_extensions,
+                                    include_extensions: value,
+                                },
+                            },
+                        };
+
+                        await this.plugin.uptSettings(next);
+
+                        this.__updateErrors();
+                    });
+
+                return toggle;
+            });
+
+        const registerExtensionsGrouped = new Setting(containerEl)
+            .setName(this.locale.getLocaleItem('SETTINGS_STATUS_BAR_EXTS_GROUPED')[0]!)
+            .setDesc(this.locale.getLocaleItem('SETTINGS_STATUS_BAR_EXTS_GROUPED')[1]!)
+            .addToggle(toggle => {
+                toggle
+                    .setValue(this.plugin.settings.status_bar.registered_extensions.include_extensions_grouped)
+                    .onChange(async (value) => {
+                        const next = {
+                            ...this.plugin.settings,
+                            status_bar: {
+                                ...this.plugin.settings.status_bar,
+                                registered_extensions: {
+                                    ...this.plugin.settings.status_bar.registered_extensions,
+                                    include_extensions_grouped: value,
+                                },
+                            },
+                        };
+
+                        await this.plugin.uptSettings(next);
+
+                        this.__updateErrors();
+                    });
+
+                return toggle;
+            });
+
+        const registerExtensionsCodeEditor = new Setting(containerEl)
+            .setName(this.locale.getLocaleItem('SETTINGS_STATUS_BAR_EXTS_CODE_EDITOR')[0]!)
+            .setDesc(this.locale.getLocaleItem('SETTINGS_STATUS_BAR_EXTS_CODE_EDITOR')[1]!)
+            .addToggle(toggle => {
+                toggle
+                    .setValue(this.plugin.settings.status_bar.registered_extensions.include_code_editor_extensions)
+                    .onChange(async (value) => {
+                        const next = {
+                            ...this.plugin.settings,
+                            status_bar: {
+                                ...this.plugin.settings.status_bar,
+                                registered_extensions: {
+                                    ...this.plugin.settings.status_bar.registered_extensions,
+                                    include_code_editor_extensions: value,
+                                },
+                            },
+                        };
+
+                        await this.plugin.uptSettings(next);
+
+                        this.__updateErrors();
+                    });
+
+                return toggle;
+            });
+
+        const registeredViews = new Setting(containerEl)
+            .setName(this.locale.getLocaleItem('SETTINGS_STATUS_BAR_VIEWS')[0]!)
+            .setDesc(this.locale.getLocaleItem('SETTINGS_STATUS_BAR_VIEWS')[1]!)
+            .addToggle(toggle => {
+                toggle
+                    .setValue(this.plugin.settings.status_bar.registered_views)
+                    .onChange(async (value) => {
+                        const next = {
+                            ...this.plugin.settings,
+                            status_bar: {
+                                ...this.plugin.settings.status_bar,
+                                registered_views: value,
+                            },
+                        };
+
+                        await this.plugin.uptSettings(next);
+
+                        this.__updateErrors();
+                    });
+
+                return toggle;
+            });
+
+        const displayCurrentWorker = new Setting(containerEl)
+            .setName(this.locale.getLocaleItem('SETTINGS_STATUS_BAR_PROCESSOR')[0]!)
+            .setDesc(this.locale.getLocaleItem('SETTINGS_STATUS_BAR_PROCESSOR')[1]!)
+            .addToggle(toggle => {
+                toggle
+                    .setValue(this.plugin.settings.status_bar.current_processor)
+                    .onChange(async (value) => {
+                        const next = {
+                            ...this.plugin.settings,
+                            status_bar: {
+                                ...this.plugin.settings.status_bar,
+                                current_processor: value,
+                            },
+                        };
+
+                        await this.plugin.uptSettings(next);
+
+                        this.__updateErrors();
+                    });
+
+                return toggle;
+            });
+
+        const displayCurrentLanguage = new Setting(containerEl)
+            .setName(this.locale.getLocaleItem('SETTINGS_STATUS_BAR_LANGUAGE_MODEL')[0]!)
+            .setDesc(this.locale.getLocaleItem('SETTINGS_STATUS_BAR_LANGUAGE_MODEL')[1]!)
+            .addToggle(toggle => {
+                toggle
+                    .setValue(this.plugin.settings.status_bar.current_display)
+                    .onChange(async (value) => {
+                        const next = {
+                            ...this.plugin.settings,
+                            status_bar: {
+                                ...this.plugin.settings.status_bar,
+                                current_display: value,
+                            },
+                        };
+
+                        await this.plugin.uptSettings(next);
+
+                        this.__updateErrors();
+                    });
+
+                return toggle;
+            });
+
+        const displayCursorPosition = new Setting(containerEl)
+            .setName(this.locale.getLocaleItem('SETTINGS_STATUS_BAR_CURSOR_POSITION')[0]!)
+            .setDesc(this.locale.getLocaleItem('SETTINGS_STATUS_BAR_CURSOR_POSITION')[1]!)
+            .addToggle(toggle => {
+                toggle
+                    .setValue(this.plugin.settings.status_bar.cursor_position)
+                    .onChange(async (value) => {
+                        const next = {
+                            ...this.plugin.settings,
+                            status_bar: {
+                                ...this.plugin.settings.status_bar,
+                                cursor_position: value,
+                            },
+                        };
+
+                        await this.plugin.uptSettings(next);
+
+                        this.__updateErrors();
+                    });
+
+                return toggle;
+            });
     }
 
+    // update mobile config
     private __uptMbConfig(mbConfigInput: TextAreaComponent, mbConfigEnabled: boolean): void {
         mbConfigInput.inputEl.style.display = mbConfigEnabled ? 'block' : 'none';
     }
 
-    private __uptCEConfig(configCodeEditorElements: (TextAreaComponent | Setting)[], configCodeEditorEnabled: boolean): void {
-        for (const configCodeEditorElement of configCodeEditorElements) {
+    // update module system config
+    private _uptMSConfig(configModuleElements: (TextAreaComponent | Setting)[], configModuleEnabled: boolean): void {
+        for (const configCodeEditorElement of configModuleElements) {
             if (configCodeEditorElement instanceof TextAreaComponent) {
-                configCodeEditorElement.inputEl.style.display = configCodeEditorEnabled ? 'block' : 'none';
+                configCodeEditorElement.inputEl.style.display = configModuleEnabled ? 'block' : 'none';
             } else if (configCodeEditorElement instanceof Setting) {
-                configCodeEditorElement.settingEl.style.display = configCodeEditorEnabled ? 'block' : 'none';
+                configCodeEditorElement.settingEl.style.display = configModuleEnabled ? 'block' : 'none';
             } else {
                 throw new Error('Unknown type of throwable entity.');
             }

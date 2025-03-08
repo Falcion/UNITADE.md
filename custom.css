@@ -1,0 +1,39 @@
+.unitade-addition-text {
+	font-size: 80%;
+	margin: 10px;
+}
+
+.unitade-warning-dark {
+	color: #ffff00 !important;
+}
+
+.unitade-warning-light {
+	color: #b3b300 !important;
+}
+
+.unitade-attention-dark {
+	color: #9d0606 !important;
+}
+
+.unitade-attention-light {
+	color: #8b0000 !important;
+}
+
+.unitade-commentary-dark {
+	color: #008000 !important;
+}
+
+.unitade-commentary-light {
+	color: #008000 !important;
+}
+
+.unitade-info-style {
+	font-weight: bold;
+	font-size: 80%;
+}
+
+.unitade-input-style {
+	width: 100%;
+	height: 48px;
+	min-height: 36px;
+}

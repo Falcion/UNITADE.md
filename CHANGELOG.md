@@ -1,6 +1,34 @@
+<!--markdownlint-disable-->
 # Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+## [3.2.0](https://github.com/mokkapps/changelog-generator-demo/compare/v3.1.0...v3.2.0) (2025-03-07)
+
+
+### Features
+
+* **commands:** create and integrate commands for plugin ([adf7135](https://github.com/mokkapps/changelog-generator-demo/commits/adf7135449715f15a4af78ff81d2b4b442ca7852)), closes [#96](https://github.com/Falcion/UNITADE.md/issues/96)
+* **editor-ci:** integrate new obsidian version with code editor ([3ed76c1](https://github.com/mokkapps/changelog-generator-demo/commits/3ed76c1bc3805b09244115b78b6638cb638be1d6)), closes [#104](https://github.com/Falcion/UNITADE.md/issues/104)
+* **locales:** add all languages and update them ([847518c](https://github.com/mokkapps/changelog-generator-demo/commits/847518c85eeefa0598d80de940e661942abe8872))
+* **settings:** add button to reset to defaults in settings ([115afee](https://github.com/mokkapps/changelog-generator-demo/commits/115afee0232e4761d1ea4d0935fb37f23c1c4cf5)), closes [#100](https://github.com/Falcion/UNITADE.md/issues/100)
+* **settings:** add dynamic tooltip for sliders in settings with slider components ([c3a3bdc](https://github.com/mokkapps/changelog-generator-demo/commits/c3a3bdcd64f49508ac66ce1d5fef9b188e3d7c55)), closes [#101](https://github.com/Falcion/UNITADE.md/issues/101)
+* **settings:** add settings for the status bar ([572549f](https://github.com/mokkapps/changelog-generator-demo/commits/572549f3f74767821e4a680d90c6d0825b7e0513)), closes [#98](https://github.com/Falcion/UNITADE.md/issues/98)
+* **stylings:** implement custom CSS themes for plugin ([b079d8e](https://github.com/mokkapps/changelog-generator-demo/commits/b079d8e8428300f0aacaf32af634bb20cd058624)), closes [#95](https://github.com/Falcion/UNITADE.md/issues/95)
+
+
+### Build system
+
+* **build-ci:** automate langs synchro ([a7628fb](https://github.com/mokkapps/changelog-generator-demo/commits/a7628fbf1e1e2cb12c1a6bb286bca17a9517f4b3))
+* **build-deps:** integrate private types within package ([8052f94](https://github.com/mokkapps/changelog-generator-demo/commits/8052f948c8942cdf16a80731acfc3ba66f7dfb16))
+* **deps:** bump esbuild in the npm_and_yarn group across 1 directory ([9768fd6](https://github.com/mokkapps/changelog-generator-demo/commits/9768fd6a02bd7c31859203ece1916dc4a1f82850))
+* **deps:** bump the npm_and_yarn group across 1 directory with 2 updates ([0f902ec](https://github.com/mokkapps/changelog-generator-demo/commits/0f902ecaaa3eea5df677c32a51c64db2556c98cb))
+
+
+### Fixes
+
+* **locales:** add en-GB localisation ([6fb6001](https://github.com/mokkapps/changelog-generator-demo/commits/6fb6001713850980864e3e9d0a0fc90f1cea2ac3)), closes [#103](https://github.com/Falcion/UNITADE.md/issues/103)
+* **status:** fix errors when status bar is not initialized ([03db4bb](https://github.com/mokkapps/changelog-generator-demo/commits/03db4bb8e5b2805492061513be774ccf0a31dd8d))
 
 ## [3.1.0](https://github.com/mokkapps/changelog-generator-demo/compare/v3.0.2...v3.1.0) (2025-02-11)
 

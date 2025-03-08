@@ -56,7 +56,7 @@ export class ContextEditCodeblocks {
 		let fenceLines = 0;
 
 		// Сheck in front the current аence, 
-        // if there is an uneven number of fences, we are not in a valid fence.
+		// if there is an uneven number of fences, we are not in a valid fence.
 		for (let i = 0; i < this.start; i++) {
 			if (this.editor.getLine(i).startsWith("```")) {
 				fenceLines++;

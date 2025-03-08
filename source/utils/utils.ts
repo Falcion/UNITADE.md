@@ -32,7 +32,7 @@ import {
 
 import { UNITADE_SETTINGS } from "./../settings";
 
-import * as monaco from 'monaco-editor'
+import * as monaco from 'monaco-editor';
 
 /**
  * Determines whether the provided file is an instance of `TFile` from the Obsidian API.
@@ -44,8 +44,15 @@ import * as monaco from 'monaco-editor'
  * const isFile = isTFile(someFile);
  * console.log(isFile); // true if someFile is a TFile, false otherwise
  */
-export function isTFile(file: TAbstractFile): boolean {
+export function isTFile(file: TAbstractFile | null): boolean {
     return (file instanceof TFile);
+}
+
+export function asTFile(file: TAbstractFile | null): TFile {
+    if (file instanceof TFile)
+        return file as TFile;
+
+    throw new Error('Error occured when tried to parse TAbstractFile as TFile')
 }
 
 /**
@@ -58,8 +65,15 @@ export function isTFile(file: TAbstractFile): boolean {
  * const isFolder = isTFolder(someFile);
  * console.log(isFolder); // true if someFile is a TFolder, false otherwise
  */
-export function isTFolder(file: TAbstractFile): boolean {
+export function isTFolder(file: TAbstractFile | null): boolean {
     return (file instanceof TFolder);
+}
+
+export function asTFolder(file: TAbstractFile | null): TFolder {
+    if (file instanceof TFolder)
+        return file as TFolder;
+
+    throw new Error('Error occured when tried to parse TAbstractFile as TFolder')
 }
 
 /**
@@ -471,15 +485,15 @@ export function getWorker(language: string): Worker {
  * @returns {monaco.editor.IStandaloneEditorConstructionOptions} - The constructed editor configuration options.
  */
 export function genEditorSettings(
-    setting: UNITADE_SETTINGS, 
-    language: string, 
-    minimap: boolean = true, 
+    setting: UNITADE_SETTINGS,
+    language: string,
+    minimap: boolean = true,
     wordwrap: boolean = false
 ): monaco.editor.IStandaloneEditorConstructionOptions {
-    
+
     // Set the minimap flag based on the provided argument or the setting.
     const minimapFlag = minimap === false ? false : setting.code_editor_settings.minimapping;
-    
+
     const minimapOptions: monaco.editor.IEditorMinimapOptions = {
         enabled: minimapFlag,
     };
@@ -488,11 +502,11 @@ export function genEditorSettings(
 
     const settings: monaco.editor.IStandaloneEditorConstructionOptions = {
         automaticLayout: true,
-        language: getLanguage(language), 
+        language: getLanguage(language),
         theme: setting.code_editor_settings.theme !== 'auto' ? setting.code_editor_settings.theme : getTheme(),
         lineNumbers: setting.code_editor_settings.line_numbers ? "on" : "off",
         wordWrap: wordwrapFlag ? "on" : "off",
-        minimap: minimapOptions, 
+        minimap: minimapOptions,
         folding: setting.code_editor_settings.folding,
         fontSize: setting.code_editor_settings.font_size,
         fontFamily: setting.code_editor_settings.font_family,
@@ -503,12 +517,17 @@ export function genEditorSettings(
         'semanticHighlighting.enabled': true,
     };
 
-    if(setting.debug_mode)
+    if (setting.debug_mode)
         console.debug(settings);
 
     return settings;
 }
 
 export function getTheme(): string {
-    return document.body.classList.contains("theme-dark") === true  ? "vs-dark" : "vs";
+    return document.body.classList.contains("theme-dark") === true ? "vs-dark" : "vs";
 }
+
+export function getThemeObsidian(): string {
+    return document.body.classList.contains("theme-dark") === true ? "dark" : "light";
+}
+
