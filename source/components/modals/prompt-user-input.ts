@@ -1,5 +1,5 @@
 import { App, Modal, Setting } from 'obsidian';
-import LocalesModule from 'source/locales/core';
+import LocalesModule from './../../locales/core';
 
 export class PromptUserInput extends Modal {
     constructor(app: App, title: string, locale: LocalesModule, onSubmit: (result: string) => void) {
