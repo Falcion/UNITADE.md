@@ -314,5 +314,10 @@ export const LOCALES_KH = {
         "0": "Force vanilla paste keybind",
         "1": "In new versions of OBSIDIAN, code editor can paste data only with CTRL+SHIFT+V combination, this setting is created for this versions, returning custom CTRL+V paste function.",
         "2": "CAUTION! This setting needs to be enabled only if default CTRL+V doesn't work."
+    },
+    "CODE_EDITOR_ZOOM_OPTION": {
+        "0": "Enable zoom in/out in editor",
+        "1": "If enabled, allows you to zoom in/out in the editor by holding Ctrl+MOUSEWHEEL correspondively. Upon changing option, close and reopen the file to apply.",
+        "2": "This option changes font size in the settings of the plugin, so be careful with this option and possible spam errors."
     }
 };
