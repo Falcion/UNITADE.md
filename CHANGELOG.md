@@ -1,7 +1,13 @@
-<!--markdownlint-disable-->
 # Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+### [3.2.1](https://github.com/mokkapps/changelog-generator-demo/compare/v3.2.0...v3.2.1) (2025-03-12)
+
+
+### Features
+
+* **zoom:** add zoom setting for the code editor ([8366913](https://github.com/mokkapps/changelog-generator-demo/commits/8366913e94929515baf6d5a69c366252fb3af3c1))
 
 ## [3.2.0](https://github.com/mokkapps/changelog-generator-demo/compare/v3.1.0...v3.2.0) (2025-03-07)
 
