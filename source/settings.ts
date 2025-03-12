@@ -79,6 +79,7 @@ export interface UNITADE_SETTINGS {
         validation_syntax: boolean,
         theme: string,
         force_vanilla_paste: boolean,
+        enable_zoom: boolean,
         font_size: number,
         font_family: string,
         font_ligatures: boolean;
@@ -145,6 +146,7 @@ export const DEFAULT_SETTINGS: UNITADE_SETTINGS = {
         validation_syntax: true,
         theme: 'auto',
         force_vanilla_paste: false,
+        enable_zoom: true,
         font_size: 14,
         font_family: "'Cascadia Code', 'Fira Code', Consolas, 'Courier New', monospace",
         font_ligatures: true,
@@ -791,7 +793,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                             useDefaultExtensions, editorExtensionsInput, codeExtensionsWarn, editorTheme,
                             editorFolding, editorWordWrapping, editorLineNumbers, editorMinimapping,
                             editorValidationSemantic, editorValidationSyntax, editorFontSize,
-                            editorFontFamily, editorFontLigatures, forceVanillaPaste
+                            editorFontFamily, editorFontLigatures, forceVanillaPaste, enableZoomSetting,
                         ], value);
                     })
 
@@ -1041,6 +1043,28 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                                 ...this.plugin.settings.code_editor_settings,
                                 force_vanilla_paste: value
                             }
+                        };
+
+                        this.plugin.uptSettings(next);
+                    });
+
+                return toggle;
+            });
+
+        const enableZoomSetting = new Setting(containerEl)
+            .setName(this.locale.getLocaleItem('CODE_EDITOR_ZOOM_OPTION')[0]!)
+            .setDesc(this.locale.getLocaleItem('CODE_EDITOR_ZOOM_OPTION')[1]!)
+            .setTooltip(this.locale.getLocaleItem('CODE_EDITOR_ZOOM_OPTION')[2]!)
+            .addToggle(toggle => {
+                toggle
+                    .setValue(this.plugin.settings.code_editor_settings.enable_zoom)
+                    .onChange(async (value) => {
+                        const next = {
+                            ...this.plugin.settings,
+                            code_editor_settings: {
+                                ...this.plugin.settings.code_editor_settings,
+                                enable_zoom: value,
+                            },
                         };
 
                         this.plugin.uptSettings(next);
