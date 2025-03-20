@@ -114,7 +114,9 @@ export class UNITADE_VIEW_CODE extends TextFileView {
 
     private addCtrlKeyWheelEvents = () => {
         if (this.plugin.settings.code_editor_settings.enable_zoom)
-            this.containerEl.addEventListener('wheel', this.__mousewheelHandler, true);
+            this.containerEl.addEventListener('wheel', this.__mousewheelHandler, {
+                passive: true,
+            });
     }
 
     private __keyHandler = async (event: KeyboardEvent) => {
