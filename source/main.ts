@@ -678,6 +678,37 @@ export default class UNITADE_PLUGIN extends Plugin {
         this.__apply();
     }
 
+    /**
+     * This function updates specific visual settings and data without reapplying
+     * the entire context for the plugin. Useful for updating visuals, dynamic settings, etc.
+     * @param partialUpdates Partial settings to update
+     */
+    async uptSettingsVisuals(partialUpdates: {
+        code_editor_settings?: Partial<UNITADE_SETTINGS['code_editor_settings']>;
+        status_bar?: Partial<UNITADE_SETTINGS['status_bar']>;
+        mobile_settings?: Partial<UNITADE_SETTINGS['mobile_settings']>;
+        [key: string]: any;
+    }): Promise<void> {
+        // Perform a deep merge of current settings 
+        // and partial updates
+        const deepMerge = (target: any, source: any) => {
+            for (const key of Object.keys(source)) {
+                if (source[key] && typeof source[key] === 'object' && !Array.isArray(source[key])) {
+                    if (!target[key] || typeof target[key] !== 'object') {
+                        target[key] = {};
+                    }
+                    deepMerge(target[key], source[key]);
+                } else {
+                    target[key] = source[key];
+                }
+            }
+        };
+
+        deepMerge(this._settings, partialUpdates);
+
+        await this.saveData(this._settings);
+    }
+
     //! MAIN METHOD OF ENTIRE PLUGIN:
     //! Configures and applies everything from the settings.
     /**

@@ -64,11 +64,15 @@ export class UNITADE_VIEW_CODE extends TextFileView {
 
         await super.onUnloadFile(file);
 
+        await this.__saveFontSize();
+
         this.monacoEditor.dispose();
     }
 
     async onClose() {
         await super.onClose();
+
+        await this.__saveFontSize();
     }
 
     onResize() {
@@ -115,7 +119,8 @@ export class UNITADE_VIEW_CODE extends TextFileView {
     private addCtrlKeyWheelEvents = () => {
         if (this.plugin.settings.code_editor_settings.enable_zoom)
             this.containerEl.addEventListener('wheel', this.__mousewheelHandler, {
-                passive: true,
+                capture: this.plugin.settings.code_editor_settings.enable_zoom,
+                passive: !this.plugin.settings.code_editor_settings.enable_zoom,
             });
     }
 
@@ -190,26 +195,23 @@ export class UNITADE_VIEW_CODE extends TextFileView {
         }
     }
 
-
     private __mousewheelHandler = async (event: WheelEvent) => {
         if (event.ctrlKey) {
             const delta = event.deltaY > 0 ? 1 : -1;
 
-            const next = {
-                ...this.plugin.settings,
-                code_editor_settings: {
-                    ...this.plugin.settings.code_editor_settings,
-                    font_size: this.plugin.settings.code_editor_settings.font_size += delta,
-                },
-            }
-
-            await this.plugin.uptSettings(next);
-
             this.monacoEditor!.updateOptions({
-                fontSize: this.plugin.settings.code_editor_settings.font_size,
+                fontSize: (this.monacoEditor.getOption(monaco.editor.EditorOption.fontSize) + delta),
             });
 
             event.stopPropagation();
         }
+    }
+
+    private __saveFontSize = async () => {
+        await this.plugin.uptSettingsVisuals({
+            code_editor_settings: {
+                font_size: this.monacoEditor.getOption(monaco.editor.EditorOption.fontSize),
+            }
+        });
     }
 }
