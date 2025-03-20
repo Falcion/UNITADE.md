@@ -27,7 +27,6 @@
 import {
     App,
     EventRef,
-    MarkdownPostProcessorContext,
     Platform,
     Plugin,
     WorkspaceLeaf,
@@ -56,9 +55,7 @@ import {
 } from './components/modals/folder-edit';
 
 import {
-    asTFile,
     getWorker,
-    isTFile,
     isTFolder
 } from './utils/utils';
 
@@ -347,8 +344,6 @@ export default class UNITADE_PLUGIN extends Plugin {
         this.registerEvent(this.__ctxFence());
 
         this.registerEvent(this.app.workspace.on("editor-change", (editor) => {
-            this.refreshOutline();
-
             if (this.settings.debug_mode && this.settings.status_bar.cursor_position)
                 console.debug('[UNITADE] CHECKED CURSOR POSITION OF EDITOR-CHANGE EVENT:', editor.getCursor());
 
@@ -363,8 +358,6 @@ export default class UNITADE_PLUGIN extends Plugin {
         this.registerEvent(this.app.workspace.on("active-leaf-change", async (leaf) => {
             if (!leaf)
                 return;
-
-            this.refreshOutline();
 
             const editor = this.app.workspace.activeEditor?.editor;
             let registered_extensions: number = 0;
@@ -429,10 +422,6 @@ export default class UNITADE_PLUGIN extends Plugin {
 
         if (this.settings.debug_mode)
             console.debug('[UNITADE]: Initializing custom markdown postprocessor.');
-
-        this.registerMarkdownPostProcessor((el: HTMLElement, ctx: MarkdownPostProcessorContext) => {
-            this.injectHeadingsIntoOutline(ctx);
-        });
 
         this._observer = new MutationObserver(async (mutation) => {
             if (mutation.length !== 1) return;
@@ -517,45 +506,6 @@ export default class UNITADE_PLUGIN extends Plugin {
         this._observer.observe(document, { childList: true, subtree: true });
 
         this.__apply();
-    }
-
-    injectHeadingsIntoOutline(ctx: MarkdownPostProcessorContext) {
-        const file = ctx.sourcePath;
-        if (!file) return;
-
-        const abstractFile = this.app.vault.getAbstractFileByPath(file);
-
-        if (!isTFile(abstractFile)) return;
-
-        console.debug(abstractFile);
-
-        const cache = this.app.metadataCache.getFileCache(asTFile(abstractFile));
-        if (!cache) return;
-
-        //@ts-expect-error Not part of public API, access through runtime
-        const headings = ctx.getSectionInfo ? ctx.getSectionInfo(ctx.containerEl) ?? [] : [];
-
-        if (!Array.isArray(headings))
-            return;
-
-        this.app.metadataCache.trigger("changed", file, {
-            sections: headings.map((h: any) => ({
-                type: "heading",
-                level: h.level,
-                position: h.position,
-                heading: h.text
-            }))
-        });
-    }
-
-    refreshOutline() {
-        const activeFile = this.app.workspace.getActiveFile();
-        /* Since outline has any meaning only files-as-markdown:
-         * so read only default "vanilla" extensions system.   
-         */
-        if (!activeFile || !this.settings.extensions.split('>').includes(activeFile.extension)) return;
-
-        this.app.metadataCache.trigger("changed", activeFile.path);
     }
 
     //#region Status bar update
@@ -726,6 +676,38 @@ export default class UNITADE_PLUGIN extends Plugin {
         await this.saveData(this.settings);
 
         this.__apply();
+    }
+
+    /**
+     * This function updates specific visual settings and data without reapplying
+     * the entire context for the plugin. Useful for updating visuals, dynamic settings, etc.
+     * @param partialUpdates Partial settings to update
+     */
+    async uptSettingsVisuals(partialUpdates: {
+        code_editor_settings?: Partial<UNITADE_SETTINGS['code_editor_settings']>;
+        status_bar?: Partial<UNITADE_SETTINGS['status_bar']>;
+        mobile_settings?: Partial<UNITADE_SETTINGS['mobile_settings']>;
+        [key: string]: any;
+    }): Promise<void> {
+        // Perform a deep merge of current settings 
+        // and partial updates
+        const deepMerge = (target: any, source: any) => {
+            for (const key of Object.keys(source)) {
+                if (key === "__proto__" || key === "constructor") continue;
+                if (source[key] && typeof source[key] === 'object' && !Array.isArray(source[key])) {
+                    if (!target[key] || typeof target[key] !== 'object') {
+                        target[key] = {};
+                    }
+                    deepMerge(target[key], source[key]);
+                } else {
+                    target[key] = source[key];
+                }
+            }
+        };
+
+        deepMerge(this._settings, partialUpdates);
+
+        await this.saveData(this._settings);
     }
 
     //! MAIN METHOD OF ENTIRE PLUGIN:

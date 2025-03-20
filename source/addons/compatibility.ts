@@ -13,13 +13,22 @@ export default class CompatibilityModule {
         this.current_manifest = this._app.plugins.manifests['unitade'];
     }
 
-    async start(): Promise<void> {
+    async start(): Promise<boolean> {
         const data = await this._plugin.loadData();
+
+        if (!data) {
+            console.debug('[UNITADE]\tCompatibility module tried to read data, while it is installed without any settings (first init).');
+
+            return false;
+        }
+
         const version = this.getVersion(data);
 
-        if (version === this._plugin.settings.manifest_version) return;
+        if (version === this._plugin.settings.manifest_version) return false;
 
         await this.convert(data, version);
+
+        return true;
     }
 
     private getVersion(data: any): string {

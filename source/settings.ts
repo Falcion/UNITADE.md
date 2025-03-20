@@ -192,7 +192,17 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
         this.plugin = plugin;
 
         if (this.plugin.settings.compatibility_module) {
-            new CompatibilityModule(app, plugin).start();
+            const compatModule = new CompatibilityModule(app, plugin);
+            compatModule.start().then((result) => {
+                if (!result) {
+                    const next = {
+                        ...this.plugin.settings,
+                        manifest_version: compatModule.current_manifest.version || '',
+                    };
+
+                    this.plugin.uptSettings(next);
+                }
+            });
         }
     }
 
