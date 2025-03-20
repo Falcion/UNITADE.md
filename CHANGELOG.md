@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.2.2](https://github.com/mokkapps/changelog-generator-demo/compare/v3.2.1...v3.2.2) (2025-03-20)
+
+
+### Build system
+
+* **deps-dev:** bump axios in the npm_and_yarn group across 1 directory ([d00acaf](https://github.com/mokkapps/changelog-generator-demo/commits/d00acaf71071814e791a815a8bfd99f11e794453))
+* **deps:** bump @babel/runtime ([812a291](https://github.com/mokkapps/changelog-generator-demo/commits/812a29186748651bd372364fc0c906fe7d213ddd))
+
+
+### Fixes
+
+* **codeview:** fix warning with wheel events in code view ([3575c19](https://github.com/mokkapps/changelog-generator-demo/commits/3575c19638cadf22ccbf826c3b7a3ef57f1748de)), closes [#113](https://github.com/Falcion/UNITADE.md/issues/113)
+* **compat:** remove abundancy with reading null data ([cbf9d3a](https://github.com/mokkapps/changelog-generator-demo/commits/cbf9d3a5ae63d33c870434027ba8da27af881728)), closes [#112](https://github.com/Falcion/UNITADE.md/issues/112)
+* **optimization:** remove legacy pipeline code, fixes [#107107](https://github.com/Falcion/UNITADE.md/issues/107107) ([0975e8e](https://github.com/mokkapps/changelog-generator-demo/commits/0975e8efa30b9792878b534e8bd97955647d3b3a)), closes [#107](https://github.com/Falcion/UNITADE.md/issues/107)
+* **scrolls:** fix blinking file system when scrolling in codeview ([8a6fc01](https://github.com/mokkapps/changelog-generator-demo/commits/8a6fc01f711f4d0e5005d3079c4b6d143e2b5ec5))
+
 ### [3.2.1](https://github.com/mokkapps/changelog-generator-demo/compare/v3.2.0...v3.2.1) (2025-03-12)
 
 
