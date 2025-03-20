@@ -34,8 +34,7 @@ body:
           label: Version of an project's essence
           description: What version of an project's essence are you running.
           options:
-              - "3.2.1"
-              - "3.2.0"
+              - "3.2.2"
               - "Other (specify in issue)"
           default: 0
       validations:

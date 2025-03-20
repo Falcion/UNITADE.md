@@ -81,10 +81,14 @@ Before publishing issue, PRs to any version of plugin check, is this version sup
       </tr>
       <tr>
         <td style="text-align: center"><a href="https://github.com/Falcion/UNITADE.md/tree/3.2.0">3.2.0</a></td>
-        <td style="text-align: center" align="center">✅</td>
+        <td style="text-align: center" align="center">❎</td>
       </tr>
       <tr>
         <td style="text-align: center"><a href="https://github.com/Falcion/UNITADE.md/tree/3.2.1">3.2.1</a></td>
+        <td style="text-align: center" align="center">❎</td>
+      </tr>
+      <tr>
+        <td style="text-align: center"><a href="https://github.com/Falcion/UNITADE.md/tree/3.2.2">3.2.2</a></td>
         <td style="text-align: center" align="center">✅</td>
       </tr>
     </table>
