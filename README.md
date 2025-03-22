@@ -9,14 +9,29 @@
     <a href="https://github.com/Falcion/UNITADE.md/actions/workflows/analytics.yml"><img src="https://img.shields.io/github/actions/workflow/status/Falcion/UNITADE.md/.github%2Fworkflows%2Fanalytics.yml" alt="build"></a>
     <a href="https://github.com/Falcion/UNITADE.md/commits"><img src="https://img.shields.io/github/last-commit/Falcion/UNITADE.md" alt="commit-activity"/></a>
     <a href="https://obsidian.md/plugins?search=unitade"><img src="https://img.shields.io/github/downloads/Falcion/UNITADE.md/total" alt="downloads"/></a>
-    <a href="https://github.com/Falcion/UNITADE.mdOBSDIAIN/releases"><img src="https://img.shields.io/github/manifest-json/v/Falcion/UNITADE.md" alt="version"/></a>
+    <a href="https://github.com/Falcion/UNITADE.md/releases"><img src="https://img.shields.io/github/manifest-json/v/Falcion/UNITADE.md" alt="version"/></a>
 </div>
 <!-- -->
 <br/>
 <!-- -->
 <div align="center">
-    <img src="./.github/images/icon.png" alt="icon" style="width:100;height:100%;"/>
+    <!-- markdownlint-disable -->
+    <picture align="left" alt="logo" style="width:66%;height:auto;" width="66%" height="auto">
+          <source
+            srcset="./media/UNITADE.md%20-%20logo%20and%20title%20(cut)%20-%20DARK%20THEME.svg"
+            media="(prefers-color-scheme: dark)"
+            style="width:66%;height:auto;" width="66%" height="auto"
+          />
+          <source
+            srcset="./media/UNITADE.md%20-%20logo%20and%20title%20(cut).svg"
+            media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)"
+            style="width:66%;height:auto;" width="66%" height="auto"
+           />
+          <img style="width:66%;height:auto;" src="./media/UNITADE.md%20-%20logo%20and%20title%20(cut).svg" width="66%" height="auto"/>
+    </picture>
+    <!-- markdownlint-enable -->
     <!-- TEXTS -->
+    <br/>
     <h3>
         UNITADE</h3>
      <p>
@@ -35,9 +50,13 @@
 
 ## About the project
 
-Unfortunately, Obsidian™ does not, for some reason, have the ability to edit any file extensions that the user would like to edit, and the plugins that exist for this application are an inconvenient format for the end user, for example, entering a full-fledged JSON in one line.
+Unfortunately, Obsidian does not, for some reason, have the ability to edit any file extensions that the user would like to edit, and the plugins that exist for this application are an inconvenient format for the end user, for example, entering a full-fledged JSON in one line.
 
-Plugin UNITADE presents a simple yet advanced and user-friendly solution of this file extension problem: you can not only open and registry any extension in OBSIDIAN, but also, force-open them in your vault, render them as code just like in other code editing software (like [VS Code](https://code.visualstudio.com/) for example) and many other infrastructure and functionalities, including compatibility modules for stale versions of plugin.
+Plugin UNITADE presents a simple yet advanced and user-friendly solution of this file extension problem: you can not only open and registry any extension in OBSIDIAN, but also, force-open them in your vault, render them as code just like in other code editing software (like [Visual Studio Code](https://code.visualstudio.com/) for example) and many other infrastructure and functionalities, including compatibility modules for stale versions of plugin.
+
+> [!Note]
+> This project has custom brandbook (guidelines) and license for it's media (logo and etc.).\
+> Please, read [this](https://github.com/Falcion/UNITADE.md/wiki/Brandbook) file if you interested in UNITADE's media.
 
 <!-- BUILT WITH:
  -->
@@ -65,7 +84,7 @@ Before asking questions, read this block because here is all the primary informa
 Before downloading the source code or using this project ensure you met the following requirements:
 
 - Installed [Node.js](https://dotnet.microsoft.com/en-us/download/) on your desktop on which you will edit/setup this project;
-- Installed [Obsidian™](https://obsidian.md/), app, for which this plugin is created and on which you'll test/use this plugin;
+- Installed [Obsidian](https://obsidian.md/), app, for which this plugin is created and on which you'll test/use this plugin;
 
 <p align="right"><a href="#readme-top" title="Back to the top of README">[^]</a></p>
 
@@ -85,14 +104,14 @@ If you want to use this plugin, there are two ways to download-and-use this plug
 Guidelines for direct-installation way:
 
 1. Download last tag on project's repository, for the last ZIP-tarball link provided below:\
-   [download latest release](https://github.com/Falcion/UNITADE.mdOBSIDIAN/releases/latest/);
+   [download latest release](https://github.com/Falcion/UNITADE.md/releases/latest/);
 2. Open your vault's folder, go to the subfolder "`/.obsidian/ → /plugins/" and paste contents of downloaded ZIP into this subfolder;
 3. Now, you can use plugin just as if you installed it from community plugins.
 
 Guidelines for installation of source code of this project:
 
-1. Clone the repository with any form of app which supports git (or CLI of this site), guide is attached:\
-   https://www.howtogeek.com/451360/how-to-clone-a-github-repository/
+1. Clone the repository with any form of app which supports Git (or CLI of GitHub), guide is attached:\
+   <https://www.howtogeek.com/451360/how-to-clone-a-github-repository/>
 2. Open it with any suitable for you editor and feel free to customize, update and/or contribute to this project[^1].
 
 <p align="right"><a href="#readme-top" title="Back to the top of README">[^]</a></p>
@@ -168,7 +187,10 @@ Project thanks the [Electron.js](https://github.com/electron/electron/) and [Ang
 Project itself is being distributed under the [MIT License](https://choosealicense.com/licenses/mit/) — see the file for more specified information.
 
 > Entirery of project's infrastructure is taken from repository template project:\
-> https://github.com/Falcion/Patternugit.git
+> <https://github.com/Falcion/Patternugit.git>
+
+Media of this project is licensed under the [CC-BY-SA-4.0](https://choosealicense.com/licenses/cc-by-sa-4.0/#) license and has custom guidelines in
+terms of brandbook, read this file before using any media affiliated with project.
 
 <p align="right"><a href="#readme-top" title="Back to the top of README">[^]</a></p>
 
@@ -193,8 +215,8 @@ If the developer/maintainer didn't answered, or you have other questions in natu
 
 ## Acknowledgments
 
-- https://shields.io/
-- https://simpleicons.org/
+- <https://shields.io/>
+- <https://simpleicons.org/>
 - [Obsidian](https://obsidian.md/)
 - [Obsidian's API](https://docs.obsidian.md/home)
 - [Best README template](https://github.com/othneildrew/Best-README-Template)
