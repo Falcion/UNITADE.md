@@ -16,20 +16,21 @@
 <!-- -->
 <div align="center">
     <!-- markdownlint-disable -->
-    <picture align="left" alt="logo" style="width:25%;height:25%;">
+    <picture align="left" alt="logo" style="width:25%;height:25%;" width="25%" height="auto">
           <source
             srcset="./media/Logo (White-colored).svg"
             media="(prefers-color-scheme: dark)"
+            style="width:25%;height:25%;" width="25%" height="auto"
           />
           <source
             srcset="./media/Logo.svg"
             media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)"
-          />
-          <img style="width:25%;height:25%;" src="./media/Logo (White-colored).svg" />
+            style="width:25%;height:25%;" width="25%" height="auto"
+           />
+          <img style="width:25%;height:25%;" src="./media/Logo (White-colored).svg" width="25%" height="auto"/>
     </picture>
     <!-- markdownlint-enable -->
     <!-- TEXTS -->
-    <br/>
     <br/>
     <h3>
         UNITADE</h3>
