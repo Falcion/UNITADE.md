@@ -16,18 +16,18 @@
 <!-- -->
 <div align="center">
     <!-- markdownlint-disable -->
-    <picture align="left" alt="logo" style="width:25%;height:25%;" width="25%" height="auto">
+    <picture align="left" alt="logo" style="width:66%;height:auto;" width="66%" height="auto">
           <source
-            srcset="./media/Logo (White-colored).svg"
+            srcset="./media/UNITADE.md - logo and title (cut).svg"
             media="(prefers-color-scheme: dark)"
-            style="width:25%;height:25%;" width="25%" height="auto"
+            style="width:66%;height:auto;" width="66%" height="auto"
           />
           <source
-            srcset="./media/Logo.svg"
+            srcset="./media/UNITADE.md - logo and title (cut) - DARK THEME.svg"
             media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)"
-            style="width:25%;height:25%;" width="25%" height="auto"
+            style="width:66%;height:auto;" width="66%" height="auto"
            />
-          <img style="width:25%;height:25%;" src="./media/Logo (White-colored).svg" width="25%" height="auto"/>
+          <img style="width:66%;height:auto;" src="./media/UNITADE.md - logo and title (cut).svg" width="66%" height="auto"/>
     </picture>
     <!-- markdownlint-enable -->
     <!-- TEXTS -->
