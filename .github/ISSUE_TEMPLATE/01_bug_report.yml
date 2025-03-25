@@ -15,7 +15,7 @@ body:
       id: contact
       attributes:
           label: Contact details
-          description: If possible, write down the contact information if you need additional communication, if you want contact via “github”, leave this field blank.
+          description: If possible, write down the contact information if you need additional communication, if you want contact via "github", leave this field blank.
           placeholder: example@domain.com
       validations:
           required: false
@@ -28,6 +28,14 @@ body:
           value: ...
       validations:
           required: true
+    - type: markdown
+      attributes:
+          value: |
+              > [!Note]
+              > You can do this by opening vault's settings and: "→ Options → General → Advanced → Notify if startup takes longer than expected → (timer icon)", with "copy to clipboard" to copy entire setup information.
+              >
+              > About collecting debug information:
+              > https://help.obsidian.md/resources#Collect+debug+information
     - type: dropdown
       id: version
       attributes:
