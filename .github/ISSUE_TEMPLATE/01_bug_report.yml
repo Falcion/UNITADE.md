@@ -28,7 +28,7 @@ body:
           value: ...
       validations:
           required: true
-    - type: input
+    - type: textarea
       id: obsidian-setup
       attributes:
           label: Obsidian setup information
