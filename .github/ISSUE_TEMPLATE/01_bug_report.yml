@@ -28,6 +28,22 @@ body:
           value: ...
       validations:
           required: true
+    - type: input
+      id: obsidian-setup
+      attributes:
+          label: Obsidian setup information
+          description: Please provide details about your setup (version, installed plugins, community plugins, etc.)
+          placeholder: "... see comment the note below this input."
+      validations:
+          required: true
+    - type: textarea
+      id: obsidian-logs
+      attributes:
+          label: Obsidian logs
+          description: If available, please paste relevant logs from application history
+          placeholder: "... see comment the note below this input."
+      validations:
+          required: false
     - type: markdown
       attributes:
           value: |
