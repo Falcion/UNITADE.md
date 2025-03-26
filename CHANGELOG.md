@@ -1,3 +1,4 @@
+<!--markdownlint-disable-->
 # Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
@@ -8,7 +9,6 @@ All notable changes to this project will be documented in this file. See [standa
 ### Features
 
 * **docs:** add brandbook, licenses and etc. ([3444de3](https://github.com/mokkapps/changelog-generator-demo/commits/3444de30807ff6b6a7282f31cb9845302c6b1ce2))
-* **localization:** update Russian translation for plugin (removed images) ([b1a3275](https://github.com/mokkapps/changelog-generator-demo/commits/b1a3275baaee6ea35a68fcc8e614b5a71ad0bd53))
 * **localization:** update Russian translation for plugin (removed images) ([8f1d58b](https://github.com/mokkapps/changelog-generator-demo/commits/8f1d58b56d0ac6bba58be63c386d95648115b912))
 
 
