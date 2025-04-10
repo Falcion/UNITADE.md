@@ -138,7 +138,7 @@ export default class UNITADE_PLUGIN extends Plugin {
 
         if (this.settings.advanced_silencing_errors.observer_errors) {
             window.addEventListener('error', e => {
-                if (e.message === 'ResizeObserver loop completed with undelivered notifications.') {
+                if (this.settings.advanced_silencing_errors.signatures.split('\n').contains(e.message)) {
                     e.preventDefault();
                     e.stopImmediatePropagation();
                 }
