@@ -100,6 +100,11 @@ export interface UNITADE_SETTINGS {
         current_processor: boolean,
         current_display: boolean,
         cursor_position: boolean,
+    },
+
+    advanced_silencing_errors: {
+        observer_errors: boolean,
+        require2_errors: boolean,
     }
 }
 
@@ -167,6 +172,11 @@ export const DEFAULT_SETTINGS: UNITADE_SETTINGS = {
         current_processor: true,
         current_display: true,
         cursor_position: true,
+    },
+
+    advanced_silencing_errors: {
+        observer_errors: true,
+        require2_errors: true,
     }
 }
 
