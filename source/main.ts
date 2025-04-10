@@ -55,7 +55,6 @@ import {
 } from './components/modals/folder-edit';
 
 import {
-    getWorker,
     isTFolder
 } from './utils/utils';
 
@@ -75,6 +74,8 @@ import StatusBarConfig from './externals/samples/statusBarConfig';
 import StatusBarParser from './externals/samples/statusBarParser';
 import { PromptUserInput } from './components/modals/prompt-user-input';
 
+import './_exportMonaco';
+
 declare module "obsidian" {
     interface Workspace {
         on(
@@ -83,6 +84,13 @@ declare module "obsidian" {
             ctx?: any,
         ): EventRef;
     }
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+declare interface Window {
+    MonacoEnvironment?: {
+        getWorker: (workerId: string, label: string) => Promise<Worker>;
+    };
 }
 
 export default class UNITADE_PLUGIN extends Plugin {
@@ -122,11 +130,11 @@ export default class UNITADE_PLUGIN extends Plugin {
 
         this._statusBar = this.addStatusBarItem();
 
-        window.MonacoEnvironment = {
-            getWorker(_: string, label: string) {
-                return getWorker(label);
-            }
-        }
+        // window.MonacoEnvironment = {
+        //     getWorker(_: string, label: string) {
+        //         return getWorker(label);
+        //     }
+        // }
 
         //#region Commands
         this.addCommand({
@@ -238,7 +246,7 @@ export default class UNITADE_PLUGIN extends Plugin {
                         }
                     } catch (error) {
                         if (!this.settings.silence_errors) {
-                            console.error(error);
+                            console.warn(error);
                         } else {
                             console.debug(`[UNITADE-ERROR]: ERROR IS SILENCED, ERROR: ${error}`);
                         }
@@ -278,7 +286,7 @@ export default class UNITADE_PLUGIN extends Plugin {
                     if (!this.settings.silence_errors) {
                         new Notification(this.locale.getLocaleItem('ERROR_COMMON_MESSAGE')[0]!, { body: `${err}` });
 
-                        console.error(err);
+                        console.warn(err);
                     } else {
                         console.debug(`[UNITADE-ERROR]: ERROR IS SILENCED, ERROR: ${err}`);
                     }
@@ -317,7 +325,7 @@ export default class UNITADE_PLUGIN extends Plugin {
                         if (!this.settings.silence_errors) {
                             new Notification(this.locale.getLocaleItem('ERROR_COMMON_MESSAGE')[0]!, { body: `${extensions}` });
 
-                            console.error(err);
+                            console.warn(err);
                         } else {
                             console.debug(`[UNITADE-ERROR]: ERROR IS SILENCED, ERROR: ${err}`);
                         }
@@ -645,7 +653,7 @@ export default class UNITADE_PLUGIN extends Plugin {
             if (!this.settings.silence_errors) {
                 new Notification(this.locale.getLocaleItem('ERROR_COMMON_MESSAGE')[0]!, { body: err });
 
-                console.error(err);
+                console.warn(err);
             } else {
                 console.debug(`[UNITADE-ERROR]: ERROR IS SILENCED, ERROR: ${err}`);
             }
@@ -768,7 +776,7 @@ export default class UNITADE_PLUGIN extends Plugin {
                 if (!this.settings.silence_errors) {
                     new Notification(this.locale.getLocaleItem('ERROR_COMMON_MESSAGE')[0]!, { body: `${err}` });
 
-                    console.error(err);
+                    console.warn(err);
                 } else {
                     console.debug(`[UNITADE-ERROR]: ERROR IS SILENCED, ERROR: ${err}`);
                 }
@@ -815,7 +823,7 @@ export default class UNITADE_PLUGIN extends Plugin {
             if (!this.settings.silence_errors) {
                 new Notification(this.locale.getLocaleItem('ERROR_COMMON_MESSAGE')[0]!, { body: _msg });
 
-                console.error(_msg);
+                console.warn(_msg);
             } else {
                 console.debug(`[UNITADE-ERROR]: ERROR IS SILENCED, ERROR: ${_msg}`);
             }
@@ -893,7 +901,7 @@ export default class UNITADE_PLUGIN extends Plugin {
                         if (!this.settings.silence_errors) {
                             new Notification(this.locale.getLocaleItem('ERROR_COMMON_MESSAGE')[0]!, { body: _msg });
 
-                            console.error(_msg);
+                            console.warn(_msg);
                         } else {
                             console.debug(`[UNITADE-ERROR]: ERROR IS SILENCED, ERROR: ${_msg}`);
                         }

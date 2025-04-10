@@ -72,6 +72,8 @@ export class UNITADE_VIEW_CODE extends TextFileView {
     async onClose() {
         await super.onClose();
 
+        this.containerEl.removeEventListener('wheel', this.__mousewheelHandler);
+
         await this.__saveFontSize();
     }
 
