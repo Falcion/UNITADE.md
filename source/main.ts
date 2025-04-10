@@ -70,8 +70,8 @@ import { UNITADE_VIEW_CODE } from './components/views/view_monaco';
 import { ContextEditor } from './components/contexts/contextEditor';
 import { FenceEditModal } from './components/modals/codeblock-edit';
 import { ContextEditCodeblocks } from './components/contextEditCodeblock';
-import StatusBarConfig from './components/status_bar/status_bar_config';
-import StatusBarParser from './components/status_bar/status_bar_parser';
+import StatusBarConfig from './externals/samples/statusBarConfig';
+import StatusBarParser from './externals/samples/statusBarParser';
 import { PromptUserInput } from './components/modals/prompt-user-input';
 
 import './_exportMonaco';
