@@ -1,7 +1,20 @@
-<!--markdownlint-disable-->
 # Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+### [3.2.4](https://github.com/mokkapps/changelog-generator-demo/compare/v3.2.3...v3.2.4) (2025-04-11)
+
+
+### Features
+
+* **debug:** add ability to silence specific errors ([9d1c662](https://github.com/mokkapps/changelog-generator-demo/commits/9d1c662aec54745075568d43c8f1e714e1dde60b))
+* **silencing:** add advanced silencing based on error's signatures ([67249d2](https://github.com/mokkapps/changelog-generator-demo/commits/67249d238f5b0f286b2ba62c9a00e8a171d718f0))
+
+
+### Fixes
+
+* **monaco:** fix issue [#119](https://github.com/Falcion/UNITADE.md/issues/119) with URLs of monaco workers for code editor ([4e5aba1](https://github.com/mokkapps/changelog-generator-demo/commits/4e5aba1739254afa9427d501f2fc2c159c2e6987))
+* **observer:** force-silence warning-error for the observer, fix of [#126](https://github.com/Falcion/UNITADE.md/issues/126) ([0b230c9](https://github.com/mokkapps/changelog-generator-demo/commits/0b230c90fbc944b675175ea57a45ce63351d20a5))
 
 ### [3.2.3](https://github.com/mokkapps/changelog-generator-demo/compare/v3.2.2...v3.2.3) (2025-03-26)
 

@@ -100,6 +100,10 @@ export interface UNITADE_SETTINGS {
         current_processor: boolean,
         current_display: boolean,
         cursor_position: boolean,
+    },
+
+    advanced_silencing_errors: {
+        signatures: string,
     }
 }
 
@@ -167,6 +171,11 @@ export const DEFAULT_SETTINGS: UNITADE_SETTINGS = {
         current_processor: true,
         current_display: true,
         cursor_position: true,
+    },
+
+    advanced_silencing_errors: {
+        // This are additional signatures that user can silence
+        signatures: "",
     }
 }
 

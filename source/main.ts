@@ -55,7 +55,6 @@ import {
 } from './components/modals/folder-edit';
 
 import {
-    getWorker,
     isTFolder
 } from './utils/utils';
 
@@ -75,6 +74,9 @@ import StatusBarConfig from './externals/samples/statusBarConfig';
 import StatusBarParser from './externals/samples/statusBarParser';
 import { PromptUserInput } from './components/modals/prompt-user-input';
 
+import './_exportMonaco';
+import { DEFAULT_SIGNATURES } from './externals/errors/signatures';
+
 declare module "obsidian" {
     interface Workspace {
         on(
@@ -83,6 +85,13 @@ declare module "obsidian" {
             ctx?: any,
         ): EventRef;
     }
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+declare interface Window {
+    MonacoEnvironment?: {
+        getWorker: (workerId: string, label: string) => Promise<Worker>;
+    };
 }
 
 export default class UNITADE_PLUGIN extends Plugin {
@@ -114,7 +123,7 @@ export default class UNITADE_PLUGIN extends Plugin {
     public get is_mobile(): boolean {
         return Platform.isMobile && this.settings.mobile_settings.enable;
     }
-
+    //#region Load/Unload
     async onload(): Promise<void> {
         super.onload();
 
@@ -122,11 +131,33 @@ export default class UNITADE_PLUGIN extends Plugin {
 
         this._statusBar = this.addStatusBarItem();
 
-        window.MonacoEnvironment = {
-            getWorker(_: string, label: string) {
-                return getWorker(label);
+        // window.MonacoEnvironment = {
+        //     getWorker(_: string, label: string) {
+        //         return getWorker(label);
+        //     }
+        // }
+
+        window.addEventListener('error', e => {
+            if (this.settings.debug_mode)
+                console.info('Obsidian caught an error, signature provided:', e.message);
+
+            let add_signatures: string[] = [];
+
+            try {
+                add_signatures = this.settings.advanced_silencing_errors.signatures.split('\n');
+            } catch (error) {
+                console.info("[UNITADE]: Plugin couldn't get any additional signatures to silence errors.");
             }
-        }
+
+            const signatures = DEFAULT_SIGNATURES;
+
+            signatures.push(...add_signatures);
+
+            if (signatures.contains(e.message)) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+            }
+        });
 
         //#region Commands
         this.addCommand({
@@ -240,7 +271,7 @@ export default class UNITADE_PLUGIN extends Plugin {
                         if (!this.settings.silence_errors) {
                             console.error(error);
                         } else {
-                            console.debug(`[UNITADE-ERROR]: ERROR IS SILENCED, ERROR: ${error}`);
+                            console.warn(`[UNITADE-ERROR]: ERROR IS SILENCED, ERROR: ${error}`);
                         }
                     }
                 }
@@ -280,7 +311,7 @@ export default class UNITADE_PLUGIN extends Plugin {
 
                         console.error(err);
                     } else {
-                        console.debug(`[UNITADE-ERROR]: ERROR IS SILENCED, ERROR: ${err}`);
+                        console.warn(`[UNITADE-ERROR]: ERROR IS SILENCED, ERROR: ${err}`);
                     }
                 }
             }
@@ -319,7 +350,7 @@ export default class UNITADE_PLUGIN extends Plugin {
 
                             console.error(err);
                         } else {
-                            console.debug(`[UNITADE-ERROR]: ERROR IS SILENCED, ERROR: ${err}`);
+                            console.warn(`[UNITADE-ERROR]: ERROR IS SILENCED, ERROR: ${err}`);
                         }
                     }
                 }
@@ -508,6 +539,39 @@ export default class UNITADE_PLUGIN extends Plugin {
         this.__apply();
     }
 
+    async onunload(): Promise<void> {
+        super.onunload();
+
+        this._observer.disconnect();
+
+        this.__unapply(this.settings);
+
+        try {
+            this.registerExtensions(['.md'], 'markdown');
+        } catch (err: any) {
+            if (!this.settings.silence_errors) {
+                new Notification(this.locale.getLocaleItem('ERROR_COMMON_MESSAGE')[0]!, { body: err });
+
+                console.error(err);
+            } else {
+                console.warn(`[UNITADE-ERROR]: ERROR IS SILENCED, ERROR: ${err}`);
+            }
+
+            this.settings.errors['markdown_override'] = formatString(this.locale.getLocaleItem('ERROR_REGISTRY_EXTENSION')[3]!, err);
+        }
+
+        for (const key in CodeMirror.modes) {
+            if (Object.prototype.hasOwnProperty.call(CodeMirror.modes, key) && !['hypermd', 'markdown', 'null', 'xml'].includes(key))
+                delete CodeMirror.modes[key];
+        }
+
+        this.leafRef(this.app);
+
+        if (this.settings.status_bar.enabled)
+            this._statusBar.remove();
+    }
+    //#endregion
+
     //#region Status bar update
     public updateStatusBar(): void {
         if (this.settings.status_bar.enabled) {
@@ -618,7 +682,11 @@ export default class UNITADE_PLUGIN extends Plugin {
 
             this.leafRef(_app);
         } catch (error) {
-            console.warn('CAUGHT AN ERROR VIA LAYOUT-READY EVENT.');
+            if (this.settings.silence_errors) {
+                console.warn('[SILENCING ERRORS]: CAUGHT AN ERROR VIA LAYOUT-READY EVENT.');
+            } else {
+                console.error('CAUGHT AN ERROR VIA LAYOUT-READY EVENT.');
+            }
         }
     }
 
@@ -627,43 +695,16 @@ export default class UNITADE_PLUGIN extends Plugin {
             /**@ts-expect-error: not part of public API, accessing through runtime. */
             _app.workspace.iterateCodeMirrors(cm => cm.setOption("mode", cm.getOption("mode")));
         } catch (error) {
-            console.warn('CAUGHT AN ERROR VIA LEAF-ITERATE EVENT.');
+            if (this.settings.silence_errors) {
+                console.warn('[SILENCING ERRORS]: CAUGHT AN ERROR VIA LAYOUT-ITERATE EVENT.');
+            } else {
+                console.error('CAUGHT AN ERROR VIA LAYOUT-ITERATE EVENT.');
+            }
         }
     }
     //#endregion
 
-    async onunload(): Promise<void> {
-        super.onunload();
-
-        this._observer.disconnect();
-
-        this.__unapply(this.settings);
-
-        try {
-            this.registerExtensions(['.md'], 'markdown');
-        } catch (err: any) {
-            if (!this.settings.silence_errors) {
-                new Notification(this.locale.getLocaleItem('ERROR_COMMON_MESSAGE')[0]!, { body: err });
-
-                console.error(err);
-            } else {
-                console.debug(`[UNITADE-ERROR]: ERROR IS SILENCED, ERROR: ${err}`);
-            }
-
-            this.settings.errors['markdown_override'] = formatString(this.locale.getLocaleItem('ERROR_REGISTRY_EXTENSION')[3]!, err);
-        }
-
-        for (const key in CodeMirror.modes) {
-            if (Object.prototype.hasOwnProperty.call(CodeMirror.modes, key) && !['hypermd', 'markdown', 'null', 'xml'].includes(key))
-                delete CodeMirror.modes[key];
-        }
-
-        this.leafRef(this.app);
-
-        if (this.settings.status_bar.enabled)
-            this._statusBar.remove();
-    }
-
+    //#region Settings
     async ldSettings(): Promise<void> {
         this._settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
     }
@@ -709,7 +750,9 @@ export default class UNITADE_PLUGIN extends Plugin {
 
         await this.saveData(this._settings);
     }
+    //#endregion
 
+    //#region Core apply or other (core "business"-logic) 
     //! MAIN METHOD OF ENTIRE PLUGIN:
     //! Configures and applies everything from the settings.
     /**
@@ -770,7 +813,7 @@ export default class UNITADE_PLUGIN extends Plugin {
 
                     console.error(err);
                 } else {
-                    console.debug(`[UNITADE-ERROR]: ERROR IS SILENCED, ERROR: ${err}`);
+                    console.warn(`[UNITADE-ERROR]: ERROR IS SILENCED, ERROR: ${err}`);
                 }
             }
         }
@@ -817,7 +860,7 @@ export default class UNITADE_PLUGIN extends Plugin {
 
                 console.error(_msg);
             } else {
-                console.debug(`[UNITADE-ERROR]: ERROR IS SILENCED, ERROR: ${_msg}`);
+                console.warn(`[UNITADE-ERROR]: ERROR IS SILENCED, ERROR: ${_msg}`);
             }
 
             this._settings.errors[filetype] = _msg;
@@ -828,7 +871,6 @@ export default class UNITADE_PLUGIN extends Plugin {
         this.settings.errors = {};
 
         if (this.settings.debug_mode)
-
             console.info(this.app.viewRegistry.typeByExtension);
 
         const extensions_arr: string[] = extensions.split('>').map(s => s.trim());
@@ -836,7 +878,7 @@ export default class UNITADE_PLUGIN extends Plugin {
         for (const extension of extensions_arr) {
             if (this.settings.safe_mode && view === 'markdown' && CONSTANTS.unsafeExtensions.contains(extension.toLowerCase())) {
                 if (this.settings.debug_mode)
-                    console.debug('[UNITADE]: Skipped unsafe extension:', extension);
+                    console.info('[UNITADE]: Skipped unsafe extension:', extension);
 
                 continue;
             }
@@ -895,9 +937,10 @@ export default class UNITADE_PLUGIN extends Plugin {
 
                             console.error(_msg);
                         } else {
-                            console.debug(`[UNITADE-ERROR]: ERROR IS SILENCED, ERROR: ${_msg}`);
+                            console.warn(`[UNITADE-ERROR]: ERROR IS SILENCED, ERROR: ${_msg}`);
                         }
                     }
                 }
     }
+    //#endregion
 }

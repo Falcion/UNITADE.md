@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import esbuild from "esbuild";
 import { sassPlugin } from 'esbuild-sass-plugin'
 import process from "process";
 import builtins from "builtin-modules";
 import glsl from "esbuild-plugin-glsl";
 import fs from 'fs';
+import path from 'node:path';
 
 const banner =
     `/*
@@ -35,6 +37,35 @@ let manifest = {
     }
 }
 
+// const workerPlugin = {
+//     name: 'monaco-workers',
+//     setup(build) {
+//         build.onResolve({ filter: /\.worker\.js$/ }, async (args) => {
+//             return {
+//                 path: path.resolve(args.resolveDir, args.path),
+//                 namespace: 'monaco-worker',
+//             };
+//         });
+
+//         build.onLoad({ filter: /.*/, namespace: 'monaco-worker' }, async (args) => {
+//             // Bundle worker code into a self-contained script
+//             const result = await esbuild.build({
+//                 entryPoints: [args.path],
+//                 bundle: true,
+//                 format: 'iife',
+//                 write: false,
+//                 target: 'es6',
+//             });
+
+//             const code = result.outputFiles[0].text;
+//             return {
+//                 contents: `export default ${JSON.stringify(code)};`,
+//                 loader: 'js',
+//             };
+//         });
+//     }
+// };
+
 let autotest = {
     name: 'autotest',
     setup(build) {
@@ -57,12 +88,16 @@ const context = await esbuild.context({
     banner: {
         js: banner,
     },
-    entryPoints: ["source/main.ts"],
+    entryPoints: [
+        // main app entry point
+        'source/main.ts'
+    ],
     plugins: [
         sassPlugin(),
         glsl({
             minify: true,
         }),
+        // workerPlugin,
         {
             name: 'worker-plugin',
             setup(build) {
@@ -106,7 +141,7 @@ const context = await esbuild.context({
     outfile: "out/main.js",
     loader: {
         '.ttf': 'base64',
-    },
+    }
 });
 
 if (prod) {

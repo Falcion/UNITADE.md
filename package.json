@@ -2,7 +2,7 @@
 	"name": "unitade",
 	"displayName": "UNITADE.md",
 	"private": true,
-	"version": "3.2.3",
+	"version": "3.2.4",
 	"description": "A plugin for note-taking app Obsidian™ which allows you to treat any file extension as markdown note-file",
 	"main": "main.ts",
 	"markdown": "github",
@@ -198,11 +198,13 @@
 		}
 	],
 	"dependencies": {
+		"@oazmi/kitchensink": "^0.9.14",
 		"codemirror": "^6.0.1",
 		"esbuild": "^0.25.0",
+		"esbuild-extra": "^0.4.2",
 		"esbuild-plugin-glsl": "^1.2.2",
 		"esbuild-sass-plugin": "^3.3.1",
-		"monaco-editor": "^0.52.2",
+		"monaco-editor": "0.50.0",
 		"obsidian": "^1.7.2",
 		"obsidian-typings": "^2.35.0",
 		"terser": "^5.36.0"

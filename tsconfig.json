@@ -18,8 +18,11 @@
 		"strict": true,
 		"sourceMap": false,
 		"allowJs": true,
-		"types": ["obsidian-typings", "monaco-editor"]
+		"types": ["obsidian-typings", "monaco-editor", "./source/types/workers.d.ts"],
+		"paths": {
+			"monaco-editor/esm/vs/*": ["./src/types/monaco-workers.d.ts"]
+		}
 	},
 	"exclude": ["node_modules", "out", "git", "venv"],
-	"include": ["**/*.ts", "**/*.d.ts"]
+	"include": ["**/*.ts", "**/*.d.ts", "build/meta_url_transformer.js"]
 }
