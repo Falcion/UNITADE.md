@@ -104,8 +104,6 @@ export interface UNITADE_SETTINGS {
 
     advanced_silencing_errors: {
         signatures: string,
-        observer_errors: boolean,
-        require2_errors: boolean,
     }
 }
 
@@ -176,9 +174,8 @@ export const DEFAULT_SETTINGS: UNITADE_SETTINGS = {
     },
 
     advanced_silencing_errors: {
-        signatures: "ResizeObserver loop completed with undelivered notifications.\nrequire2 is not a function",
-        observer_errors: true,
-        require2_errors: true,
+        // This are additional signatures that user can silence
+        signatures: "",
     }
 }
 

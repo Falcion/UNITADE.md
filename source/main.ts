@@ -75,6 +75,7 @@ import StatusBarParser from './externals/samples/statusBarParser';
 import { PromptUserInput } from './components/modals/prompt-user-input';
 
 import './_exportMonaco';
+import { DEFAULT_SIGNATURES } from './externals/errors/signatures';
 
 declare module "obsidian" {
     interface Workspace {
@@ -136,14 +137,27 @@ export default class UNITADE_PLUGIN extends Plugin {
         //     }
         // }
 
-        if (this.settings.advanced_silencing_errors.observer_errors) {
-            window.addEventListener('error', e => {
-                if (this.settings.advanced_silencing_errors.signatures.split('\n').contains(e.message)) {
-                    e.preventDefault();
-                    e.stopImmediatePropagation();
-                }
-            });
-        }
+        window.addEventListener('error', e => {
+            if (this.settings.debug_mode)
+                console.info('Obsidian caught an error, signature provided:', e.message);
+
+            let add_signatures: string[] = [];
+
+            try {
+                add_signatures = this.settings.advanced_silencing_errors.signatures.split('\n');
+            } catch (error) {
+                console.info("[UNITADE]: Plugin couldn't get any additional signatures to silence errors.");
+            }
+
+            const signatures = DEFAULT_SIGNATURES;
+
+            signatures.push(...add_signatures);
+
+            if (signatures.contains(e.message)) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+            }
+        });
 
         //#region Commands
         this.addCommand({
