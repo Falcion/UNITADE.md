@@ -2,7 +2,7 @@
 	"name": "unitade",
 	"displayName": "UNITADE.md",
 	"private": true,
-	"version": "3.2.3",
+	"version": "3.2.4",
 	"description": "A plugin for note-taking app Obsidian™ which allows you to treat any file extension as markdown note-file",
 	"main": "main.ts",
 	"markdown": "github",
