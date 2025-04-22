@@ -10,7 +10,8 @@ body:
     - type: markdown
       attributes:
           value: |
-              Before you begin, please make sure you've checked if the bug has already been reported, if you find a similar issue, feel free to add any additional information or context that may help us resolve it more effectively.
+              Before you begin, please make sure you've checked if the bug has already been reported, if you find a similar issue, feel free to add any additional information or context that may help us resolve it more effectively. |
+              Also check FAQ on the wiki before asking some questions or reporting some bugs.
     - type: input
       id: contact
       attributes:
