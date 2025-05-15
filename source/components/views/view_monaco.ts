@@ -135,7 +135,7 @@ export class UNITADE_VIEW_CODE extends TextFileView {
             ['[', 'editor.action.outdentLines'],
             [']', 'editor.action.indentLines'],
             ['d', 'editor.action.copyLinesDownAction'],
-            ['v', 'editor.action.clipboardPasteAction']
+            // ['v', 'editor.action.clipboardPasteAction']
         ]);
 
         if (event.ctrlKey) {
