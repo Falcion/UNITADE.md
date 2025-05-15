@@ -29,3 +29,20 @@ function getWorkerType(label: string): keyof typeof workerImports {
         default: return 'editor';
     }
 }
+
+// import * as monaco from 'monaco-editor';
+// import 'monaco-editor/esm/vs/editor/contrib/clipboard/browser/clipboard';
+
+// const ClipboardController = (monaco as any).editor.ClipboardController;
+// if (!ClipboardController) {
+//     console.warn('ClipboardController not found—Monaco version may have changed');
+// }
+
+// const originalPaste = ClipboardController.prototype._paste || ClipboardController.prototype.paste;
+
+// ClipboardController.prototype._paste = function (this: any, ...args: any[]) {
+//     // Force the internal flag that enables native paste
+//     this._clipboard.supportsClipboardAPI = true;
+//     // Call the original paste logic
+//     return originalPaste.apply(this, args);
+// };

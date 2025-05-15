@@ -60,7 +60,8 @@ export class UNITADE_VIEW_CODE extends TextFileView {
     }
 
     async onUnloadFile(file: TFile) {
-        window.removeEventListener('keydown', this.__keyHandler, true);
+        this.containerEl.removeEventListener('keydown', this.__keyHandler, true);
+        this.containerEl.removeEventListener('wheel', this.__mousewheelHandler);
 
         await super.onUnloadFile(file);
 
@@ -70,9 +71,10 @@ export class UNITADE_VIEW_CODE extends TextFileView {
     }
 
     async onClose() {
-        await super.onClose();
-
+        this.containerEl.removeEventListener('keydown', this.__keyHandler, true);
         this.containerEl.removeEventListener('wheel', this.__mousewheelHandler);
+
+        await super.onClose();
 
         await this.__saveFontSize();
     }
@@ -111,11 +113,13 @@ export class UNITADE_VIEW_CODE extends TextFileView {
     }
 
     private addKeyEvents = () => {
-        window.addEventListener('keydown', this.__keyHandler, true);
+        this.containerEl.addEventListener('keydown', this.__keyHandler, true);
+
+        console.log('UNITADE-DEV: Start to registry key events in opened code editor instance. Is force vanilla paste enabled?', this.plugin.settings.code_editor_settings.force_vanilla_paste)
 
         if (this.plugin.settings.code_editor_settings.force_vanilla_paste)
             this.monacoEditor.addCommand(
-                monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyV, () => this.pasteFromClipboard());
+                monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyV, () => this.monacoEditor.trigger('', 'editor.action.clipboardPasteAction', null));
     }
 
     private addCtrlKeyWheelEvents = () => {
@@ -127,6 +131,10 @@ export class UNITADE_VIEW_CODE extends TextFileView {
     }
 
     private __keyHandler = async (event: KeyboardEvent) => {
+        console.log('UNITADE-DEV: Caught key event in code editor view!\n', event);
+
+        if (this.getViewType() !== 'codeview') return;
+
         const KEYMAP = new Map<string, string>([
             ['f', 'actions.find'],
             ['h', 'editor.action.startFindReplaceAction'],
@@ -164,38 +172,38 @@ export class UNITADE_VIEW_CODE extends TextFileView {
         }
     }
 
-    private async pasteFromClipboard() {
-        try {
-            const text = await navigator.clipboard.readText();
+    // private async pasteFromClipboard() {
+    //     try {
+    //         const text = await navigator.clipboard.readText();
 
-            if (text) {
-                const position = this.monacoEditor.getPosition();
-                const endColumn = position!.column + text.length;
+    //         if (text) {
+    //             const position = this.monacoEditor.getPosition();
+    //             const endColumn = position!.column + text.length;
 
-                this.monacoEditor.executeEdits("", [
-                    {
-                        range: new monaco.Range(
-                            position!.lineNumber, position!.column,
-                            position!.lineNumber, position!.column
-                        ),
-                        text,
-                    },
-                ]);
+    //             this.monacoEditor.executeEdits("", [
+    //                 {
+    //                     range: new monaco.Range(
+    //                         position!.lineNumber, position!.column,
+    //                         position!.lineNumber, position!.column
+    //                     ),
+    //                     text,
+    //                 },
+    //             ]);
 
-                this.monacoEditor.setPosition({
-                    lineNumber: position!.lineNumber,
-                    column: endColumn
-                });
+    //             this.monacoEditor.setPosition({
+    //                 lineNumber: position!.lineNumber,
+    //                 column: endColumn
+    //             });
 
-                this.monacoEditor.setSelection(new monaco.Selection(
-                    position!.lineNumber, endColumn,
-                    position!.lineNumber, endColumn
-                ));
-            }
-        } catch (error) {
-            console.error("Clipboard paste failed:", error);
-        }
-    }
+    //             this.monacoEditor.setSelection(new monaco.Selection(
+    //                 position!.lineNumber, endColumn,
+    //                 position!.lineNumber, endColumn
+    //             ));
+    //         }
+    //     } catch (error) {
+    //         console.error("Clipboard paste failed:", error);
+    //     }
+    // }
 
     private __mousewheelHandler = async (event: WheelEvent) => {
         if (event.ctrlKey) {
