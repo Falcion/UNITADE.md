@@ -375,8 +375,6 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
 
         mobileConfigInp.inputEl.addClass('unitade-input-style');
 
-        this.__uptMbConfig(mobileConfigInp, this.plugin.settings.mobile_settings.enable);
-
         new Setting(containerEl)
             .setName(this.locale.getLocaleItem('SETTINGS_HARD_DELETE')[0]!)
             .setDesc(this.locale.getLocaleItem('SETTINGS_HARD_DELETE')[1]!)
@@ -551,6 +549,8 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                         };
 
                         await this.plugin.uptSettings(next);
+
+                        this.display();
                     });
 
                 return toggle;
@@ -581,6 +581,8 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                         };
 
                         await this.plugin.uptSettings(next);
+
+                        this.display();
                     });
 
                 return toggle;
@@ -718,12 +720,6 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
 
         ignoreMskInp.inputEl.addClass('unitade-input-style');
 
-        this.__uptIgnConfig(
-            [ignoreExtInp, ignoreMskInp],
-            [ignoreExtMsg, ignoreMskMsg],
-            this.plugin.settings.is_ignore,
-        );
-
         const groupMsg = new Setting(containerEl)
             .setName(this.locale.getLocaleItem('SETTINGS_GROUP_EXTENSIONS')[0]!)
             .setDesc(this.locale.getLocaleItem('SETTINGS_GROUP_EXTENSIONS')[1]!)
@@ -813,6 +809,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                             editorFolding, editorWordWrapping, editorLineNumbers, editorMinimapping,
                             editorValidationSemantic, editorValidationSyntax, editorFontSize,
                             editorFontFamily, editorFontLigatures, forceVanillaPaste, enableZoomSetting,
+                            titleFontSettings
                         ], value);
                     })
 
@@ -892,8 +889,6 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
         codeExtensionsWarn.infoEl.appendChild(codeExtensionsText);
 
         editorExtensionsInput.inputEl.addClass('unitade-input-style');
-
-        this._uptMSConfig([editorExtensionsInput, codeExtensionsWarn], !this.plugin.settings.code_editor_settings.use_default_extensions);
 
         const editorFolding = new Setting(containerEl)
             .setName(this.locale.getLocaleItem('CODE_EDITOR_FOLDING')[0]!)
@@ -1098,7 +1093,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
 
         forceVanillaPaste.infoEl.appendChild(forceVanillaPasteText);
 
-        containerEl.createEl('h4', { text: this.locale.getLocaleItem('SETTINGS_CODE_EDITOR')[3]! });
+        const titleFontSettings = containerEl.createEl('h4', { text: this.locale.getLocaleItem('SETTINGS_CODE_EDITOR')[3]! });
 
         const editorFontSize = new Setting(containerEl)
             .setName(this.locale.getLocaleItem('CODE_EDITOR_FONT_SIZE')[0]!)
@@ -1489,7 +1484,7 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
                                 ...this.plugin.settings.status_bar,
                                 current_processor: value,
                             },
-                        };
+                        }; ``
 
                         await this.plugin.uptSettings(next);
 
@@ -1544,6 +1539,26 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
 
                 return toggle;
             });
+
+        //#region Force-updaters
+        this.__uptMbConfig(mobileConfigInp, this.plugin.settings.mobile_settings.enable);
+
+        this.__uptIgnConfig(
+            [ignoreExtInp, ignoreMskInp],
+            [ignoreExtMsg, ignoreMskMsg],
+            this.plugin.settings.is_ignore,
+        );
+
+        this._uptMSConfig([editorExtensionsInput, codeExtensionsWarn], !this.plugin.settings.code_editor_settings.use_default_extensions);
+
+        this._uptMSConfig([
+            useDefaultExtensions, editorExtensionsInput, codeExtensionsWarn, editorTheme,
+            editorFolding, editorWordWrapping, editorLineNumbers, editorMinimapping,
+            editorValidationSemantic, editorValidationSyntax, editorFontSize,
+            editorFontFamily, editorFontLigatures, forceVanillaPaste, enableZoomSetting,
+            titleFontSettings
+        ], this.plugin.settings.code_editor_settings.enabled);
+        //#endregion
     }
 
     // update mobile config
@@ -1552,16 +1567,15 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
     }
 
     // update module system config
-    private _uptMSConfig(configModuleElements: (TextAreaComponent | Setting)[], configModuleEnabled: boolean): void {
+    private _uptMSConfig(configModuleElements: (TextAreaComponent | Setting | HTMLElement)[], configModuleEnabled: boolean): void {
         for (const configCodeEditorElement of configModuleElements) {
             if (configCodeEditorElement instanceof TextAreaComponent) {
                 configCodeEditorElement.inputEl.style.display = configModuleEnabled ? 'block' : 'none';
             } else if (configCodeEditorElement instanceof Setting) {
                 configCodeEditorElement.settingEl.style.display = configModuleEnabled ? 'block' : 'none';
             } else {
-                throw new Error('Unknown type of throwable entity.');
+                configCodeEditorElement.style.display = configModuleEnabled ? 'block' : 'none';
             }
-
         }
     }
 
