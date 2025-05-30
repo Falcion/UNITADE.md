@@ -778,25 +778,17 @@ export default class UNITADE_PLUGIN extends Plugin {
             }
         }
 
-        if (this.is_mobile) {
-            if (!this.settings.code_editor_settings.use_default_extensions)
-                this.__applyCfg(this.settings.mobile_settings.extensions ?? this.settings.extensions, 'markdown');
-        } else {
-            if (!this.settings.code_editor_settings.use_default_extensions)
-                this.__applyCfg(this.settings.extensions, 'markdown');
-        }
+        const exts = this.is_mobile ? (this.settings.mobile_settings.extensions ?? this.settings.extensions)
+            : this.settings.extensions;
 
-        if (this.settings.code_editor_settings.enabled) {
-            if (this.settings.code_editor_settings.use_default_extensions) {
-                if (this.is_mobile)
-                    this.__applyCfg(this.settings.mobile_settings.extensions ?? this.settings.extensions, 'codeview');
-                else
-                    this.__applyCfg(this.settings.extensions, 'codeview');
-            }
-            else {
-                this.__applyCfg(this.settings.code_editor_settings.extensions, 'codeview');
-            }
-        }
+        this.__applyCfg(exts,
+            (
+                this.settings.code_editor_settings.enabled &&
+                this.settings.code_editor_settings.use_default_extensions
+            ) /* If every required code editor instance is true, then register default extensions as
+                 code editor extensions. */
+                ? 'codeview'
+                : 'markdown')
 
         const forced_extensions = this.settings.forced_extensions.split('>').map(s => s.trim());
 
@@ -900,10 +892,25 @@ export default class UNITADE_PLUGIN extends Plugin {
     }
 
     private __unapply(upt_settings: UNITADE_SETTINGS): void {
-        if (this.is_mobile) {
-            this.__unapplyCfg(this.settings.mobile_settings.extensions ?? this.settings.extensions, upt_settings.markdown_overcharge);
-        } else {
-            this.__unapplyCfg(this.settings.extensions, upt_settings.markdown_overcharge);
+        const exts = this.is_mobile ? (upt_settings.mobile_settings.extensions ?? upt_settings.extensions)
+            : upt_settings.extensions;
+
+        this.__unapplyCfg(exts, upt_settings.markdown_overcharge);
+
+        if (this.app.viewRegistry.viewByType['codeview'] !== undefined ||
+            this.app.viewRegistry.viewByType['codeview'] !== null)
+            this.app.viewRegistry.unregisterView('codeview');
+
+        if (this.app.viewRegistry.viewByType['mirrorview'] !== undefined ||
+            this.app.viewRegistry.viewByType['mirrorview'] !== null)
+            this.app.viewRegistry.unregisterView('mirrorview');
+
+        if (upt_settings.is_grouped) {
+            const data: { [key: string]: string[] } = parsegroup(upt_settings.grouped_extensions);
+
+            for (const view in data) {
+                this.__unapplyCfg(data[view].join('>'), upt_settings.markdown_overcharge);
+            }
         }
     }
 
