@@ -254,6 +254,17 @@ export default class UNITADE_PLUGIN extends Plugin {
         //#endregion
 
         this.app.vault.on('create', async (file) => {
+            /*
+             If workspace is not ready, do not read "creation" events from vaults.
+             Reason behind this is the fact, that upon startup, when app is initialized and
+             it reads files, all of them are "being created" at the moment.
+
+             Source:
+             <https://docs.obsidian.md/Plugins/Guides/Optimizing+plugin+load+time#Pitfalls>
+            */
+            if (!this.app.workspace.layoutReady)
+                return;
+
             const filename: string[] = file.name.split('.').splice(1);
 
             if (isTFolder(file)) return;
