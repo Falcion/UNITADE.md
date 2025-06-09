@@ -115,8 +115,6 @@ export class UNITADE_VIEW_CODE extends TextFileView {
     private addKeyEvents = () => {
         this.containerEl.addEventListener('keydown', this.__keyHandler, true);
 
-        console.log('UNITADE-DEV: Start to registry key events in opened code editor instance. Is force vanilla paste enabled?', this.plugin.settings.code_editor_settings.force_vanilla_paste)
-
         if (this.plugin.settings.code_editor_settings.force_vanilla_paste)
             this.monacoEditor.addCommand(
                 monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyV, () => this.monacoEditor.trigger('', 'editor.action.clipboardPasteAction', null));
@@ -131,8 +129,6 @@ export class UNITADE_VIEW_CODE extends TextFileView {
     }
 
     private __keyHandler = async (event: KeyboardEvent) => {
-        console.log('UNITADE-DEV: Caught key event in code editor view!\n', event);
-
         if (this.getViewType() !== 'codeview') return;
 
         const KEYMAP = new Map<string, string>([
