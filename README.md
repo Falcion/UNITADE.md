@@ -18,16 +18,16 @@
     <!-- markdownlint-disable -->
     <picture align="left" alt="logo" style="width:66%;height:auto;" width="66%" height="auto">
           <source
-            srcset="./media/UNITADE.md%20-%20logo%20and%20title%20(cut)%20-%20DARK%20THEME.svg"
+            srcset="https://github.com/Falcion/UNITADE.md/blob/main/media/UNITADE.md%20-%20logo%20and%20title%20(cut)%20-%20DARK%20THEME.svg"
             media="(prefers-color-scheme: dark)"
             style="width:66%;height:auto;" width="66%" height="auto"
           />
           <source
-            srcset="./media/UNITADE.md%20-%20logo%20and%20title%20(cut).svg"
+            srcset="https://github.com/Falcion/UNITADE.md/blob/main/media/UNITADE.md%20-%20logo%20and%20title%20(cut).svg"
             media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)"
             style="width:66%;height:auto;" width="66%" height="auto"
            />
-          <img style="width:66%;height:auto;" src="./media/UNITADE.md%20-%20logo%20and%20title%20(cut).svg" width="66%" height="auto"/>
+          <img style="width:66%;height:auto;" src="https://github.com/Falcion/UNITADE.md/blob/main/media/UNITADE.md%20-%20logo%20and%20title%20(cut).svg" width="66%" height="auto"/>
     </picture>
     <!-- markdownlint-enable -->
     <!-- TEXTS -->
