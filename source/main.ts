@@ -908,11 +908,11 @@ export default class UNITADE_PLUGIN extends Plugin {
 
         this.__unapplyCfg(exts, upt_settings.markdown_overcharge);
 
-        if (this.app.viewRegistry.viewByType['codeview'] !== undefined ||
+        if (this.app.viewRegistry.viewByType['codeview'] !== undefined &&
             this.app.viewRegistry.viewByType['codeview'] !== null)
             this.app.viewRegistry.unregisterView('codeview');
 
-        if (this.app.viewRegistry.viewByType['mirrorview'] !== undefined ||
+        if (this.app.viewRegistry.viewByType['mirrorview'] !== undefined &&
             this.app.viewRegistry.viewByType['mirrorview'] !== null)
             this.app.viewRegistry.unregisterView('mirrorview');
 
