@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.2.5](https://github.com/mokkapps/changelog-generator-demo/compare/v3.2.4...v3.2.5) (2025-06-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* **settings:** fix logic-update issues and update display method
+* **apply:** revamp apply and unapply systems for plugin
+
+### Features
+
+* **apply:** revamp apply and unapply systems for plugin ([7d7a4de](https://github.com/mokkapps/changelog-generator-demo/commits/7d7a4deeb1723092a706bd35bd2fdde732065d53)), closes [#135](https://github.com/Falcion/UNITADE.md/issues/135)
+* **onload:** optimize plugin's work with vault and it's files ([050d7ba](https://github.com/mokkapps/changelog-generator-demo/commits/050d7bad63c1ee7398618c3182afe0dce890fabf))
+
+
+### Build system
+
+* **code:** remove legacy-code from plugin's internal API and codebase ([0f5df2b](https://github.com/mokkapps/changelog-generator-demo/commits/0f5df2bbf5234377e5fa1f5325164267f9f454b8))
+
+
+### Fixes
+
+* **buffer:** remove trigger for paste action, ([a4f4c85](https://github.com/mokkapps/changelog-generator-demo/commits/a4f4c856254748eb15f28bdb593d21c7e3a282ed)), closes [#132](https://github.com/Falcion/UNITADE.md/issues/132)
+* **paste:** append multiple paste elements in entire codebase ([0583add](https://github.com/mokkapps/changelog-generator-demo/commits/0583adde6b979cc1f6f549ab572b32f30fbd8f17))
+* **settings:** fix logic-update issues and update display method ([f10171d](https://github.com/mokkapps/changelog-generator-demo/commits/f10171dfb2b674f2d32c9ec399922a84aa7ffe53))
+
 ### [3.2.4](https://github.com/mokkapps/changelog-generator-demo/compare/v3.2.3...v3.2.4) (2025-04-11)
 
 
