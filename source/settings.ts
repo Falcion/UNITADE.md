@@ -1563,27 +1563,27 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
 
     // update mobile config
     private __uptMbConfig(mbConfigInput: TextAreaComponent, mbConfigEnabled: boolean): void {
-        mbConfigInput.inputEl.style.display = mbConfigEnabled ? 'block' : 'none';
+        mbConfigInput.inputEl.style.display = mbConfigEnabled ? 'flex' : 'none';
     }
 
     // update module system config
     private _uptMSConfig(configModuleElements: (TextAreaComponent | Setting | HTMLElement)[], configModuleEnabled: boolean): void {
         for (const configCodeEditorElement of configModuleElements) {
             if (configCodeEditorElement instanceof TextAreaComponent) {
-                configCodeEditorElement.inputEl.style.display = configModuleEnabled ? 'block' : 'none';
+                configCodeEditorElement.inputEl.style.display = configModuleEnabled ? 'flex' : 'none';
             } else if (configCodeEditorElement instanceof Setting) {
-                configCodeEditorElement.settingEl.style.display = configModuleEnabled ? 'block' : 'none';
+                configCodeEditorElement.settingEl.style.display = configModuleEnabled ? 'flex' : 'none';
             } else {
-                configCodeEditorElement.style.display = configModuleEnabled ? 'block' : 'none';
+                configCodeEditorElement.style.display = configModuleEnabled ? 'flex' : 'none';
             }
         }
     }
 
     private __uptIgnConfig(ignInps: TextAreaComponent[], ignMsgs: Setting[], ignConfigEnabled: boolean): void {
-        ignInps[0].inputEl.style.display = ignConfigEnabled ? 'block' : 'none';
-        ignMsgs[0].settingEl.style.display = ignConfigEnabled ? 'block' : 'none';
-        ignInps[1].inputEl.style.display = ignConfigEnabled ? 'block' : 'none';
-        ignMsgs[1].settingEl.style.display = ignConfigEnabled ? 'block' : 'none';
+        ignInps[0].inputEl.style.display = ignConfigEnabled ? 'flex' : 'none';
+        ignMsgs[0].settingEl.style.display = ignConfigEnabled ? 'flex' : 'none';
+        ignInps[1].inputEl.style.display = ignConfigEnabled ? 'flex' : 'none';
+        ignMsgs[1].settingEl.style.display = ignConfigEnabled ? 'flex' : 'none';
     }
 
     private __uptState(data: TextAreaComponent, prev: boolean, next: boolean): void {
