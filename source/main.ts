@@ -796,7 +796,7 @@ export default class UNITADE_PLUGIN extends Plugin {
          * IF: "Use default extensions" enabled -> load vanilla/mobile extensions as code editor
          * ELSE: load just code editor extensions
          */
-        if (this.settings.code_editor_settings) {
+        if (this.settings.code_editor_settings.enabled) {
             this.__applyCfg(this.settings.code_editor_settings.use_default_extensions
                 ? defaultExtensions
                 : this.settings.code_editor_settings.extensions, 'codeview');
@@ -805,8 +805,9 @@ export default class UNITADE_PLUGIN extends Plugin {
         /** DEFAULT/MOBILE EXTENSIONS */
         // Because code editor could use default extensions, we must NOT "try" to double write them, so
         // when code editor extensions disabled either way, we can load default extensions as markdown
-        if (!this.settings.code_editor_settings.enabled || !this.settings.code_editor_settings.use_default_extensions)
+        if (!this.settings.code_editor_settings.enabled || !this.settings.code_editor_settings.use_default_extensions) {
             this.__applyCfg(defaultExtensions, 'markdown');
+        }
 
         /** FORCED EXTENSIONS */
 
