@@ -789,17 +789,26 @@ export default class UNITADE_PLUGIN extends Plugin {
             }
         }
 
-        const exts = this.is_mobile ? (this.settings.mobile_settings.extensions ?? this.settings.extensions)
+        const defaultExtensions = this.is_mobile ? (this.settings.mobile_settings.extensions ?? this.settings.extensions)
             : this.settings.extensions;
 
-        this.__applyCfg(exts,
-            (
-                this.settings.code_editor_settings.enabled &&
-                this.settings.code_editor_settings.use_default_extensions
-            ) /* If every required code editor instance is true, then register default extensions as
-                 code editor extensions. */
-                ? 'codeview'
-                : 'markdown')
+        /** CODE EDITOR EXTENSIONS:
+         * IF: "Use default extensions" enabled -> load vanilla/mobile extensions as code editor
+         * ELSE: load just code editor extensions
+         */
+        if (this.settings.code_editor_settings) {
+            this.__applyCfg(this.settings.code_editor_settings.use_default_extensions
+                ? defaultExtensions
+                : this.settings.code_editor_settings.extensions, 'codeview');
+        }
+
+        /** DEFAULT/MOBILE EXTENSIONS */
+        // Because code editor could use default extensions, we must NOT "try" to double write them, so
+        // when code editor extensions disabled either way, we can load default extensions as markdown
+        if (!this.settings.code_editor_settings.enabled || !this.settings.code_editor_settings.use_default_extensions)
+            this.__applyCfg(defaultExtensions, 'markdown');
+
+        /** FORCED EXTENSIONS */
 
         const forced_extensions = this.settings.forced_extensions.split('>').map(s => s.trim());
 
