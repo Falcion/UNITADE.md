@@ -789,6 +789,9 @@ export default class UNITADE_PLUGIN extends Plugin {
             }
         }
 
+        if (this.settings.markdown_overcharge)
+            this.app.viewRegistry.unregisterExtensions(['md', 'mdown', 'markdown']);
+
         const defaultExtensions = this.is_mobile ? (this.settings.mobile_settings.extensions ?? this.settings.extensions)
             : this.settings.extensions;
 
@@ -913,10 +916,9 @@ export default class UNITADE_PLUGIN extends Plugin {
     }
 
     private __unapply(upt_settings: UNITADE_SETTINGS): void {
-        const exts = this.is_mobile ? (upt_settings.mobile_settings.extensions ?? upt_settings.extensions)
-            : upt_settings.extensions;
-
-        this.__unapplyCfg(exts, upt_settings.markdown_overcharge);
+        this.__unapplyCfg(upt_settings.extensions)
+        this.__unapplyCfg(upt_settings.mobile_settings.extensions);
+        this.__unapplyCfg(upt_settings.code_editor_settings.extensions);
 
         if (this.app.viewRegistry.viewByType['codeview'] !== undefined &&
             this.app.viewRegistry.viewByType['codeview'] !== null)
@@ -930,7 +932,7 @@ export default class UNITADE_PLUGIN extends Plugin {
             const data: { [key: string]: string[] } = parsegroup(upt_settings.grouped_extensions);
 
             for (const view in data) {
-                this.__unapplyCfg(data[view].join('>'), upt_settings.markdown_overcharge);
+                this.__unapplyCfg(data[view].join('>'));
             }
         }
     }
@@ -947,11 +949,14 @@ export default class UNITADE_PLUGIN extends Plugin {
         }
     }
 
-    private __unapplyCfg(extensions: string, markdown_charge: boolean) {
+    private __unapplyCfg(extensions: string, markdown_charge: boolean = this.settings.markdown_overcharge) {
         const ext_arr: string[] = extensions.split('>').map(s => s.trim());
 
+        if (markdown_charge)
+            this.app.viewRegistry.registerExtensions(['md', 'mdown', 'markdown'], 'markdown');
+
         for (const extension of ext_arr)
-            if (markdown_charge || extension !== 'md')
+            if (extension !== 'md')
                 if (!this._settings.errors[extension]) {
                     try {
                         this.app.viewRegistry.unregisterExtensions([extension]);
