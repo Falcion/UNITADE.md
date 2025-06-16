@@ -916,9 +916,9 @@ export default class UNITADE_PLUGIN extends Plugin {
     }
 
     private __unapply(upt_settings: UNITADE_SETTINGS): void {
-        this.__unapplyCfg(upt_settings.extensions)
-        this.__unapplyCfg(upt_settings.mobile_settings.extensions);
-        this.__unapplyCfg(upt_settings.code_editor_settings.extensions);
+        this.__unapplyCfg(upt_settings.extensions, upt_settings.markdown_overcharge)
+        this.__unapplyCfg(upt_settings.mobile_settings.extensions ?? '', upt_settings.markdown_overcharge);
+        this.__unapplyCfg(upt_settings.code_editor_settings.extensions, upt_settings.markdown_overcharge);
 
         if (this.app.viewRegistry.viewByType['codeview'] !== undefined &&
             this.app.viewRegistry.viewByType['codeview'] !== null)
@@ -932,7 +932,7 @@ export default class UNITADE_PLUGIN extends Plugin {
             const data: { [key: string]: string[] } = parsegroup(upt_settings.grouped_extensions);
 
             for (const view in data) {
-                this.__unapplyCfg(data[view].join('>'));
+                this.__unapplyCfg(data[view].join('>'), upt_settings.markdown_overcharge);
             }
         }
     }
@@ -949,7 +949,7 @@ export default class UNITADE_PLUGIN extends Plugin {
         }
     }
 
-    private __unapplyCfg(extensions: string, markdown_charge: boolean = this.settings.markdown_overcharge) {
+    private __unapplyCfg(extensions: string, markdown_charge: boolean) {
         const ext_arr: string[] = extensions.split('>').map(s => s.trim());
 
         if (markdown_charge)
