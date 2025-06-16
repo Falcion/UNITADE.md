@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.2.6](https://github.com/mokkapps/changelog-generator-demo/compare/v3.2.5...v3.2.6) (2025-06-16)
+
+
+### Features
+
+* **visuals:** hidden visuals-fix in the latest release ([b48ba98](https://github.com/mokkapps/changelog-generator-demo/commits/b48ba9865bfae8990fddb817d0ae0d1198d60b75))
+
+
+### Build system
+
+* **deps-dev:** bump brace-expansion ([4819068](https://github.com/mokkapps/changelog-generator-demo/commits/4819068ceb058e9dee8896e8b4a3bdb9c6e8d78c))
+
+
+### Fixes
+
+* **applying:** revamp apply logic, fix of [#137](https://github.com/Falcion/UNITADE.md/issues/137) ([bc86968](https://github.com/mokkapps/changelog-generator-demo/commits/bc8696831d561eb336218ed442cf929f87acc0ca))
+* **unapplying:** revamp unapply logic, fix of [#139](https://github.com/Falcion/UNITADE.md/issues/139) ([a870e6c](https://github.com/mokkapps/changelog-generator-demo/commits/a870e6ce333de3fdfb53d87597058f7701788969))
+
 ### [3.2.5](https://github.com/mokkapps/changelog-generator-demo/compare/v3.2.4...v3.2.5) (2025-06-09)
 
 
