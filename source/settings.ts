@@ -1549,8 +1549,6 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
             this.plugin.settings.is_ignore,
         );
 
-        this._uptMSConfig([editorExtensionsInput, codeExtensionsWarn], !this.plugin.settings.code_editor_settings.use_default_extensions);
-
         this._uptMSConfig([
             useDefaultExtensions, editorExtensionsInput, codeExtensionsWarn, editorTheme,
             editorFolding, editorWordWrapping, editorLineNumbers, editorMinimapping,
@@ -1558,6 +1556,9 @@ export default class UNITADE_SETTINGS_TAB extends PluginSettingTab {
             editorFontFamily, editorFontLigatures, forceVanillaPaste, enableZoomSetting,
             titleFontSettings
         ], this.plugin.settings.code_editor_settings.enabled);
+
+        if (this.plugin.settings.code_editor_settings.enabled)
+            this._uptMSConfig([editorExtensionsInput, codeExtensionsWarn], !this.plugin.settings.code_editor_settings.use_default_extensions);
         //#endregion
     }
 
