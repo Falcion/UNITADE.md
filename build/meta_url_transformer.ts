@@ -81,7 +81,6 @@ export interface MetaUrlTransformerPluginSetup {
 
 const defaultTransform: MetaUrlTransformerPluginSetup["transform"] = (matched_substring: string, regex_args: any[], index: number): MetaUrlTransformResult => {
     const
-        //@ts-expect-error Import plugin
         [named_groups, _full_string, _offset, ..._unused_groups] = regex_args.toReversed(),
         path_name = named_groups.importPath as string,
         var_name = `__IMPORT_META_URL_${index}`
