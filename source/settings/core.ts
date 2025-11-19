@@ -1,8 +1,8 @@
 import { App, PluginSettingTab, setIcon } from "obsidian";
 
-import UnitadePlugin from "../main";
-import { SETTINGS_TABS } from "./tabs";
-import { loadSettingsTab } from "./tabs/utils/loader";
+import UnitadePlugin from "@root/main";
+import { SETTINGS_TABS } from "@settings/tabs";
+import { loadSettingsTab } from "@settings/utils/loader";
 
 export class UnitadeSettingsTab extends PluginSettingTab {
     public plugin!: UnitadePlugin;

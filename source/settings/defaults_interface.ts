@@ -215,6 +215,8 @@ export interface ISettings {
      * Enables legacy mode for the plugin, allowing user to work with deprecated features and settings
      * @param {string}  error_signatures
      * Record of error messages by which they would be sorted out and silenced on application level: part of advanced error silencing system
+     * @param {number}  input_debouncing
+     * Milliseconds input debounce (lag) which defines pause before reading user input
      */
     developer: {
         /** Enables debug mode for the plugin, interlopes with more log output and custom behaviour */
@@ -223,6 +225,8 @@ export interface ISettings {
         stale: boolean,
         /** Record of error messages by which they would be sorted out and silenced on application level: part of advanced error silencing system */
         error_signatures: string,
+        /** Milliseconds input debounce (lag) which defines pause before reading user input */
+        input_debouncing: number,
     },
     /**
      * Represents support for files without extensions, interlopes within empty or null

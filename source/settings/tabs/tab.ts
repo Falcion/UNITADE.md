@@ -1,4 +1,4 @@
-import UnitadePlugin from "../../main";
+import UnitadePlugin from "@root/main";
 
 export interface IUnitadeTab {
     display(containerEl: HTMLElement, plugin: UnitadePlugin): void;

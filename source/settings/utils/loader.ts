@@ -1,4 +1,4 @@
-import { IUnitadeTab } from "../tab";
+import { IUnitadeTab } from "@settings/tabs/tab";
 
 export async function loadSettingsTab(
     id: string

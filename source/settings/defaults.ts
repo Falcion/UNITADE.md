@@ -24,7 +24,7 @@
  * Any code and/or API associated with OBSIDIAN behaves as stated in their distribution policy.
  */
 
-import { ISettings } from './defaults_interface';
+import { ISettings } from '@settings/defaults_interface';
 
 export const DEFAULT_SETTINGS: ISettings = {
     ERRORS: {},
@@ -57,7 +57,8 @@ export const DEFAULT_SETTINGS: ISettings = {
     developer: {
         debug: false,
         stale: false,
-        error_signatures: ''
+        error_signatures: '',
+        input_debouncing: 1000
     },
     barefiling: false,
     externals: {
