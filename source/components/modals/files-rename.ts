@@ -31,7 +31,7 @@ import {
     TAbstractFile,
 } from "obsidian";
 
-import UNITADE_PLUGIN from "../../main";
+import UnitadePlugin from "../../main";
 
 export class TFilesRename extends Modal {
     private _new_name: string = '';
@@ -41,7 +41,7 @@ export class TFilesRename extends Modal {
     private _new_name_queue: string[] = [];
 
     constructor(
-        private plugin: UNITADE_PLUGIN,
+        private plugin: UnitadePlugin,
         private target: TAbstractFile[]
     ) {
         super(plugin.app);

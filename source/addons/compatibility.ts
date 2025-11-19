@@ -1,13 +1,13 @@
 import { App, PluginManifest } from "obsidian";
-import UNITADE_PLUGIN from "../main";
-import { DEFAULT_SETTINGS } from "../settings";
+import UnitadePlugin from "../main";
+import { DEFAULT_SETTINGS } from "@settings/defaults";
 
 export default class CompatibilityModule {
     private _app: App;
-    private _plugin: UNITADE_PLUGIN;
+    private _plugin: UnitadePlugin;
     current_manifest: PluginManifest;
 
-    constructor(app: App, plugin: UNITADE_PLUGIN) {
+    constructor(app: App, plugin: UnitadePlugin) {
         this._app = app;
         this._plugin = plugin;
         this.current_manifest = this._app.plugins.manifests['unitade'];
@@ -24,7 +24,7 @@ export default class CompatibilityModule {
 
         const version = this.getVersion(data);
 
-        if (version === this._plugin.settings.manifest_version) return false;
+        if (version === this._plugin.settings.SYS_MANIFEST_VERSION) return false;
 
         await this.convert(data, version);
 

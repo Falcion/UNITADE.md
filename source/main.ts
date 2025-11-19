@@ -32,11 +32,6 @@ import {
     WorkspaceLeaf,
 } from 'obsidian';
 
-import UNITADE_SETTINGS_TAB, {
-    UNITADE_SETTINGS,
-    DEFAULT_SETTINGS,
-} from './settings';
-
 import UNITADE_VIEW from './components/views/view_codemirror';
 
 import CodeMirror from './../lib/codemirror';
@@ -76,6 +71,9 @@ import { PromptUserInput } from './components/modals/prompt-user-input';
 
 import './_exportMonaco';
 import { DEFAULT_SIGNATURES } from './externals/errors/signatures';
+import { DEFAULT_SETTINGS } from './settings/defaults';
+import { ISettings } from './settings/defaults_interface';
+import { UnitadeSettingsTab } from './settings/core';
 
 declare module "obsidian" {
     interface Workspace {
@@ -94,8 +92,8 @@ declare interface Window {
     };
 }
 
-export default class UNITADE_PLUGIN extends Plugin {
-    private _settings: UNITADE_SETTINGS = DEFAULT_SETTINGS;
+export default class UnitadePlugin extends Plugin {
+    private _settings: ISettings = DEFAULT_SETTINGS;
     private _locale: LocalesModule = new LocalesModule();
     private _observer!: MutationObserver;
 
@@ -112,7 +110,7 @@ export default class UNITADE_PLUGIN extends Plugin {
             event: new MouseEvent(""),
         };
 
-    public get settings(): UNITADE_SETTINGS {
+    public get settings(): ISettings {
         return this._settings;
     }
 
@@ -121,7 +119,7 @@ export default class UNITADE_PLUGIN extends Plugin {
     }
 
     public get is_mobile(): boolean {
-        return Platform.isMobile && this.settings.mobile_settings.enable;
+        return Platform.isMobile && this.settings.mobile.enable;
     }
     //#region Load/Unload
     async onload(): Promise<void> {
@@ -138,13 +136,13 @@ export default class UNITADE_PLUGIN extends Plugin {
         // }
 
         window.addEventListener('error', e => {
-            if (this.settings.debug_mode)
+            if (this.settings.developer.debug)
                 console.info('Obsidian caught an error, signature provided:', e.message);
 
             let add_signatures: string[] = [];
 
             try {
-                add_signatures = this.settings.advanced_silencing_errors.signatures.split('\n');
+                add_signatures = this.settings.developer.error_signatures.split('\n');
             } catch (error) {
                 console.info("[UNITADE]: Plugin couldn't get any additional signatures to silence errors.");
             }
@@ -167,7 +165,7 @@ export default class UNITADE_PLUGIN extends Plugin {
             callback: () => {
                 const next = {
                     ...this.settings,
-                    safe_mode: !this.settings.safe_mode,
+                    safe_mode: !this.settings.externals.safe,
                 };
 
                 this.uptSettings(next);
@@ -210,13 +208,13 @@ export default class UNITADE_PLUGIN extends Plugin {
                     const extensions: string = result;
                     if (!extensions) return;
 
-                    const data = extensions.split('>').filter(x => !this.settings.extensions.split('>').includes(x));
+                    const data = extensions.split('>').filter(x => !this.settings.default.extensions.split('>').includes(x));
 
                     if (data.length > 0) {
 
                         const next = {
                             ...this.settings,
-                            extensions: (this.settings.extensions + `>${data.join('>')}`)
+                            extensions: (this.settings.default.extensions + `>${data.join('>')}`)
                         };
 
                         this.uptSettings(next);
@@ -234,15 +232,15 @@ export default class UNITADE_PLUGIN extends Plugin {
                     const extensions: string = result;
                     if (!extensions) return;
 
-                    const data = extensions.split('>').filter(x => !this.settings.code_editor_settings.extensions.split('>').includes(x));
+                    const data = extensions.split('>').filter(x => !this.settings.code_editor.extensions.split('>').includes(x));
 
                     if (data.length > 0) {
 
                         const next = {
                             ...this.settings,
                             code_editor_settings: {
-                                ...this.settings.code_editor_settings,
-                                extensions: (this.settings.code_editor_settings.extensions + `>${data.join('>')}`)
+                                ...this.settings.code_editor,
+                                extensions: (this.settings.code_editor.extensions + `>${data.join('>')}`)
                             }
                         };
 
@@ -269,8 +267,8 @@ export default class UNITADE_PLUGIN extends Plugin {
 
             if (isTFolder(file)) return;
 
-            if (this.settings.is_ignore) {
-                for (const mask of this.settings.ignore_masks.split('>')) {
+            if (this.settings.ignore.enable) {
+                for (const mask of this.settings.ignore.masks.split('>')) {
                     const _mask = mask.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
                     try {
@@ -279,7 +277,7 @@ export default class UNITADE_PLUGIN extends Plugin {
                             return;
                         }
                     } catch (error) {
-                        if (!this.settings.silence_errors) {
+                        if (!this.settings.externals.silencing) {
                             console.error(error);
                         } else {
                             console.warn(`[UNITADE-ERROR]: ERROR IS SILENCED, ERROR: ${error}`);
@@ -291,33 +289,33 @@ export default class UNITADE_PLUGIN extends Plugin {
             if (this.settings.is_onload) {
                 const total_extension = filename.join('.');
 
-                if (this.settings.ignore_extensions.split('>').includes(total_extension!) && this.settings.is_ignore)
+                if (this.settings.ignore.extensions.split('>').includes(total_extension!) && this.settings.ignore.enable)
                     return;
-                if (this.settings.extensions.split('>').includes(total_extension!))
+                if (this.settings.default.extensions.split('>').includes(total_extension!))
                     return;
-                if (this.settings.mobile_settings.enable &&
-                    this.settings.mobile_settings.extensions.split('>').includes(total_extension!))
+                if (this.settings.mobile.enable &&
+                    this.settings.mobile.extensions.split('>').includes(total_extension!))
                     return;
 
                 try {
                     this.__tryApply(total_extension!, 'markdown');
 
-                    const __settings = this.settings.extensions.split('>');
+                    const __settings = this.settings.default.extensions.split('>');
 
                     __settings.push(`${total_extension!}`);
 
-                    this.settings.extensions = __settings.join('>');
+                    this.settings.default.extensions = __settings.join('>');
 
-                    if (this.settings.mobile_settings.enable) {
+                    if (this.settings.mobile.enable) {
 
-                        const __mb_settings = this.settings.mobile_settings.extensions.split('>');
+                        const __mb_settings = this.settings.mobile.extensions.split('>');
 
                         __mb_settings.push(`${total_extension!}`);
 
-                        this.settings.mobile_settings.extensions = __mb_settings.join('>');
+                        this.settings.mobile.extensions = __mb_settings.join('>');
                     }
                 } catch (err: any) {
-                    if (!this.settings.silence_errors) {
+                    if (!this.settings.externals.silencing) {
                         new Notification(this.locale.getLocaleItem('ERROR_COMMON_MESSAGE')[0]!, { body: `${err}` });
 
                         console.error(err);
@@ -331,32 +329,32 @@ export default class UNITADE_PLUGIN extends Plugin {
                 const extensions: string[] = filename;
 
                 for (const extension of extensions) {
-                    if (this.settings.ignore_extensions.split('>').includes(extension) && this.settings.is_ignore)
+                    if (this.settings.ignore.extensions.split('>').includes(extension) && this.settings.ignore.enable)
                         return;
-                    if (this.settings.extensions.split('>').includes(extension))
+                    if (this.settings.default.extensions.split('>').includes(extension))
                         return;
-                    if (this.settings.mobile_settings.enable &&
-                        this.settings.mobile_settings.extensions.split('>').includes(extension))
+                    if (this.settings.mobile.enable &&
+                        this.settings.mobile.extensions.split('>').includes(extension))
                         return;
 
                     try {
                         this.__tryApply(extension, 'markdown');
 
-                        const __settings = this.settings.extensions.split('>');
+                        const __settings = this.settings.default.extensions.split('>');
 
                         __settings.push(`${extension}`);
 
-                        this.settings.extensions = __settings.join('>');
+                        this.settings.default.extensions = __settings.join('>');
 
-                        if (this.settings.mobile_settings.enable) {
-                            const __mb_settings = this.settings.mobile_settings.extensions.split('>');
+                        if (this.settings.mobile.enable) {
+                            const __mb_settings = this.settings.mobile.extensions.split('>');
 
                             __mb_settings.push(`${extension}`);
 
-                            this.settings.mobile_settings.extensions = __mb_settings.join('>');
+                            this.settings.mobile.extensions = __mb_settings.join('>');
                         }
                     } catch (err: any) {
-                        if (!this.settings.silence_errors) {
+                        if (!this.settings.externals.silencing) {
                             new Notification(this.locale.getLocaleItem('ERROR_COMMON_MESSAGE')[0]!, { body: `${extensions}` });
 
                             console.error(err);
@@ -375,7 +373,7 @@ export default class UNITADE_PLUGIN extends Plugin {
 
             this.app.viewRegistry.unregisterExtensions(['md']);
 
-        this.addSettingTab(new UNITADE_SETTINGS_TAB(this.app, this));
+        this.addSettingTab(new UnitadeSettingsTab(this.app, this));
 
         this.app.workspace.layoutReady ? this.ltReady(this.app) : this.app.workspace.on('layout-change', () => {
             this.ltReady(this.app);
@@ -386,7 +384,7 @@ export default class UNITADE_PLUGIN extends Plugin {
         this.registerEvent(this.__ctxFence());
 
         this.registerEvent(this.app.workspace.on("editor-change", (editor) => {
-            if (this.settings.debug_mode && this.settings.status_bar.cursor_position)
+            if (this.settings.developer.debug && this.settings.status_bar.cursor_position)
                 console.debug('[UNITADE] CHECKED CURSOR POSITION OF EDITOR-CHANGE EVENT:', editor.getCursor());
 
             this.statusBarConfig.update({
@@ -404,11 +402,9 @@ export default class UNITADE_PLUGIN extends Plugin {
             const editor = this.app.workspace.activeEditor?.editor;
             let registered_extensions: number = 0;
 
-            const {
-                extensions,
-                grouped_extensions,
-                code_editor_settings
-            } = this.settings;
+            const extensions = this.settings.default.extensions;
+            const grouped_extensions = this.settings.grouped.patterns;
+            const code_editor_settings = this.settings.code_editor;
 
             const globalExtensionsByView = parsegroup(grouped_extensions);
 
@@ -417,8 +413,8 @@ export default class UNITADE_PLUGIN extends Plugin {
             if (!globalExtensionsByView['markdown'])
                 globalExtensionsByView['markdown'] = [];
 
-            if (code_editor_settings.enabled)
-                globalExtensionsByView['codeview'] = globalExtensionsByView['codeview'].concat(code_editor_settings.use_default_extensions
+            if (code_editor_settings.enable)
+                globalExtensionsByView['codeview'] = globalExtensionsByView['codeview'].concat(code_editor_settings.enable_default_extensions
                     ? extensions.split('>')
                     : code_editor_settings.extensions.split('>'));
 
@@ -426,9 +422,9 @@ export default class UNITADE_PLUGIN extends Plugin {
 
             const viewType = leaf.getViewState().type;
 
-            if (this.settings.status_bar.registered_extensions.include_extensions)
+            if (this.settings.status_bar.registered_extensions.include_extensions_markdown)
                 registered_extensions += globalExtensionsByView['markdown'].length;
-            if (this.settings.status_bar.registered_extensions.include_code_editor_extensions)
+            if (this.settings.status_bar.registered_extensions.include_extensions_code)
                 registered_extensions += globalExtensionsByView['codeview'].length;
             if (this.settings.status_bar.registered_extensions.include_extensions_grouped) {
                 const views = Object.keys(globalExtensionsByView).filter(view => (view !== 'markdown' && view !== 'codeview'));
@@ -446,7 +442,7 @@ export default class UNITADE_PLUGIN extends Plugin {
 
             const cursor = editor.getCursor();
 
-            if (this.settings.debug_mode && this.settings.status_bar.cursor_position)
+            if (this.settings.developer.debug && this.settings.status_bar.cursor_position)
                 console.debug('[UNITADE] CHECKED CURSOR POSITION OF LEAF-CHANGE EVENT:', cursor);
 
             this.statusBarConfig.update({
@@ -462,7 +458,7 @@ export default class UNITADE_PLUGIN extends Plugin {
             this.updateStatusBar();
         }));
 
-        if (this.settings.debug_mode)
+        if (this.settings.developer.debug)
             console.debug('[UNITADE]: Initializing custom markdown postprocessor.');
 
         this._observer = new MutationObserver(async (mutation) => {
@@ -477,10 +473,10 @@ export default class UNITADE_PLUGIN extends Plugin {
 
             let valid: boolean = false;
 
-            if (!this.settings.code_editor_settings.use_default_extensions)
-                valid = this.settings.code_editor_settings.extensions.includes(file.extension);
+            if (!this.settings.code_editor.enable_default_extensions)
+                valid = this.settings.code_editor.extensions.includes(file.extension);
             else
-                valid = this.settings.extensions.includes(file.extension);
+                valid = this.settings.default.extensions.includes(file.extension);
 
             if (valid === false) return;
             const fileContent = await this.app.vault.read(file);
@@ -560,7 +556,7 @@ export default class UNITADE_PLUGIN extends Plugin {
         try {
             this.registerExtensions(['.md'], 'markdown');
         } catch (err: any) {
-            if (!this.settings.silence_errors) {
+            if (!this.settings.externals.silencing) {
                 new Notification(this.locale.getLocaleItem('ERROR_COMMON_MESSAGE')[0]!, { body: err });
 
                 console.error(err);
@@ -568,7 +564,7 @@ export default class UNITADE_PLUGIN extends Plugin {
                 console.warn(`[UNITADE-ERROR]: ERROR IS SILENCED, ERROR: ${err}`);
             }
 
-            this.settings.errors['markdown_override'] = formatString(this.locale.getLocaleItem('ERROR_REGISTRY_EXTENSION')[3]!, err);
+            this.settings.ERRORS['markdown_override'] = formatString(this.locale.getLocaleItem('ERROR_REGISTRY_EXTENSION')[3]!, err);
         }
 
         for (const key in CodeMirror.modes) {
@@ -578,21 +574,21 @@ export default class UNITADE_PLUGIN extends Plugin {
 
         this.leafRef(this.app);
 
-        if (this.settings.status_bar.enabled)
+        if (this.settings.status_bar.enable)
             this._statusBar.remove();
     }
     //#endregion
 
     //#region Status bar update
     public updateStatusBar(): void {
-        if (this.settings.status_bar.enabled) {
+        if (this.settings.status_bar.enable) {
             const data: string[] = new StatusBarParser(this._locale, this.statusBarConfig).generateText();
 
             let text: string = '';
 
             if (this.settings.status_bar.current_processor)
                 text += data[0];
-            if (this.settings.status_bar.registered_extensions.enabled)
+            if (this.settings.status_bar.registered_extensions.enable)
                 text += (data[1].split(',')[0] + '');
             if (this.settings.status_bar.registered_views)
                 text += data[1].split(',')[1];
@@ -601,7 +597,7 @@ export default class UNITADE_PLUGIN extends Plugin {
             if (this.settings.status_bar.current_display)
                 text += data[3];
 
-            if (this.settings.debug_mode)
+            if (this.settings.developer.debug)
                 console.debug('[UNITADE] STATUS BAR UPDATE: ' + text);
 
             this._statusBar.setText(text);
@@ -693,7 +689,7 @@ export default class UNITADE_PLUGIN extends Plugin {
 
             this.leafRef(_app);
         } catch (error) {
-            if (this.settings.silence_errors) {
+            if (this.settings.externals.silencing) {
                 console.warn('[SILENCING ERRORS]: CAUGHT AN ERROR VIA LAYOUT-READY EVENT.');
             } else {
                 console.error('CAUGHT AN ERROR VIA LAYOUT-READY EVENT.');
@@ -706,7 +702,7 @@ export default class UNITADE_PLUGIN extends Plugin {
             /**@ts-expect-error: not part of public API, accessing through runtime. */
             _app.workspace.iterateCodeMirrors(cm => cm.setOption("mode", cm.getOption("mode")));
         } catch (error) {
-            if (this.settings.silence_errors) {
+            if (this.settings.externals.silencing) {
                 console.warn('[SILENCING ERRORS]: CAUGHT AN ERROR VIA LAYOUT-ITERATE EVENT.');
             } else {
                 console.error('CAUGHT AN ERROR VIA LAYOUT-ITERATE EVENT.');
@@ -720,7 +716,7 @@ export default class UNITADE_PLUGIN extends Plugin {
         this._settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
     }
 
-    async uptSettings(upt_settings: UNITADE_SETTINGS): Promise<void> {
+    async uptSettings(upt_settings: ISettings): Promise<void> {
         this.__unapply(upt_settings);
 
         this._settings = upt_settings;
@@ -736,9 +732,9 @@ export default class UNITADE_PLUGIN extends Plugin {
      * @param partialUpdates Partial settings to update
      */
     async uptSettingsVisuals(partialUpdates: {
-        code_editor_settings?: Partial<UNITADE_SETTINGS['code_editor_settings']>;
-        status_bar?: Partial<UNITADE_SETTINGS['status_bar']>;
-        mobile_settings?: Partial<UNITADE_SETTINGS['mobile_settings']>;
+        code_editor_settings?: Partial<ISettings['code_editor']>;
+        status_bar?: Partial<ISettings['status_bar']>;
+        mobile_settings?: Partial<ISettings['mobile']>;
         [key: string]: any;
     }): Promise<void> {
         // Perform a deep merge of current settings 
@@ -781,8 +777,8 @@ export default class UNITADE_PLUGIN extends Plugin {
             this.app.viewRegistry.viewByType['codeview'] === null)
             this.registerView('codeview', leaf => new UNITADE_VIEW_CODE(leaf, this));
 
-        if (this.settings.is_grouped) {
-            const data: { [key: string]: string[] } = parsegroup(this.settings.grouped_extensions);
+        if (this.settings.grouped.enable) {
+            const data: { [key: string]: string[] } = parsegroup(this.settings.grouped.patterns);
 
             for (const view in data) {
                 this.__applyCfg(data[view].join('>'), view);
@@ -792,23 +788,23 @@ export default class UNITADE_PLUGIN extends Plugin {
         if (this.settings.markdown_overcharge)
             this.app.viewRegistry.unregisterExtensions(['md', 'mdown', 'markdown']);
 
-        const defaultExtensions = this.is_mobile ? (this.settings.mobile_settings.extensions ?? this.settings.extensions)
-            : this.settings.extensions;
+        const defaultExtensions = this.is_mobile ? (this.settings.mobile.extensions ?? this.settings.default.extensions)
+            : this.settings.default.extensions;
 
         /** CODE EDITOR EXTENSIONS:
          * IF: "Use default extensions" enabled -> load vanilla/mobile extensions as code editor
          * ELSE: load just code editor extensions
          */
-        if (this.settings.code_editor_settings.enabled) {
-            this.__applyCfg(this.settings.code_editor_settings.use_default_extensions
+        if (this.settings.code_editor.enable) {
+            this.__applyCfg(this.settings.code_editor.enable_default_extensions
                 ? defaultExtensions
-                : this.settings.code_editor_settings.extensions, 'codeview');
+                : this.settings.code_editor.extensions, 'codeview');
         }
 
         /** DEFAULT/MOBILE EXTENSIONS */
         // Because code editor could use default extensions, we must NOT "try" to double write them, so
         // when code editor extensions disabled either way, we can load default extensions as markdown
-        if (!this.settings.code_editor_settings.enabled || !this.settings.code_editor_settings.use_default_extensions) {
+        if (!this.settings.code_editor.enable || !this.settings.code_editor.enable_default_extensions) {
             this.__applyCfg(defaultExtensions, 'markdown');
         }
 
@@ -822,9 +818,9 @@ export default class UNITADE_PLUGIN extends Plugin {
                     return new UNITADE_VIEW(leaf, extension);
                 });
             } catch (err: any) {
-                this.settings.errors[extension] = `${this.locale.getLocaleItem('ERROR_COMMON_MESSAGE')[0]!} ${err}`;
+                this.settings.ERRORS[extension] = `${this.locale.getLocaleItem('ERROR_COMMON_MESSAGE')[0]!} ${err}`;
 
-                if (!this.settings.silence_errors) {
+                if (!this.settings.externals.silencing) {
                     new Notification(this.locale.getLocaleItem('ERROR_COMMON_MESSAGE')[0]!, { body: `${err}` });
 
                     console.error(err);
@@ -871,7 +867,7 @@ export default class UNITADE_PLUGIN extends Plugin {
                 _msg = formatString(this.locale.getLocaleItem('ERROR_REGISTRY_EXTENSION')[1]!, filetype, view, err);
             }
 
-            if (!this.settings.silence_errors) {
+            if (!this.settings.externals.silencing) {
                 new Notification(this.locale.getLocaleItem('ERROR_COMMON_MESSAGE')[0]!, { body: _msg });
 
                 console.error(_msg);
@@ -879,27 +875,27 @@ export default class UNITADE_PLUGIN extends Plugin {
                 console.warn(`[UNITADE-ERROR]: ERROR IS SILENCED, ERROR: ${_msg}`);
             }
 
-            this._settings.errors[filetype] = _msg;
+            this._settings.ERRORS[filetype] = _msg;
         }
     }
 
     private __applyCfg(extensions: string, view: string): void {
-        this.settings.errors = {};
+        this.settings.ERRORS = {};
 
-        if (this.settings.debug_mode)
+        if (this.settings.developer.debug)
             console.info(this.app.viewRegistry.typeByExtension);
 
         const extensions_arr: string[] = extensions.split('>').map(s => s.trim());
 
         for (const extension of extensions_arr) {
-            if (this.settings.safe_mode && view === 'markdown' && CONSTANTS.unsafeExtensions.contains(extension.toLowerCase())) {
-                if (this.settings.debug_mode)
+            if (this.settings.externals.safe && view === 'markdown' && CONSTANTS.unsafeExtensions.contains(extension.toLowerCase())) {
+                if (this.settings.developer.debug)
                     console.info('[UNITADE]: Skipped unsafe extension:', extension);
 
                 continue;
             }
 
-            if (this.settings.is_ignore && this.settings.ignore_extensions.split('>').includes(extension))
+            if (this.settings.ignore.enable && this.settings.ignore.extensions.split('>').includes(extension))
                 continue;
 
             // If we ignore case difference (example: Windows systems)
@@ -915,10 +911,10 @@ export default class UNITADE_PLUGIN extends Plugin {
         }
     }
 
-    private __unapply(upt_settings: UNITADE_SETTINGS): void {
-        this.__unapplyCfg(upt_settings.extensions, upt_settings.markdown_overcharge)
-        this.__unapplyCfg(upt_settings.mobile_settings.extensions ?? '', upt_settings.markdown_overcharge);
-        this.__unapplyCfg(upt_settings.code_editor_settings.extensions, upt_settings.markdown_overcharge);
+    private __unapply(upt_settings: ISettings): void {
+        this.__unapplyCfg(upt_settings.default.extensions, upt_settings.markdown_overcharge)
+        this.__unapplyCfg(upt_settings.mobile.extensions ?? '', upt_settings.markdown_overcharge);
+        this.__unapplyCfg(upt_settings.code_editor.extensions, upt_settings.markdown_overcharge);
 
         if (this.app.viewRegistry.viewByType['codeview'] !== undefined &&
             this.app.viewRegistry.viewByType['codeview'] !== null)
@@ -928,8 +924,8 @@ export default class UNITADE_PLUGIN extends Plugin {
             this.app.viewRegistry.viewByType['mirrorview'] !== null)
             this.app.viewRegistry.unregisterView('mirrorview');
 
-        if (upt_settings.is_grouped) {
-            const data: { [key: string]: string[] } = parsegroup(upt_settings.grouped_extensions);
+        if (upt_settings.grouped.enable) {
+            const data: { [key: string]: string[] } = parsegroup(upt_settings.grouped.patterns);
 
             for (const view in data) {
                 this.__unapplyCfg(data[view].join('>'), upt_settings.markdown_overcharge);
@@ -957,15 +953,15 @@ export default class UNITADE_PLUGIN extends Plugin {
 
         for (const extension of ext_arr)
             if (extension !== 'md')
-                if (!this._settings.errors[extension]) {
+                if (!this._settings.ERRORS[extension]) {
                     try {
                         this.app.viewRegistry.unregisterExtensions([extension]);
                     } catch (err: any) {
                         const _msg = formatString(this.locale.getLocaleItem('ERROR_REGISTRY_EXTENSION')[2]!, extension);
 
-                        this.settings.errors[extension] = _msg;
+                        this.settings.ERRORS[extension] = _msg;
 
-                        if (!this.settings.silence_errors) {
+                        if (!this.settings.externals.silencing) {
                             new Notification(this.locale.getLocaleItem('ERROR_COMMON_MESSAGE')[0]!, { body: _msg });
 
                             console.error(_msg);

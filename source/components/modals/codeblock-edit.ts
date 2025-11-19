@@ -1,13 +1,13 @@
 import { Modal, Notice } from "obsidian";
 import { ContextEditor } from "../contexts/contextEditor";
 import { ContextEditCodeblocks } from "../contextEditCodeblock";
-import UNITADE_PLUGIN from "../../main";
+import UnitadePlugin from "../../main";
 
 export class FenceEditModal extends Modal {
 	private codeEditor!: ContextEditor;
 
 	private constructor(
-		private plugin: UNITADE_PLUGIN,
+		private plugin: UnitadePlugin,
 		private code: string,
 		private language: string,
 		private onSave: (changedCode: string) => void
@@ -44,11 +44,11 @@ export class FenceEditModal extends Modal {
 		this.onSave(this.codeEditor.getValue());
 	}
 
-	static openOnCurrentCode(plugin: UNITADE_PLUGIN) {
+	static openOnCurrentCode(plugin: UnitadePlugin) {
 		const context = ContextEditCodeblocks.create(plugin);
 
 		if (!context.isInFence()) {
-			if (plugin.settings.silence_errors)
+			if (plugin.settings.externals.silencing)
 				console.debug('SILENCED ERROR: Notice("Not valid codeblock");');
 			else
 				new Notice("Not valid codeblock");

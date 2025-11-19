@@ -31,14 +31,14 @@ import {
     TAbstractFile,
 } from "obsidian";
 
-import UNITADE_PLUGIN from "../../main";
+import UnitadePlugin from "../../main";
 
 export class TFolderEdit extends Modal {
     private _foldername: string;
     private _folderpath: string;
 
     constructor(
-        private plugin: UNITADE_PLUGIN,
+        private plugin: UnitadePlugin,
         private target: TAbstractFile
     ) {
         super(plugin.app);

@@ -31,7 +31,7 @@ import {
     Setting,
 } from "obsidian";
 
-import UNITADE_PLUGIN from "../../main";
+import UnitadePlugin from "../../main";
 
 export class TFileCreate extends Modal {
     private _filepath: string;
@@ -42,7 +42,7 @@ export class TFileCreate extends Modal {
     private _integration_code_editor: boolean;
 
     constructor(
-        private plugin: UNITADE_PLUGIN,
+        private plugin: UnitadePlugin,
         private target: string,
     ) {
         super(plugin.app);
@@ -170,7 +170,7 @@ export class TFileCreate extends Modal {
                 ...this.plugin.settings,
             };
 
-            next.extensions += `>${extensions}`;
+            next.default.extensions += `>${extensions}`;
 
             this.plugin.uptSettings(next);
         }
@@ -180,10 +180,10 @@ export class TFileCreate extends Modal {
                 ...this.plugin.settings,
             };
 
-            if (this.plugin.settings.code_editor_settings.use_default_extensions)
-                next.extensions += `>${extensions}`;
+            if (this.plugin.settings.code_editor.enable_default_extensions)
+                next.default.extensions += `>${extensions}`;
             else
-                next.code_editor_settings.extensions += `>${extensions}`;
+                next.code_editor.extensions += `>${extensions}`;
 
             this.plugin.uptSettings(next);
         }
@@ -193,7 +193,7 @@ export class TFileCreate extends Modal {
         try {
             this.plugin.apply();
         } catch (error) {
-            if (this.plugin.settings.debug_mode)
+            if (this.plugin.settings.developer.debug)
                 console.debug(error);
             else {
                 return;

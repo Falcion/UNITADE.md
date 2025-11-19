@@ -47,7 +47,7 @@ export const DEFAULT_SETTINGS: ISettings = {
         extensions: ''
     },
     grouped: {
-        enabled: false,
+        enable: false,
         patterns: ''
     },
     forced_extensions: '',

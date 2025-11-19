@@ -1,7 +1,7 @@
 import { TextFileView, TFile, WorkspaceLeaf } from "obsidian";
 import * as monaco from 'monaco-editor';
 import { genEditorSettings } from "../../utils/utils";
-import UNITADE_PLUGIN from "../../main";
+import UnitadePlugin from "../../main";
 
 /**
  * The `UNITADE_VIEW_CODE` class provides a code editor view powered by the Monaco Editor.
@@ -13,7 +13,7 @@ export class UNITADE_VIEW_CODE extends TextFileView {
     value = "";
     monacoEditor!: monaco.editor.IStandaloneCodeEditor;
 
-    constructor(leaf: WorkspaceLeaf, private plugin: UNITADE_PLUGIN) {
+    constructor(leaf: WorkspaceLeaf, private plugin: UnitadePlugin) {
         super(leaf);
     }
 
@@ -115,16 +115,16 @@ export class UNITADE_VIEW_CODE extends TextFileView {
     private addKeyEvents = () => {
         this.containerEl.addEventListener('keydown', this.__keyHandler, true);
 
-        if (this.plugin.settings.code_editor_settings.force_vanilla_paste)
+        if (this.plugin.settings.code_editor.externals.enable_vanilla_pasting)
             this.monacoEditor.addCommand(
                 monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyV, () => this.monacoEditor.trigger('', 'editor.action.clipboardPasteAction', null));
     }
 
     private addCtrlKeyWheelEvents = () => {
-        if (this.plugin.settings.code_editor_settings.enable_zoom)
+        if (this.plugin.settings.code_editor.externals.enable_zooming)
             this.containerEl.addEventListener('wheel', this.__mousewheelHandler, {
-                capture: this.plugin.settings.code_editor_settings.enable_zoom,
-                passive: !this.plugin.settings.code_editor_settings.enable_zoom,
+                capture: this.plugin.settings.code_editor.externals.enable_zooming,
+                passive: !this.plugin.settings.code_editor.externals.enable_zooming,
             });
     }
 
@@ -153,15 +153,15 @@ export class UNITADE_VIEW_CODE extends TextFileView {
                 const next = {
                     ...this.plugin.settings,
                     code_editor_settings: {
-                        ...this.plugin.settings.code_editor_settings,
-                        word_wrapping: !this.plugin.settings.code_editor_settings.word_wrapping,
+                        ...this.plugin.settings.code_editor,
+                        word_wrapping: !this.plugin.settings.code_editor.visuals.words_wrapping,
                     },
                 };
 
                 await this.plugin.uptSettings(next);
 
                 this.monacoEditor.updateOptions({
-                    wordWrap: this.plugin.settings.code_editor_settings.word_wrapping ? "on" : "off",
+                    wordWrap: this.plugin.settings.code_editor.visuals.words_wrapping ? "on" : "off",
                 });
             }
         }
@@ -180,10 +180,10 @@ export class UNITADE_VIEW_CODE extends TextFileView {
     }
 
     private __saveFontSize = async () => {
-        await this.plugin.uptSettingsVisuals({
-            code_editor_settings: {
-                font_size: this.monacoEditor.getOption(monaco.editor.EditorOption.fontSize),
-            }
-        });
+        // await this.plugin.uptSettingsVisuals({
+        //     code_editor_settings: {
+        //         ...this.plugin.settings.code_editor.visuals,
+        //         font_size: this.monacoEditor.getOption(monaco.editor.EditorOption.fontSize)
+        //     });
     }
 }

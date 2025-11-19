@@ -151,7 +151,7 @@ export interface ISettings {
      */
     grouped: {
         /** Is this module enabled */
-        enabled: boolean,
+        enable: boolean,
         /** Record which contains extensions assigned by views as keys: converts to the dictionary in the plugin */
         patterns: string,
     },

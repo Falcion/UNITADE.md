@@ -18,7 +18,6 @@
 		"allowJs": true,
 		"types": ["obsidian-typings", "monaco-editor", "./source/types/workers.d.ts"],
 		"paths": {
-			"monaco-editor/esm/vs/*": ["./source/types/monaco-workers.d.ts"],
 			"@root/*": ["./source/*"],
 			"@settings/*": ["./source/settings/*"]
 		}

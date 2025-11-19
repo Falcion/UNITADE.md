@@ -1,5 +1,5 @@
 import { Editor } from "obsidian";
-import UNITADE_PLUGIN from "../main";
+import UnitadePlugin from "../main";
 import { getLanguage } from "../utils/utils";
 
 export class ContextEditCodeblocks {
@@ -11,13 +11,13 @@ export class ContextEditCodeblocks {
 
 	private isInValidFence = false;
 
-	private constructor(private plugin: UNITADE_PLUGIN) {
+	private constructor(private plugin: UnitadePlugin) {
 		this.initializeStartAndEnd();
 
 		this.validateFence();
 	}
 
-	static create(plugin: UNITADE_PLUGIN) {
+	static create(plugin: UnitadePlugin) {
 		return new ContextEditCodeblocks(plugin);
 	}
 

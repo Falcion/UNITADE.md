@@ -1,16 +1,16 @@
 
 import * as monaco from 'monaco-editor';
 
-import UNITADE_PLUGIN from './../../main';
+import UnitadePlugin from './../../main';
 import { genEditorSettings } from './../../utils/utils';
 
 export class ContextEditor {
 	contentEl: HTMLElement;
 	value = "";
 	monacoEditor: monaco.editor.IStandaloneCodeEditor;
-	plugin: UNITADE_PLUGIN;
+	plugin: UnitadePlugin;
 
-	constructor(contentEl: HTMLElement, plugin: UNITADE_PLUGIN, code: string, language: string, miniMap: boolean = true, wordWrap: boolean = false) {
+	constructor(contentEl: HTMLElement, plugin: UnitadePlugin, code: string, language: string, miniMap: boolean = true, wordWrap: boolean = false) {
 		this.contentEl = contentEl;
 		this.plugin = plugin;
 		this.value = code;

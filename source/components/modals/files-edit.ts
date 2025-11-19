@@ -32,7 +32,7 @@ import {
     Setting,
 } from "obsidian";
 
-import UNITADE_PLUGIN from "../../main";
+import UnitadePlugin from "../../main";
 
 export class TFilesEdit extends Modal {
     private _new_extension: string = 'md';
@@ -41,7 +41,7 @@ export class TFilesEdit extends Modal {
     private _integration_code_editor: boolean;
 
     constructor(
-        private plugin: UNITADE_PLUGIN,
+        private plugin: UnitadePlugin,
         private target: TAbstractFile[]
     ) {
         super(plugin.app);
@@ -165,7 +165,7 @@ export class TFilesEdit extends Modal {
                 ...this.plugin.settings,
             };
 
-            next.extensions += `>${this._new_extension}`;
+            next.default.extensions += `>${this._new_extension}`;
 
             this.plugin.uptSettings(next);
         }
@@ -175,10 +175,10 @@ export class TFilesEdit extends Modal {
                 ...this.plugin.settings,
             };
 
-            if (this.plugin.settings.code_editor_settings.use_default_extensions)
-                next.extensions += `>${this._new_extension}`;
+            if (this.plugin.settings.code_editor.enable_default_extensions)
+                next.default.extensions += `>${this._new_extension}`;
             else
-                next.code_editor_settings.extensions += `>${this._new_extension}`;
+                next.code_editor.extensions += `>${this._new_extension}`;
 
             this.plugin.uptSettings(next);
         }
@@ -195,7 +195,7 @@ export class TFilesEdit extends Modal {
         try {
             this.plugin.apply();
         } catch (error) {
-            if (this.plugin.settings.debug_mode)
+            if (this.plugin.settings.developer.debug)
                 console.debug(error);
             else {
                 return;

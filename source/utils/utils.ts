@@ -30,9 +30,8 @@ import {
     TAbstractFile,
 } from "obsidian";
 
-import { UNITADE_SETTINGS } from "./../settings";
-
 import * as monaco from 'monaco-editor';
+import { ISettings } from "@root/settings/defaults_interface";
 
 /**
  * Determines whether the provided file is an instance of `TFile` from the Obsidian API.
@@ -485,39 +484,39 @@ export function getLanguage(extension: string): string {
  * @returns {monaco.editor.IStandaloneEditorConstructionOptions} - The constructed editor configuration options.
  */
 export function genEditorSettings(
-    setting: UNITADE_SETTINGS,
+    setting: ISettings,
     language: string,
     minimap: boolean = true,
     wordwrap: boolean = false
 ): monaco.editor.IStandaloneEditorConstructionOptions {
 
     // Set the minimap flag based on the provided argument or the setting.
-    const minimapFlag = minimap === false ? false : setting.code_editor_settings.minimapping;
+    const minimapFlag = minimap === false ? false : setting.code_editor.visuals.minimapping;
 
     const minimapOptions: monaco.editor.IEditorMinimapOptions = {
         enabled: minimapFlag,
     };
 
-    const wordwrapFlag = wordwrap === true ? wordwrap : setting.code_editor_settings.word_wrapping;
+    const wordwrapFlag = wordwrap === true ? wordwrap : setting.code_editor.visuals.words_wrapping;
 
     const settings: monaco.editor.IStandaloneEditorConstructionOptions = {
         automaticLayout: true,
         language: getLanguage(language),
-        theme: setting.code_editor_settings.theme !== 'auto' ? setting.code_editor_settings.theme : getTheme(),
-        lineNumbers: setting.code_editor_settings.line_numbers ? "on" : "off",
+        theme: setting.code_editor.visuals.theme !== 'auto' ? setting.code_editor.visuals.theme : getTheme(),
+        lineNumbers: setting.code_editor.visuals.line_numbering ? "on" : "off",
         wordWrap: wordwrapFlag ? "on" : "off",
         minimap: minimapOptions,
-        folding: setting.code_editor_settings.folding,
-        fontSize: setting.code_editor_settings.font_size,
-        fontFamily: setting.code_editor_settings.font_family,
-        fontLigatures: setting.code_editor_settings.font_ligatures,
+        folding: setting.code_editor.visuals.folding,
+        fontSize: setting.code_editor.visuals.font_size,
+        fontFamily: setting.code_editor.visuals.font_family,
+        fontLigatures: setting.code_editor.visuals.font_ligatures,
         // Controls whether characters that can be confused with basic ASCII are highlighted
         unicodeHighlight: { ambiguousCharacters: false, invisibleCharacters: false },
         scrollBeyondLastLine: false,
         'semanticHighlighting.enabled': true,
     };
 
-    if (setting.debug_mode)
+    if (setting.developer.debug)
         console.debug(settings);
 
     return settings;
