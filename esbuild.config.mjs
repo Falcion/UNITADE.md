@@ -37,34 +37,21 @@ let manifest = {
     }
 }
 
-// const workerPlugin = {
-//     name: 'monaco-workers',
-//     setup(build) {
-//         build.onResolve({ filter: /\.worker\.js$/ }, async (args) => {
-//             return {
-//                 path: path.resolve(args.resolveDir, args.path),
-//                 namespace: 'monaco-worker',
-//             };
-//         });
+function alias(aliases) {
+    return {
+        name: "alias-plugin",
+        setup(build) {
+            for (const [find, replacement] of Object.entries(aliases)) {
+                build.onResolve({ filter: new RegExp(`^${find}`) }, args => {
+                    const rel = args.path.replace(find, "");
+                    const full = path.resolve(replacement, rel);
+                    return { path: full };
+                });
+            }
+        }
+    };
+}
 
-//         build.onLoad({ filter: /.*/, namespace: 'monaco-worker' }, async (args) => {
-//             // Bundle worker code into a self-contained script
-//             const result = await esbuild.build({
-//                 entryPoints: [args.path],
-//                 bundle: true,
-//                 format: 'iife',
-//                 write: false,
-//                 target: 'es6',
-//             });
-
-//             const code = result.outputFiles[0].text;
-//             return {
-//                 contents: `export default ${JSON.stringify(code)};`,
-//                 loader: 'js',
-//             };
-//         });
-//     }
-// };
 
 let autotest = {
     name: 'autotest',
@@ -97,7 +84,6 @@ const context = await esbuild.context({
         glsl({
             minify: true,
         }),
-        // workerPlugin,
         {
             name: 'worker-plugin',
             setup(build) {
@@ -115,7 +101,12 @@ const context = await esbuild.context({
         },
         assigner,
         manifest,
-        autotest
+        autotest,
+        alias({
+            "@root": path.resolve(process.cwd(), "source/*"),
+            "@settings": path.resolve(process.cwd(), "source/settings/*"),
+            "monaco-editor/esm/vs/*": path.resolve(process.cwd(), "source/types/monaco-workers.d.ts")
+        })
     ],
     bundle: true,
     external: [
