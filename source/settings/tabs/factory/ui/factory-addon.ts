@@ -8,9 +8,10 @@ export function makeAddonBlock(
     const div = document.createElement("div");
 
     div.addClasses([
-        "unitade-addition-text",
-        `unitade-${type}-${getThemeObsidian()}`
-    ]);
+        `unitade-addition-text`,
+        `unitade-${type}}`]);
+    div.setAttribute('data-variant', getThemeObsidian());
+
     div.innerHTML = text;
 
     return div;
