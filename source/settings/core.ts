@@ -6,10 +6,12 @@ import { loadSettingsTab } from "@settings/utils/loader";
 
 export class UnitadeSettingsTab extends PluginSettingTab {
     public plugin!: UnitadePlugin;
-    public activeTab: string = 'generic';
+    public activeTab: string = 'tab-generic';
 
     constructor(app: App, plugin: UnitadePlugin) {
         super(app, plugin);
+
+        this.plugin = plugin;
     }
 
     async display(): Promise<void> {
@@ -23,7 +25,7 @@ export class UnitadeSettingsTab extends PluginSettingTab {
 
         SETTINGS_TABS.forEach(tab => {
             const tabButton = tabsEl.createEl('div', {
-                cls: `unitade-settings-tabs ${this.activeTab === tab.id ? 'active' : ''}`
+                cls: `unitade-settings-tab ${this.activeTab === tab.id ? 'active' : ''}`
             });
 
             setIcon(tabButton, tab.icon);
@@ -38,9 +40,13 @@ export class UnitadeSettingsTab extends PluginSettingTab {
             });
         });
 
-        const loadedTab = await loadSettingsTab(this.activeTab);
+        const container = containerEl.createEl('div', {
+            cls: 'unitade-settings-content'
+        });
 
-        loadedTab.display(containerEl, this.plugin);
+        const loadedTab = await loadSettingsTab(this.activeTab, container);
+
+        loadedTab.display(this.plugin);
         //TODO: debugging on categories (addEventListener typedef)
     }
 }

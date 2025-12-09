@@ -56,7 +56,7 @@ export default class UnitadeTabGenericBuilder implements IUnitadeTabBuilder {
             'MARKDOWN_OVERCHARGE',
             'MARKDOWN_OVERCHARGE',
             'markdown_overcharge',
-            this
+            this,
         );
     }
 
@@ -73,18 +73,21 @@ export default class UnitadeTabGenericBuilder implements IUnitadeTabBuilder {
             'default.extensions',
             '',
             this,
+            true,
             (val) => {
-                if (!val.trimEnd()) return { stable: false, error: 'Cannot be empty' }
+                if (!val.trimEnd()) return { stable: false, error: 'Cannot be ended at empty symb.' }
                 else return { stable: true }
             }
         );
     }
 
     public get SETTING_CONFIG_EXTENSIONS_MOBILE(): Setting {
-        return this._SETTING_CONFIG_EXTENSIONS_MOBILE ??= makeSetting(
+        return this._SETTING_CONFIG_EXTENSIONS_MOBILE ??= makeToggleSetting(
             'EXTENSIONS AS MARKDOWN (MOBILE)',
             'EXTENSIONS AS MARKDOWN (MOBILE)',
-            this
+            'mobile.enable',
+            this,
+            () => { this.updateDisplays(); }
         );
     }
 
@@ -93,8 +96,9 @@ export default class UnitadeTabGenericBuilder implements IUnitadeTabBuilder {
             'mobile.extensions',
             '',
             this,
+            true,
             (val) => {
-                if (!val.trimEnd()) return { stable: false, error: 'Cannot be empty' }
+                if (!val.trimEnd()) return { stable: false, error: 'Cannot be ended at empty symb.' }
                 else return { stable: true }
             }
         );
@@ -105,7 +109,7 @@ export default class UnitadeTabGenericBuilder implements IUnitadeTabBuilder {
             'CASE INSENSITIVE',
             'CASE INSENSITIVE',
             'is_case_insensitive',
-            this
+            this,
         );
     }
 
@@ -151,7 +155,12 @@ export default class UnitadeTabGenericBuilder implements IUnitadeTabBuilder {
         //TODO: implement debug
     }
     updateDisplays(): void {
-        //TODO: implement debug
+        this.updateState();
+        this.updateErrors();
+
+        if (this._SETTING_CONFIG_EXTENSIONS_MOBILE_INPUT) {
+            this._SETTING_CONFIG_EXTENSIONS_MOBILE_INPUT.inputEl.style.display = this.plugin.settings.mobile.enable ? 'block' : 'none';
+        }
     }
 
     async updateSetting(key: NestedKey<ISettings>, value: any) {

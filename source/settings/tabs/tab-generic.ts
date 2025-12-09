@@ -5,11 +5,18 @@ import { Addons } from "@settings/utils/types/addons";
 import UnitadePlugin from "@main";
 
 export default class UnitadeTabGeneric implements IUnitadeTab {
-    public tabBuilder!: UnitadeTabGenericBuilder;
-    public tabSettings!: NestedSetting[];
+    tabContainer!: HTMLElement;
+    tabBuilder!: UnitadeTabGenericBuilder;
+    tabSettings!: NestedSetting[];
 
-    display(containerEl: HTMLElement, plugin: UnitadePlugin): void {
-        this.tabBuilder = new UnitadeTabGenericBuilder(containerEl, plugin);
+    constructor(containerEl: HTMLElement) {
+        this.tabContainer = containerEl.createEl('div', {
+            cls: 'unitade-settings-tab-container'
+        });
+    }
+
+    display(plugin: UnitadePlugin): void {
+        this.tabBuilder = new UnitadeTabGenericBuilder(this.tabContainer, plugin);
         this.tabSettings = [
             this.tabBuilder.SETTING_MARKDOWN_OVERCHARGE,
             this.tabBuilder.SETTING_CONFIG_EXTENSIONS_DEFAULT,
@@ -19,10 +26,12 @@ export default class UnitadeTabGeneric implements IUnitadeTab {
             this.tabBuilder.SETTING_CASE_INSENSITIVE
         ];
 
-        this.tabBuilder.attachAddon(this.tabBuilder.SETTING_CONFIG_EXTENSIONS_DEFAULT, Addons.Warning, 'EXTENSIONS WARNING')
+        this.tabBuilder.updateDisplays();
+        this.tabBuilder.attachAddon(this.tabBuilder.SETTING_CONFIG_EXTENSIONS_DEFAULT, Addons.Warning, 'EXTENSIONS WARNING');
+
     }
 
-    addEventListener(containerEl: HTMLElement, type: keyof HTMLElementEventMap, listener: (this: HTMLElement, ev: Event) => any, options?: boolean | AddEventListenerOptions): void {
-        containerEl.addEventListener(type, listener, options);
+    addEventListener(type: keyof HTMLElementEventMap, listener: (this: HTMLElement, ev: Event) => any, options?: boolean | AddEventListenerOptions): void {
+        this.tabContainer.addEventListener(type, listener, options);
     }
 }

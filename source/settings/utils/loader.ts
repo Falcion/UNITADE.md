@@ -2,9 +2,14 @@ import { IUnitadeTab } from "@settings/tabs/tab";
 import { SETTINGS_TABS_FACTORIES } from "@settings/tabs_factory";
 
 export async function loadSettingsTab(
-    id: string
+    id: string,
+    containerEl: HTMLElement
 ): Promise<IUnitadeTab> {
-    const module = await import(`../${id}`);
+    const factory = SETTINGS_TABS_FACTORIES[id];
 
-    return new module.default();
+    if (!factory) throw new Error(`Unknown settings tab: ${id}`);
+
+    const module = await factory();
+
+    return new module.default(containerEl);
 }
