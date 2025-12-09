@@ -1,14 +1,14 @@
 {
 	"compilerOptions": {
-		//"module": "ES6",
-		"module": "commonjs",
+		"module": "es2022",
+		"moduleResolution": "bundler",
 		"declaration": false,
 		"removeComments": false,
 		"resolveJsonModule": true,
 		"allowSyntheticDefaultImports": true,
 		"skipLibCheck": true,
 		"downlevelIteration": true,
-		"target": "ES2023",
+		"target": "es2022",
 		"lib": ["es2022", "dom", "dom.iterable"],
 		"outDir": "out",
 		"incremental": true,
@@ -18,10 +18,10 @@
 		"allowJs": true,
 		"types": ["obsidian-typings", "monaco-editor", "./source/types/workers.d.ts"],
 		"paths": {
-			"@root/*": ["./source/*"],
+			"@main": ["./source/main.ts"],
 			"@settings/*": ["./source/settings/*"]
 		}
 	},
 	"exclude": ["node_modules", "out", "git", "venv"],
-	"include": ["**/*.ts", "**/*.d.ts", "build/meta_url_transformer.js"]
+	"include": ["**/*.ts", "**/*.d.ts"]
 }
