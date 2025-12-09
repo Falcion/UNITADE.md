@@ -9,6 +9,7 @@ export function makeInputText<P extends NestedKey<ISettings>>(
     path: P,
     placeholder: string,
     builder: IUnitadeTabBuilder,
+    cssStyle: boolean = true,
     validator?: (value: string) => { stable: boolean; error?: string | null },
 ): TextAreaComponent {
     const currentVal = getDeep(builder.plugin.settings, path) ?? '';
@@ -35,7 +36,9 @@ export function makeInputText<P extends NestedKey<ISettings>>(
         .setValue(String(currentVal))
         .onChange(value => {
             applyChange(value);
-        })
+        });
+
+    if (cssStyle) input.inputEl.addClass('unitade-input');
 
     return input;
 }

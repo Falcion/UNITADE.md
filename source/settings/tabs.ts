@@ -16,36 +16,36 @@ export const SETTINGS_TABS: ISettingsTab[] = [
     {
         id: 'tab-generic',
         name: 'Generic',
-        icon: 'cog'
+        icon: 'cog',
     },
     {
         id: 'tab-advanced',
         name: 'Advanced',
-        icon: 'layout-list'
+        icon: 'layout-list',
     },
     {
         id: 'tab-code-editor',
         name: 'Code editor',
-        icon: 'binary'
+        icon: 'code',
     },
     {
         id: 'tab-externals',
         name: 'Externals',
-        icon: 'blocks'
+        icon: 'square-arrow-out-up-right',
     },
     {
         id: 'tab-status',
         name: 'Status bar',
-        icon: 'info'
+        icon: 'info',
     },
     {
         id: 'tab-forced',
         name: 'Forcing views',
-        icon: 'view'
+        icon: 'eye',
     },
     {
         id: 'tab-developer',
         name: 'Developer options',
-        icon: 'bug-play'
+        icon: 'bug',
     }
 ]
