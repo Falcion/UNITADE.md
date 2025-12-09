@@ -1,4 +1,6 @@
-import UnitadePlugin from "@root/main";
+import UnitadePlugin from "@main";
+import { IUnitadeTabBuilder } from "@settings/tabs/factory/builder";
+import { NestedSetting } from "@settings/utils/types/nested_setting";
 
 export interface IUnitadeTab {
     display(containerEl: HTMLElement, plugin: UnitadePlugin): void;

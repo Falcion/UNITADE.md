@@ -1,4 +1,4 @@
-import UnitadePlugin from "@root/main";
+import UnitadePlugin from "@main";
 import { ISettings } from "@settings/defaults_interface";
 import { Addons } from "@settings/utils/types/addons";
 import { NestedKey } from "@settings/utils/types/nested_key";

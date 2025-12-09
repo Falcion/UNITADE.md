@@ -1,8 +1,8 @@
-import UnitadePlugin from "@root/main";
 import { NestedSetting } from "@settings/utils/types/nested_setting";
 import UnitadeTabGenericBuilder from "@settings/tabs/factory/builder-generic";
 import { IUnitadeTab } from "@settings/tabs/tab";
-import { Addons } from "../utils/types/addons";
+import { Addons } from "@settings/utils/types/addons";
+import UnitadePlugin from "@main";
 
 export default class UnitadeTabGeneric implements IUnitadeTab {
     public tabBuilder!: UnitadeTabGenericBuilder;

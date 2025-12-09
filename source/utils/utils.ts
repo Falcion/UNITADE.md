@@ -31,7 +31,7 @@ import {
 } from "obsidian";
 
 import * as monaco from 'monaco-editor';
-import { ISettings } from "@root/settings/defaults_interface";
+import { ISettings } from "@settings/defaults_interface";
 
 /**
  * Determines whether the provided file is an instance of `TFile` from the Obsidian API.

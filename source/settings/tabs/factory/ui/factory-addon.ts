@@ -1,4 +1,4 @@
-import { Addons } from "@root/settings/utils/types/addons";
+import { Addons } from "@settings/utils/types/addons";
 import { getThemeObsidian } from "@settings/utils/functions/themes";
 
 export function makeAddonBlock(

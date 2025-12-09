@@ -1,5 +1,5 @@
 import { Setting, TextAreaComponent } from 'obsidian';
-import UnitadePlugin from '@root/main';
+import UnitadePlugin from '@main';
 import { IUnitadeTabBuilder } from '@settings/tabs/factory/builder';
 import { ISettings } from '@settings/defaults_interface';
 import { makeToggleSetting } from '@settings/tabs/factory/ui/factory-toggle';
