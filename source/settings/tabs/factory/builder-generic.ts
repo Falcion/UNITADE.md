@@ -153,13 +153,15 @@ export default class UnitadeTabGenericBuilder implements IUnitadeTabBuilder {
 
     updateErrors(): void {
         //TODO: implement debug
+        //!TODO: IMPLEMENT DEBUG BEFORE RELEASE. MUST DO. DO NOT UPDATE WITHOUT THIS FEATURE.
     }
+
     updateDisplays(): void {
         this.updateState();
         this.updateErrors();
 
-        if (this._SETTING_CONFIG_EXTENSIONS_MOBILE_INPUT) {
-            this._SETTING_CONFIG_EXTENSIONS_MOBILE_INPUT.inputEl.style.display = this.plugin.settings.mobile.enable ? 'block' : 'none';
+        if (this.SETTING_CONFIG_EXTENSIONS_MOBILE_INPUT) {
+            this.SETTING_CONFIG_EXTENSIONS_MOBILE_INPUT.inputEl.style.display = this.plugin.settings.mobile.enable ? 'block' : 'none';
         }
     }
 
