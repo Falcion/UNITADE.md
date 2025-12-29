@@ -7,9 +7,6 @@ import { makeSetting } from '@settings/tabs/factory/ui/factory-setting';
 import { NestedKey } from '@settings/utils/types/nested_key';
 import { setDeep } from '@settings/utils/functions/deep';
 import { makeInputText } from '@settings/tabs/factory/ui/factory-input-text';
-import { Addons } from '@settings/utils/types/addons';
-import { NestedSetting } from '@settings/utils/types/nested_setting';
-import { makeAddonBlock } from '@settings/tabs/factory/ui/factory-addon';
 
 export default class UnitadeTabGenericBuilder implements IUnitadeTabBuilder {
     defaults?: {
@@ -113,17 +110,6 @@ export default class UnitadeTabGenericBuilder implements IUnitadeTabBuilder {
         );
     }
 
-    attachAddon(target: NestedSetting, type: Addons, text: string): void {
-        const block = makeAddonBlock(text, type);
-
-        if (target instanceof Setting) {
-            target.infoEl.appendChild(block);
-        } else if (target instanceof TextAreaComponent) {
-            //? Using container of text area component as nearest DOM
-            target.inputEl.parentElement?.appendChild(block);
-        }
-    }
-
     updateState(): void {
         if (!this.defaults) {
             const input = this.SETTING_CONFIG_EXTENSIONS_DEFAULT_INPUT ?? this.SETTING_CONFIG_EXTENSIONS_MOBILE_INPUT;
@@ -152,7 +138,6 @@ export default class UnitadeTabGenericBuilder implements IUnitadeTabBuilder {
     }
 
     updateErrors(): void {
-        //TODO: implement debug
         //!TODO: IMPLEMENT DEBUG BEFORE RELEASE. MUST DO. DO NOT UPDATE WITHOUT THIS FEATURE.
     }
 

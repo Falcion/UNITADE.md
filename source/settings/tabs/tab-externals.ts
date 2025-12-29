@@ -3,6 +3,7 @@ import UnitadeTabGenericBuilder from "@settings/tabs/factory/builder-generic";
 import { IUnitadeTab } from "@settings/tabs/tab";
 import { Addons } from "@settings/utils/types/addons";
 import UnitadePlugin from "@main";
+import attachAddon from "@settings/tabs/factory/ui/func/attach-addon";
 
 export default class UnitadeTabExternals implements IUnitadeTab {
     tabContainer!: HTMLElement;
@@ -27,8 +28,7 @@ export default class UnitadeTabExternals implements IUnitadeTab {
         ];
 
         this.tabBuilder.updateDisplays();
-        this.tabBuilder.attachAddon(this.tabBuilder.SETTING_CONFIG_EXTENSIONS_DEFAULT, Addons.Warning, 'EXTENSIONS WARNING');
-
+        attachAddon(this.tabBuilder.SETTING_CONFIG_EXTENSIONS_DEFAULT, Addons.Warning, 'EXTENSIONS WARNING');
     }
 
     addEventListener(type: keyof HTMLElementEventMap, listener: (this: HTMLElement, ev: Event) => any, options?: boolean | AddEventListenerOptions): void {

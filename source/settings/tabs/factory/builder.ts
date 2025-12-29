@@ -1,8 +1,6 @@
 import UnitadePlugin from "@main";
 import { ISettings } from "@settings/defaults_interface";
-import { Addons } from "@settings/utils/types/addons";
 import { NestedKey } from "@settings/utils/types/nested_key";
-import { NestedSetting } from "@settings/utils/types/nested_setting";
 
 export interface IUnitadeTabBuilder {
     defaults?: {
@@ -13,19 +11,6 @@ export interface IUnitadeTabBuilder {
 
     plugin: UnitadePlugin;
     containerEl: HTMLElement;
-
-    /**
-     * Used to append child of addon-setting block on other settings as additional
-     * context or information for specified setting.
-     * @param target
-     * Target on which current addon-setting block will be assigned/appended
-     * @param type
-     * Type of addon-setting block
-     * @param text
-     * Message of addon-setting block
-     * @abstract
-     */
-    attachAddon(target: NestedSetting, type: Addons, text: string): void;
 
     /**
      * Used to update state of current tab.
