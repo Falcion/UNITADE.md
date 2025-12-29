@@ -55,8 +55,7 @@ import {
 
 import {
     formatString,
-    gencase,
-    parsegroup
+    gencase
 } from './utils/functions';
 import { TFilesRename } from './components/modals/files-rename';
 import CONSTANTS from './utils/constants';
@@ -74,6 +73,7 @@ import { DEFAULT_SIGNATURES } from './externals/errors/signatures';
 import { DEFAULT_SETTINGS } from './settings/defaults';
 import { ISettings } from './settings/defaults_interface';
 import { UnitadeSettingsTab } from './settings/core';
+import { parsePattern } from '@settings/utils/functions/parsers';
 
 declare module "obsidian" {
     interface Workspace {
@@ -406,7 +406,7 @@ export default class UnitadePlugin extends Plugin {
             const grouped_extensions = this.settings.grouped.patterns;
             const code_editor_settings = this.settings.code_editor;
 
-            const globalExtensionsByView = parsegroup(grouped_extensions);
+            const globalExtensionsByView = parsePattern(grouped_extensions);
 
             if (!globalExtensionsByView['codeview'])
                 globalExtensionsByView['codeview'] = [];
@@ -778,7 +778,7 @@ export default class UnitadePlugin extends Plugin {
             this.registerView('codeview', leaf => new UNITADE_VIEW_CODE(leaf, this));
 
         if (this.settings.grouped.enable) {
-            const data: { [key: string]: string[] } = parsegroup(this.settings.grouped.patterns);
+            const data: { [key: string]: string[] } = parsePattern(this.settings.grouped.patterns);
 
             for (const view in data) {
                 this.__applyCfg(data[view].join('>'), view);
@@ -925,7 +925,7 @@ export default class UnitadePlugin extends Plugin {
             this.app.viewRegistry.unregisterView('mirrorview');
 
         if (upt_settings.grouped.enable) {
-            const data: { [key: string]: string[] } = parsegroup(upt_settings.grouped.patterns);
+            const data: { [key: string]: string[] } = parsePattern(upt_settings.grouped.patterns);
 
             for (const view in data) {
                 this.__unapplyCfg(data[view].join('>'), upt_settings.markdown_overcharge);
