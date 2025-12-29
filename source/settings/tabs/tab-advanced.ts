@@ -1,12 +1,10 @@
-import { NestedSetting } from "@settings/utils/types/nested_setting";
-import UnitadeTabGenericBuilder from "@settings/tabs/factory/builder-generic";
-import { IUnitadeTab } from "@settings/tabs/tab";
-import { Addons } from "@settings/utils/types/addons";
-import UnitadePlugin from "@main";
-
+import UnitadePlugin from '@main';
+import { IUnitadeTab } from '@settings/tabs/tab';
+import { NestedSetting } from '@settings/utils/types/nested_setting';
+import UnitadeTabAdvancedBuilder from '@settings/tabs/factory/builder-advanced';
 export default class UnitadeTabAdvanced implements IUnitadeTab {
     tabContainer!: HTMLElement;
-    tabBuilder!: UnitadeTabGenericBuilder;
+    tabBuilder!: UnitadeTabAdvancedBuilder;
     tabSettings!: NestedSetting[];
 
     constructor(containerEl: HTMLElement) {
@@ -16,19 +14,20 @@ export default class UnitadeTabAdvanced implements IUnitadeTab {
     }
 
     display(plugin: UnitadePlugin): void {
-        this.tabBuilder = new UnitadeTabGenericBuilder(this.tabContainer, plugin);
+        this.tabBuilder = new UnitadeTabAdvancedBuilder(this.tabContainer, plugin);
         this.tabSettings = [
-            this.tabBuilder.SETTING_MARKDOWN_OVERCHARGE,
-            this.tabBuilder.SETTING_CONFIG_EXTENSIONS_DEFAULT,
-            this.tabBuilder.SETTING_CONFIG_EXTENSIONS_DEFAULT_INPUT,
-            this.tabBuilder.SETTING_CONFIG_EXTENSIONS_MOBILE,
-            this.tabBuilder.SETTING_CONFIG_EXTENSIONS_MOBILE_INPUT,
-            this.tabBuilder.SETTING_CASE_INSENSITIVE
+            this.tabBuilder.SETTING_IGNORE_CONFIG_ENABLE,
+            this.tabBuilder.SETTING_IGNORE_CONFIG_MASKS,
+            this.tabBuilder.SETTING_IGNORE_CONFIG_EXTENSIONS,
+            this.tabBuilder.SETTING_CONFIG_GROUPED_ENABLE,
+            this.tabBuilder.SETTING_CONFIG_GROUPED_PATTERNS,
+            this.tabBuilder.SETTING_FORCED_EXTENSIONS,
+            this.tabBuilder.SETTING_IS_ONLOAD,
+            this.tabBuilder.SETTING_IS_ONLOAD_UNSAFE,
+            this.tabBuilder.SETTING_BAREFILING
         ];
 
         this.tabBuilder.updateDisplays();
-        this.tabBuilder.attachAddon(this.tabBuilder.SETTING_CONFIG_EXTENSIONS_DEFAULT, Addons.Warning, 'EXTENSIONS WARNING');
-
     }
 
     addEventListener(type: keyof HTMLElementEventMap, listener: (this: HTMLElement, ev: Event) => any, options?: boolean | AddEventListenerOptions): void {
