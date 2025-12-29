@@ -55,41 +55,6 @@ export function* gencase(input: string): Generator<string> {
 }
 
 /**
- * Parses an input string into a key-value group structure, where each group is separated by a semicolon (`;`)
- * and keys are separated from values by a colon (`:`). Values can be further split by the `>` character.
- * 
- * @param {string} input - The input string to parse into key-value groups.
- * @returns {{ [key: string]: string[] }} - An object where each key has an array of values.
- * 
- * @example
- * const result = parsegroup("group1:val1>val2;group2:val3");
- * console.log(result); 
- * // {
- * //   group1: ['val1', 'val2'],
- * //   group2: ['val3']
- * // }
- */
-export function parsegroup(input: string): { [key: string]: string[] } {
-    const settings: { [key: string]: string[] } = {};
-
-    const settings_parsed = input.split(';');
-
-    for (const setting of settings_parsed) {
-        const [key, values] = setting.trim().split(':').map(x => x.trimStart());
-
-        if (values !== undefined) {
-            const arr_values = values.split('>');
-
-            settings[key.trim()] = arr_values;
-        } else {
-            settings[key.trim()] = [];
-        }
-    }
-
-    return settings;
-}
-
-/**
  * Formats a string by replacing placeholders in the form `{index}` with corresponding values 
  * from the `args` array.
  * 
