@@ -124,6 +124,8 @@ export interface ISettings {
      * Implemented in v2*
      * @param {boolean} enable 
      * Is this module enabled
+     * @param {boolean} stable
+     * Is this module stable
      * @param {string}  masks 
      * Which regular expression are treated by this module: regular expressions define standard JS regexps for glob patterns
      * @param {string}  extensions 
@@ -132,6 +134,8 @@ export interface ISettings {
     ignore: {
         /** Is this module enabled */
         enable: boolean,
+        /** Is this module stable */
+        stable: boolean,
         /** Which regular expression are treated by this module: regular expressions define standard JS regexps for glob patterns */
         masks: string,
         /** Which file extensions are treated by this module */
@@ -146,12 +150,16 @@ export interface ISettings {
      * Implemented in v2*
      * @param {boolean} enable 
      * Is this module enabled
+     * @param {boolean} stable
+     * Is this module stable
      * @param {string}  patterns
      * Record which contains extensions assigned by views as keys: converts to the dictionary in the plugin
      */
     grouped: {
         /** Is this module enabled */
         enable: boolean,
+        /** Is this module stable */
+        stable: boolean,
         /** Record which contains extensions assigned by views as keys: converts to the dictionary in the plugin */
         patterns: string,
     },

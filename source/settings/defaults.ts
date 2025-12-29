@@ -43,11 +43,13 @@ export const DEFAULT_SETTINGS: ISettings = {
     },
     ignore: {
         enable: false,
+        stable: true,
         masks: '',
         extensions: ''
     },
     grouped: {
         enable: false,
+        stable: true,
         patterns: ''
     },
     forced_extensions: '',
