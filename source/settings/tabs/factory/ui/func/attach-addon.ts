@@ -1,4 +1,3 @@
-import { Addons } from "@settings/utils/types/addons";
 import { NestedSetting } from "@settings/utils/types/nested_setting";
 import { Setting, TextAreaComponent } from "obsidian";
 import { makeAddonBlock } from "@settings/tabs/factory/ui/factory-addon";
@@ -14,7 +13,7 @@ import { makeAddonBlock } from "@settings/tabs/factory/ui/factory-addon";
  * Message of addon-setting block
  * @abstract
  */
-export default function attachAddon(target: NestedSetting, type: Addons, text: string): void {
+export default function attachAddon(target: NestedSetting, type: string, text: string): void {
     const block = makeAddonBlock(text, type);
 
     if (target instanceof Setting) {

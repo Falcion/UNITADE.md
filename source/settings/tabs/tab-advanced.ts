@@ -2,6 +2,8 @@ import UnitadePlugin from '@main';
 import { IUnitadeTab } from '@settings/tabs/tab';
 import { NestedSetting } from '@settings/utils/types/nested_setting';
 import UnitadeTabAdvancedBuilder from '@settings/tabs/factory/builder-advanced';
+import { Addons } from '@settings/utils/types/addons';
+import attachAddon from '@settings/tabs/factory/ui/func/attach-addon';
 export default class UnitadeTabAdvanced implements IUnitadeTab {
     tabContainer!: HTMLElement;
     tabBuilder!: UnitadeTabAdvancedBuilder;
@@ -28,6 +30,9 @@ export default class UnitadeTabAdvanced implements IUnitadeTab {
         ];
 
         this.tabBuilder.updateDisplays();
+
+        attachAddon(this.tabBuilder.SETTING_IS_ONLOAD, Addons.ATTENTION, 'ON-LOAD WARNING');
+        attachAddon(this.tabBuilder.SETTING_IS_ONLOAD_UNSAFE, Addons.ATTENTION, 'ON-LOAD UNSAFE WARNING');
     }
 
     addEventListener(type: keyof HTMLElementEventMap, listener: (this: HTMLElement, ev: Event) => any, options?: boolean | AddEventListenerOptions): void {

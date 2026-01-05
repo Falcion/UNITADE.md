@@ -28,7 +28,7 @@ export default class UnitadeTabDeveloper implements IUnitadeTab {
         ];
 
         this.tabBuilder.updateDisplays();
-        attachAddon(this.tabBuilder.SETTING_CONFIG_EXTENSIONS_DEFAULT, Addons.Warning, 'EXTENSIONS WARNING');
+        attachAddon(this.tabBuilder.SETTING_CONFIG_EXTENSIONS_DEFAULT, Addons.WARNING, 'EXTENSIONS WARNING');
     }
 
     addEventListener(type: keyof HTMLElementEventMap, listener: (this: HTMLElement, ev: Event) => any, options?: boolean | AddEventListenerOptions): void {

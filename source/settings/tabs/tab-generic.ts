@@ -30,7 +30,7 @@ export default class UnitadeTabGeneric implements IUnitadeTab {
         this.tabBuilder.updateState();
         this.tabBuilder.updateDisplays();
 
-        attachAddon(this.tabBuilder.SETTING_CASE_INSENSITIVE, Addons.Warning, 'EXTENSIONS WARNING');
+        attachAddon(this.tabBuilder.SETTING_CASE_INSENSITIVE, Addons.WARNING, 'EXTENSIONS WARNING');
     }
 
     addEventListener(type: keyof HTMLElementEventMap, listener: (this: HTMLElement, ev: Event) => any, options?: boolean | AddEventListenerOptions): void {
