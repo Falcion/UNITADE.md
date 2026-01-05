@@ -8,7 +8,7 @@ export function setDeep<T = any>(obj: T, path: string, value: any): T {
     let cursor = obj as any;
     for (let i = 0; i < parts.length - 1; i++) {
         const p = parts[i];
-        if (cursor[p] == null) {
+        if (!Object.prototype.hasOwnProperty.call(cursor, p) || typeof cursor[p] !== 'object') {
             cursor[p] = {};
         }
         cursor = cursor[p];
