@@ -8,28 +8,27 @@
 	--unitade-attention-dark: #9d0606;
 	--unitade-attention-light: #8b0000;
 
-	--unitade-commentary: #008000;
+	--unitade-comment: #008000;
 
 	--unitade-input-height: 48px;
 	--unitade-input-min-height: 36px;
 }
 
 /* typography / spacing */
-.unitade-addition-text,
-.unitade-info-style {
-	font-size: var(--unitade-font-size);
-}
-.unitade-info-style {
-	font-weight: bold;
-}
 .unitade-addition-text {
+	font-size: var(--unitade-font-size);
 	margin: var(--unitade-margin);
+}
+.unitade-info {
+	font-weight: bold;
+	/* info-block is different from all other addition texts */
+	margin: auto;
 }
 
 /* base rule uses a local property */
 .unitade-warning,
-.unitade-attention,
-.unitade-commentary {
+.unitade-comment,
+.unitade-attention {
 	color: var(--unitade-color) !important;
 }
 
@@ -56,12 +55,12 @@
 }
 
 /* commentary */
-.unitade-commentary[data-variant="dark"],
-.unitade-commentary[data-variant="light"] {
-	--unitade-color: var(--unitade-commentary);
+.unitade-comment[data-variant="dark"],
+.unitade-comment[data-variant="light"] {
+	--unitade-color: var(--unitade-comment);
 }
-.unitade-commentary {
-	--unitade-color: var(--unitade-commentary);
+.unitade-comment {
+	--unitade-color: var(--unitade-comment);
 }
 
 /* inputs */
