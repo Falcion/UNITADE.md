@@ -95,7 +95,7 @@ export default class UnitadeTabAdvancedBuilder implements IUnitadeTabBuilder {
             this,
             true,
             (val) => {
-                if (!val.trimEnd()) return { stable: false, error: 'Cannot be ended at empty symb.' }
+                if (!val.trimEnd() && val.length < 1) return { stable: false, error: 'Cannot be ended at empty symb.' }
                 else return { stable: true }
             }
         );
@@ -138,7 +138,7 @@ export default class UnitadeTabAdvancedBuilder implements IUnitadeTabBuilder {
             this,
             true,
             (val) => {
-                if (!val.trimEnd()) return { stable: false, error: 'Cannot be ended at empty symb.' }
+                if (!val.trimEnd() && val.length < 1) return { stable: false, error: 'Cannot be ended at empty symb.' }
                 else return { stable: true }
             }
         );

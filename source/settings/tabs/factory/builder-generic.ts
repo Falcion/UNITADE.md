@@ -68,11 +68,11 @@ export default class UnitadeTabGenericBuilder implements IUnitadeTabBuilder {
     public get SETTING_CONFIG_EXTENSIONS_DEFAULT_INPUT(): TextAreaComponent {
         return this._SETTING_CONFIG_EXTENSIONS_DEFAULT_INPUT ??= makeInputText(
             'default.extensions',
-            '',
+            'e.g. txt > ini > csv',
             this,
             true,
             (val) => {
-                if (!val.trimEnd()) return { stable: false, error: 'Cannot be ended at empty symb.' }
+                if (!val.trimEnd() && val.length < 1) return { stable: false, error: 'Cannot be ended at empty symb.' }
                 else return { stable: true }
             }
         );
@@ -91,11 +91,11 @@ export default class UnitadeTabGenericBuilder implements IUnitadeTabBuilder {
     public get SETTING_CONFIG_EXTENSIONS_MOBILE_INPUT(): TextAreaComponent {
         return this._SETTING_CONFIG_EXTENSIONS_MOBILE_INPUT ??= makeInputText(
             'mobile.extensions',
-            '',
+            'e.g. txt > ini > csv',
             this,
             true,
             (val) => {
-                if (!val.trimEnd()) return { stable: false, error: 'Cannot be ended at empty symb.' }
+                if (!val.trimEnd() && val.length < 1) return { stable: false, error: 'Cannot be ended at empty symb.' }
                 else return { stable: true }
             }
         );
