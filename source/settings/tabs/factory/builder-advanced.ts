@@ -1,4 +1,3 @@
-import { Setting, TextAreaComponent } from 'obsidian';
 import { BaseComponent, Setting, TextAreaComponent, ToggleComponent } from 'obsidian';
 import UnitadePlugin from '@main';
 import { IUnitadeTabBuilder } from '@settings/tabs/factory/builder';
@@ -8,7 +7,6 @@ import { NestedKey } from '@settings/utils/types/nested_key';
 import { setDeep } from '@settings/utils/functions/deep';
 import { makeInputText } from '@settings/tabs/factory/ui/factory-input-text';
 import { parseRegex, parsePattern } from '@settings/utils/functions/parsers';
-
 import { makeSetting } from '@settings/tabs/factory/ui/factory-setting';
 
 export default class UnitadeTabAdvancedBuilder implements IUnitadeTabBuilder {
@@ -198,9 +196,11 @@ export default class UnitadeTabAdvancedBuilder implements IUnitadeTabBuilder {
             'is_onload',
             this,
             async (val) => {
-                this.updateDisplays();
+                if (val && this.plugin.settings.is_onload_unsafe) {
+                    await this.updateSetting('is_onload_unsafe', false);
 
-                if (val && this.plugin.settings.is_onload_unsafe) await this.updateSetting('is_onload_unsafe', false);
+                    this.updateStateToggle(this.SETTING_IS_ONLOAD_UNSAFE.components, false);
+                }
             }
         );
     }
@@ -212,9 +212,11 @@ export default class UnitadeTabAdvancedBuilder implements IUnitadeTabBuilder {
             'is_onload_unsafe',
             this,
             async (val) => {
-                this.updateDisplays();
+                if (val && this.plugin.settings.is_onload) {
+                    await this.updateSetting('is_onload', false);
 
-                if (val && this.plugin.settings.is_onload) await this.updateSetting('is_onload', false);
+                    this.updateStateToggle(this.SETTING_IS_ONLOAD.components, false);
+                }
             }
         );
     }
@@ -247,6 +249,9 @@ export default class UnitadeTabAdvancedBuilder implements IUnitadeTabBuilder {
         this.updateStateInput(this.SETTING_IGNORE_CONFIG_EXTENSIONS, this.plugin.settings.ignore.stable);
         this.updateStateInput(this.SETTING_CONFIG_GROUPED_PATTERNS, this.plugin.settings.grouped.stable);
         this.updateStateInput(this.SETTING_FORCED_EXTENSIONS, true);
+
+        this.updateStateToggle(this.SETTING_IS_ONLOAD.components, this.plugin.settings.is_onload);
+        this.updateStateToggle(this.SETTING_IS_ONLOAD_UNSAFE.components, this.plugin.settings.is_onload_unsafe);
     }
 
     updateStateInput(input: TextAreaComponent, stable: boolean): void {
@@ -258,6 +263,14 @@ export default class UnitadeTabAdvancedBuilder implements IUnitadeTabBuilder {
             input.inputEl.style.color = this.defaultsError!.color;
             input.inputEl.style.borderColor = this.defaultsError!.borderColor;
             input.inputEl.style.borderWidth = this.defaultsError!.borderWidth;
+        }
+    }
+
+    updateStateToggle(components: ReadonlyArray<BaseComponent>, state: boolean): void {
+        for (const component of components) {
+            if (component instanceof ToggleComponent) {
+                component.setValue(state);
+            }
         }
     }
 

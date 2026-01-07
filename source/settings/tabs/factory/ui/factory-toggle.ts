@@ -22,7 +22,8 @@ export function makeToggleSetting(
                 .onChange(async (value) => {
                     await builder.updateSetting(key, value);
 
-                    if (onChangeExtra) await onChangeExtra(value);
+                    if (onChangeExtra)
+                        await onChangeExtra(value);
                 });
 
             return toggle;
