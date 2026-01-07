@@ -2,7 +2,8 @@
 	"compilerOptions": {
 		"module": "es2022",
 		"moduleResolution": "bundler",
-		"declaration": false,
+		"declaration": true,
+		"emitDeclarationOnly": true,
 		"removeComments": false,
 		"resolveJsonModule": true,
 		"allowSyntheticDefaultImports": true,
