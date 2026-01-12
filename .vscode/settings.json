@@ -1,11 +1,4 @@
 {
-    "files.exclude": {
-        "**/.git": true,
-        "**/.DS_Store": true
-    },
-    "files.autoSave": "onFocusChange",
-    "editor.formatOnSave": true,
-    "yaml.schemas": {
-        "https://json.schemastore.org/yamllint.json": ".github/ISSUE_TEMPLATE/config.yml"
-    }
+	"files.autoSave": "onFocusChange",
+	"editor.formatOnSave": true
 }
