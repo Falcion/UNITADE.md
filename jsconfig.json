@@ -1,10 +1,14 @@
 {
 	"compilerOptions": {
-		"module": "es2022",
+		"module": "commonjs",
 		"target": "es2022",
+		"lib": ["es2022", "dom", "dom.iterable"],
 		"jsx": "react",
 		"strictNullChecks": true,
-		"strictFunctionTypes": true
+		"strictFunctionTypes": true,
+		"paths": {
+			"@build/*": ["./build/*.js"]
+		}
 	},
 	"exclude": ["env", "**/env/*", "node_modules", "**/node_modules/*"]
 }
