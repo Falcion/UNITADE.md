@@ -17,19 +17,15 @@
 	],
 	"readme": "https://github.com/Falcion/UNITADE.md#readme",
 	"scripts": {
-		"preversion": "npm i --force",
 		"precommit": "lint-staged",
-		"preinstall": "node -e 'process.exit(0)'",
 		"prepack": "check-for-leaks",
 		"prepare": "husky .husky/ && cd scripts/python && python3 -m venv venv",
 		"install": "npm run start",
-		"pack": "python scripts/python/pack.py",
 		"release": "standard-version",
 		"release:minor": "standard-version --release-as minor",
 		"release:patch": "standard-version --release-as patch",
 		"release:major": "standard-version --release-as major",
-		"build": "tsc -noEmit && node esbuild.config.mjs production",
-		"build-nocheck": "tsc -noEmit -skipLibCheck --esModuleInterop --noCheck --downlevelIteration source/main.ts && node esbuild.config.mjs production"
+		"build": "tsc -noEmit && node esbuild.config.mjs production --manifest=manifest.json --manifest-path=out --css-files=main,custom"
 	},
 	"repository": {
 		"type": "git",
@@ -172,7 +168,7 @@
 	],
 	"dependencies": {
 		"@oazmi/kitchensink": "^0.9.14",
-		"codemirror": "^6.0.1",
+		"codemirror": "^6.0.2",
 		"esbuild": "^0.25.0",
 		"esbuild-extra": "^0.4.2",
 		"esbuild-plugin-glsl": "^1.2.2",
