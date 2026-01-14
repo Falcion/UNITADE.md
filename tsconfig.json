@@ -20,9 +20,11 @@
 		"types": ["obsidian-typings", "monaco-editor", "./source/types/workers.d.ts"],
 		"paths": {
 			"@main": ["./source/main.ts"],
-			"@settings/*": ["./source/settings/*"]
+			"@settings/*": ["./source/settings/*"],
+			"@settings-ui/*": ["./source/settings/tabs/factory/ui/*"],
+			"@settings-factory/*": ["./source/settings/tabs/factory/*"]
 		}
 	},
-	"exclude": ["node_modules", "out", "git", "venv"],
+	"exclude": ["node_modules", "out", "git", "venv", "scripts/**"],
 	"include": ["**/*.ts", "**/*.d.ts"]
 }

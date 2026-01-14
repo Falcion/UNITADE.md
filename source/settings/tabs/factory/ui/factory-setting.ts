@@ -1,5 +1,5 @@
 import { Setting } from "obsidian";
-import { IUnitadeTabBuilder } from "@settings/tabs/factory/builder";
+import { IUnitadeTabBuilder } from "@settings-factory/builder";
 
 export function makeSetting(
     name: string,

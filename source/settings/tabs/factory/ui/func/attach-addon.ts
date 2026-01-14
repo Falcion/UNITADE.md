@@ -1,6 +1,6 @@
 import { NestedSetting } from "@settings/utils/types/nested_setting";
 import { Setting, TextAreaComponent } from "obsidian";
-import { makeAddonBlock } from "@settings/tabs/factory/ui/factory-addon";
+import { makeAddonBlock } from "@settings-ui/factory-addon";
 
 /**
  * Used to append child of addon-setting block on other settings as additional

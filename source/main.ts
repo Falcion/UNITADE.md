@@ -731,7 +731,7 @@ export default class UnitadePlugin extends Plugin {
      * the entire context for the plugin. Useful for updating visuals, dynamic settings, etc.
      * @param partialUpdates Partial settings to update
      */
-    async uptSettingsVisuals(partialUpdates: {
+    async updateSettingsPartial(partialUpdates: {
         code_editor_settings?: Partial<ISettings['code_editor']>;
         status_bar?: Partial<ISettings['status_bar']>;
         mobile_settings?: Partial<ISettings['mobile']>;

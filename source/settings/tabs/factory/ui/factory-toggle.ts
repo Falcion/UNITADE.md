@@ -1,6 +1,6 @@
 import { Setting } from "obsidian";
 import { ISettings } from "@settings/defaults_interface";
-import { IUnitadeTabBuilder } from "@settings/tabs/factory/builder";
+import { IUnitadeTabBuilder } from "@settings-factory/builder";
 import { getDeep } from "@settings/utils/functions/deep";
 import { NestedKey } from "@settings/utils/types/nested_key";
 
