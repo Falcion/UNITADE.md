@@ -107,3 +107,13 @@
 .unitade-settings-content {
 	padding: 0 16px 16px 16px;
 }
+/* header alignment variants */
+.unitade-settings-header[data-variant="left"] {
+	text-align: left;
+}
+.unitade-settings-header[data-variant="center"] {
+	text-align: center;
+}
+.unitade-settings-header[data-variant="right"] {
+	text-align: right;
+}
