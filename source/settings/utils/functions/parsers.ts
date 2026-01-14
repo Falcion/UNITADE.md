@@ -1,3 +1,8 @@
+import { BaseComponent } from "obsidian";
+import { COMPONENTS_MAP } from "@settings/utils/consts/components";
+import { NestedSetting } from "@settings/utils/types/nested_setting";
+import { isType } from "@settings/utils/functions/typechecker";
+
 export function parseRegex(raw: string): RegExp | null {
     try {
         const exp = raw.trim();
@@ -21,5 +26,15 @@ export function parsePattern(raw: string): Record<string, string[]> {
             return [key?.trim() ?? '', values?.split('>').map(v => v.trim()) ?? []];
         }).filter(([key]) => key)
     );
+}
+
+export function extractComponent(target: NestedSetting): HTMLElement | undefined {
+    for (const { type, elementKey } of COMPONENTS_MAP) {
+        if (isType<BaseComponent>(target, type.prototype)) {
+            return (target as any)[elementKey];
+        }
+    }
+
+    return undefined;
 }
 

@@ -1,42 +1,12 @@
 import { BaseComponent, Setting, TextAreaComponent, ToggleComponent } from 'obsidian';
 import UnitadePlugin from '@main';
-import { IUnitadeTabBuilder } from '@settings/tabs/factory/builder';
-import { ISettings } from '@settings/defaults_interface';
-import { makeToggleSetting } from '@settings/tabs/factory/ui/factory-toggle';
-import { NestedKey } from '@settings/utils/types/nested_key';
-import { setDeep } from '@settings/utils/functions/deep';
-import { makeInputText } from '@settings/tabs/factory/ui/factory-input-text';
+import { makeToggleSetting } from '@settings-ui/factory-toggle';
+import { makeInputText } from '@settings-ui/components/factory-input-text';
 import { parseRegex, parsePattern } from '@settings/utils/functions/parsers';
-import { makeSetting } from '@settings/tabs/factory/ui/factory-setting';
+import { makeSetting } from '@settings-ui/factory-setting';
+import UnitadeUnifiedTabBuilder from '@settings-factory/unified-builder';
 
-export default class UnitadeTabAdvancedBuilder implements IUnitadeTabBuilder {
-    defaults?: {
-        color: string;
-        borderColor: string;
-        borderWidth: string;
-    } = undefined;
-
-    defaultsError: {
-        color: string;
-        borderColor: string;
-        borderWidth: string;
-    } = {
-            color: 'red',
-            borderColor: 'red',
-            borderWidth: '4px'
-        };
-
-    private _plugin!: UnitadePlugin;
-    private _containerEl!: HTMLElement;
-
-    public get plugin() {
-        return this._plugin;
-    }
-
-    public get containerEl() {
-        return this._containerEl;
-    }
-
+export default class UnitadeTabAdvancedBuilder extends UnitadeUnifiedTabBuilder {
     private _SETTING_IGNORE_CONFIG_ENABLE?: Setting = undefined;
     private _SETTING_IGNORE_CONFIG_MASKS_TITLE?: Setting = undefined;
     private _SETTING_IGNORE_CONFIG_MASKS?: TextAreaComponent = undefined;
@@ -47,17 +17,7 @@ export default class UnitadeTabAdvancedBuilder implements IUnitadeTabBuilder {
     private _SETTING_GROUPED_CONFIG_PATTERNS_TITLE?: Setting = undefined;
     private _SETTING_GROUPED_CONFIG_PATTERNS?: TextAreaComponent = undefined;
 
-    /**
-     * @deprecated
-     * This setting is in "legacy-" block and can be accessed only
-     * by enabling "legacy-mode" in the developer settings.
-     */
     private _SETTING_FORCED_EXTENSIONS_TITLE?: Setting = undefined;
-    /**
-     * @deprecated
-     * This setting is in "legacy-" block and can be accessed only
-     * by enabling "legacy-mode" in the developer settings.
-     */
     private _SETTING_FORCED_EXTENSIONS?: TextAreaComponent = undefined;
 
     private _SETTING_IS_ONLOAD?: Setting = undefined;
@@ -66,8 +26,7 @@ export default class UnitadeTabAdvancedBuilder implements IUnitadeTabBuilder {
     private _SETTING_BAREFILING?: Setting = undefined;
 
     constructor(containerEl: HTMLElement, plugin: UnitadePlugin) {
-        this._plugin = plugin;
-        this._containerEl = containerEl;
+        super(containerEl, plugin);
     }
 
     public get SETTING_IGNORE_CONFIG_ENABLE(): Setting {
@@ -282,30 +241,16 @@ export default class UnitadeTabAdvancedBuilder implements IUnitadeTabBuilder {
         this.updateState();
         this.updateErrors();
 
-        if (this.SETTING_IGNORE_CONFIG_ENABLE) {
-            this.SETTING_IGNORE_CONFIG_MASKS.inputEl.style.display = this.plugin.settings.ignore.enable ? 'block' : 'none';
-            this.SETTING_IGNORE_CONFIG_MASKS_TITLE.settingEl.style.display = this.plugin.settings.ignore.enable ? 'block' : 'none';
-            this.SETTING_IGNORE_CONFIG_EXTENSIONS.inputEl.style.display = this.plugin.settings.ignore.enable ? 'block' : 'none';
-            this.SETTING_IGNORE_CONFIG_EXTENSIONS_TITLE.settingEl.style.display = this.plugin.settings.ignore.enable ? 'block' : 'none';
-        }
+        this.setVisibility(this.SETTING_IGNORE_CONFIG_MASKS, this.plugin.settings.ignore.enable);
+        this.setVisibility(this.SETTING_IGNORE_CONFIG_MASKS_TITLE, this.plugin.settings.ignore.enable);
+        this.setVisibility(this.SETTING_IGNORE_CONFIG_EXTENSIONS, this.plugin.settings.ignore.enable);
+        this.setVisibility(this.SETTING_IGNORE_CONFIG_EXTENSIONS_TITLE, this.plugin.settings.ignore.enable);
 
-        if (this.SETTING_CONFIG_GROUPED_ENABLE) {
-            this.SETTING_CONFIG_GROUPED_PATTERNS.inputEl.style.display = this.plugin.settings.grouped.enable ? 'block' : 'none';
-            this.SETTING_CONFIG_GROUPED_PATTERNS_TITLE.settingEl.style.display = this.plugin.settings.grouped.enable ? 'block' : 'none';
-        }
+        this.setVisibility(this.SETTING_CONFIG_GROUPED_PATTERNS, this.plugin.settings.grouped.enable);
+        this.setVisibility(this.SETTING_CONFIG_GROUPED_PATTERNS_TITLE, this.plugin.settings.grouped.enable);
 
-        if (this.SETTING_FORCED_EXTENSIONS) {
-            this.SETTING_FORCED_EXTENSIONS.inputEl.style.display = this.plugin.settings.forced_extensions ? 'block' : 'none';
-            this.SETTING_FORCED_EXTENSIONS_TITLE.settingEl.style.display = this.plugin.settings.forced_extensions ? 'block' : 'none';
-        }
-    }
-
-    async updateSetting(key: NestedKey<ISettings>, value: any) {
-        const next = structuredClone(this.plugin.settings) as ISettings;
-
-        setDeep(next, key, value);
-
-        await this.plugin.uptSettings(next);
+        this.setVisibility(this.SETTING_FORCED_EXTENSIONS, this.plugin.settings.developer.stale);
+        this.setVisibility(this.SETTING_FORCED_EXTENSIONS_TITLE, this.plugin.settings.developer.stale);
     }
 }
 
