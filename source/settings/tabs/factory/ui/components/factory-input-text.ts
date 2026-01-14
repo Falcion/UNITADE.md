@@ -1,7 +1,7 @@
 import { TextAreaComponent } from "obsidian";
 import { NestedKey } from "@settings/utils/types/nested_key";
 import { ISettings } from "@settings/defaults_interface";
-import { IUnitadeTabBuilder } from "@settings/tabs/factory/builder";
+import { IUnitadeTabBuilder } from "@settings-factory/builder";
 import { getDeep } from "@settings/utils/functions/deep";
 import { debounce } from "@settings/utils/functions/debounce";
 
@@ -11,6 +11,7 @@ export function makeInputText<P extends NestedKey<ISettings>>(
     builder: IUnitadeTabBuilder,
     cssStyle: boolean = true,
     validator?: (value: string) => { stable: boolean; error?: string | null },
+    onChangeExtra?: (value: string) => void | Promise<void>
 ): TextAreaComponent {
     const currentVal = getDeep(builder.plugin.settings, path) ?? '';
     const debounceMs = builder.plugin.settings.developer.input_debouncing;
@@ -36,6 +37,9 @@ export function makeInputText<P extends NestedKey<ISettings>>(
         .setValue(String(currentVal))
         .onChange(value => {
             applyChange(value);
+
+            if (onChangeExtra)
+                onChangeExtra(value);
         });
 
     if (cssStyle) input.inputEl.addClass('unitade-input');
