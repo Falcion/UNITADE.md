@@ -117,3 +117,31 @@
 .unitade-settings-header[data-variant="right"] {
 	text-align: right;
 }
+
+/* force full-width self-contained (independent component) sliders in settings */
+.unitade-settings-content input[type="range"].slider,
+.unitade-settings-content .setting-item-control input[type="range"],
+.unitade-slider-container input[type="range"],
+.mod-slider-container input[type="range"] {
+	width: 100% !important;
+	max-width: 100% !important;
+	box-sizing: border-box;
+	margin-bottom: 2.5em;
+}
+.unitade-settings-content .setting-item-control,
+.unitade-slider-container,
+.mod-slider-container {
+	width: 100%;
+}
+
+/* slider component styling */
+.unitade-slider-container {
+	width: 100%;
+	padding: 8px 0;
+	margin: 0 0 16px 0;
+}
+
+.unitade-slider-container .slider {
+	width: 100% !important;
+	max-width: 100% !important;
+}
