@@ -1,11 +1,12 @@
 import { parseCliArgs } from "./helpers.mjs";
 import chalk from 'chalk';
-import { console } from "node:inspector";
 
 /**
  * @typedef {Object} MonacoWorkersOptions
  * @property {RegExp|string} [filter] - Match worker module filenames (RegExp or string pattern)
  */
+
+const PLUGIN_NAME = "esbuild-plugin-monaco-workers";
 
 /**
  * Worker loader plugin factory.
@@ -15,7 +16,7 @@ import { console } from "node:inspector";
 export const esbuildPluginMonacoWorkers = (opts = {}) => {
     const DEFAULT_FILTER = /\.worker(\.[cm]?js)?$/;
     return {
-        name: "esbuild-plugin-monaco-workers",
+        name: PLUGIN_NAME,
         setup(build) {
             // eslint-disable-next-line no-undef
             const cli = parseCliArgs(process.argv) ?? {};
@@ -31,7 +32,8 @@ export const esbuildPluginMonacoWorkers = (opts = {}) => {
                 loader: "js",
             }));
 
-            console.info(chalk.green(`[esbuild-plugin-monaco-workers] Worker filter reinstated: ${filter}`));
+            // eslint-disable-next-line no-undef
+            console.info(chalk.green(`[${PLUGIN_NAME}] Worker filter reinstated: ${filter}`));
         },
     };
 };

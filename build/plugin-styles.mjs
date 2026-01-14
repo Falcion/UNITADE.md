@@ -2,10 +2,8 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath, URL } from "url";
 import { parseCliArgs } from "./helpers.mjs";
-import { console } from "node:inspector";
 import chalk from 'chalk';
 
-const { promises: fsp } = fs;
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
 
 /**
@@ -16,6 +14,8 @@ const __dirname = fileURLToPath(new URL(".", import.meta.url));
  * @property {string} [outFile] - Output filename for the merged CSS (defaults to "styles.css")
  */
 
+const PLUGIN_NAME = "esbuild-plugin-css-merger";
+
 /**
  * ESBuild plugin that merges several CSS files (in order) into a single stylesheet.
  * Accepts options and also reads overrides from CLI args.
@@ -25,9 +25,9 @@ const __dirname = fileURLToPath(new URL(".", import.meta.url));
 export const esbuildPluginCssMerger = (opts = {}) => {
     const DEFAULT_FILES = ["main.css", "custom.css"];
     return {
-        name: "esbuild-plugin-css-merger",
+        name: PLUGIN_NAME,
         setup(build) {
-            build.onEnd(async () => {
+            build.onEnd(() => {
                 try {
                     // eslint-disable-next-line no-undef
                     const cli = parseCliArgs(process.argv) ?? {};
@@ -43,27 +43,33 @@ export const esbuildPluginCssMerger = (opts = {}) => {
                     const files =
                         opts.files ??
                         (typeof filesArg === "string"
-                            ? filesArg.split(",").map((s) => s.trim()).filter(Boolean)
+                            ? filesArg.split(",").map((s) => {
+                                const trimmed = s.trim();
+                                return trimmed.endsWith('.css') ? trimmed : `${trimmed}.css`;
+                            }).filter(Boolean)
                             : DEFAULT_FILES);
 
                     const outFile = opts.outFile ?? cli["css-out-file"] ?? "styles.css";
 
-                    // read all files in parallel; missing files become empty strings
-                    const reads = files.map((fname) =>
-                        fsp.readFile(path.join(base, fname), "utf8").catch(() => "")
-                    );
+                    // read all files synchronously; missing files become empty strings
+                    const contents = files.map((fname) => {
+                        try {
+                            return fs.readFileSync(path.join(base, fname), "utf8");
+                        } catch {
+                            return "";
+                        }
+                    });
 
-                    const contents = await Promise.all(reads);
-
-                    await fsp.mkdir(outDir, { recursive: true });
+                    fs.mkdirSync(outDir, { recursive: true });
 
                     const merged = contents.filter(Boolean).join("\n");
-                    await fsp.writeFile(path.join(outDir, outFile), merged, "utf8");
+                    fs.writeFileSync(path.join(outDir, outFile), merged, "utf8");
 
-                    console.info(chalk.green("[esbuild-plugin-css-merger] CSS merge completed."));
+                    // eslint-disable-next-line no-undef
+                    console.info(chalk.green(`[${PLUGIN_NAME}] CSS merge completed.`));
                 } catch (err) {
-                    // minimal runtime visibility
-                    console.error(chalk.red("[esbuild-plugin-css-merger]:"), err);
+                    // eslint-disable-next-line no-undef
+                    console.error(chalk.red(`[${PLUGIN_NAME}]:`), err);
                 }
             });
         },
