@@ -1,3 +1,4 @@
-import { Setting, TextAreaComponent } from "obsidian";
+import { BaseComponent, Setting } from "obsidian";
 
-export type NestedSetting = Setting | TextAreaComponent;
+export type NestedSetting =
+    Setting | BaseComponent | HTMLHeadingElement;
