@@ -213,18 +213,6 @@ export default class UnitadeTabAdvancedBuilder extends UnitadeUnifiedTabBuilder 
         this.updateStateToggle(this.SETTING_IS_ONLOAD_UNSAFE.components, this.plugin.settings.is_onload_unsafe);
     }
 
-    updateStateInput(input: TextAreaComponent, stable: boolean): void {
-        if (stable) {
-            input.inputEl.style.color = this.defaults!.color;
-            input.inputEl.style.borderColor = this.defaults!.borderColor;
-            input.inputEl.style.borderWidth = this.defaults!.borderWidth;
-        } else {
-            input.inputEl.style.color = this.defaultsError!.color;
-            input.inputEl.style.borderColor = this.defaultsError!.borderColor;
-            input.inputEl.style.borderWidth = this.defaultsError!.borderWidth;
-        }
-    }
-
     updateStateToggle(components: ReadonlyArray<BaseComponent>, state: boolean): void {
         for (const component of components) {
             if (component instanceof ToggleComponent) {

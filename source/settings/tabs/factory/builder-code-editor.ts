@@ -257,18 +257,6 @@ export default class UnitadeTabCodeEditorBuilder extends UnitadeUnifiedTabBuilde
         this.updateStateInput(this.SETTING_CODE_EDITOR_EXTENSIONS_INPUT, true);
     }
 
-    updateStateInput(input: TextAreaComponent, stable: boolean): void {
-        if (stable) {
-            input.inputEl.style.color = this.defaults!.color;
-            input.inputEl.style.borderColor = this.defaults!.borderColor;
-            input.inputEl.style.borderWidth = this.defaults!.borderWidth;
-        } else {
-            input.inputEl.style.color = this.defaultsError!.color;
-            input.inputEl.style.borderColor = this.defaultsError!.borderColor;
-            input.inputEl.style.borderWidth = this.defaultsError!.borderWidth;
-        }
-    }
-
     updateErrors(): void {
         //!TODO: IMPLEMENT DEBUG BEFORE RELEASE. MUST DO. DO NOT UPDATE WITHOUT THIS FEATURE.
     }

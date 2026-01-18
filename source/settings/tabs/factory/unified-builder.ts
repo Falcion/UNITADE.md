@@ -5,6 +5,7 @@ import { NestedKey } from "@settings/utils/types/nested_key";
 import { setDeep } from "@settings/utils/functions/deep";
 import { NestedSetting } from "@settings/utils/types/nested_setting";
 import { extractComponent } from "@settings/utils/functions/parsers";
+import { TextAreaComponent } from "obsidian";
 
 /**
  * @description
@@ -100,6 +101,26 @@ export default abstract class UnitadeUnifiedTabBuilder implements IUnitadeTabBui
      * @inheritdoc
      */
     abstract updateState(): void;
+
+    /**
+     * Updates text input depending on stability value of it's
+     * configuration.
+     * @param {TextAreaComponent} input
+     * Text input component state of which must be updated
+     * @param {boolean} stable
+     * Stability value of given configuration
+     */
+    protected updateStateInput(input: TextAreaComponent, stable: boolean): void {
+        if (stable) {
+            input.inputEl.style.color = this.defaults!.color;
+            input.inputEl.style.borderColor = this.defaults!.borderColor;
+            input.inputEl.style.borderWidth = this.defaults!.borderWidth;
+        } else {
+            input.inputEl.style.color = this.defaultsError!.color;
+            input.inputEl.style.borderColor = this.defaultsError!.borderColor;
+            input.inputEl.style.borderWidth = this.defaultsError!.borderWidth;
+        }
+    }
 
     /**
      * Used to update errors of current tab.

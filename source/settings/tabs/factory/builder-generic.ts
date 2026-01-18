@@ -84,18 +84,6 @@ export default class UnitadeTabGenericBuilder extends UnitadeUnifiedTabBuilder {
         this.updateStateInput(this.SETTING_CONFIG_EXTENSIONS_MOBILE_INPUT, this.plugin.settings.mobile.stable)
     }
 
-    updateStateInput(input: TextAreaComponent, stable: boolean): void {
-        if (stable) {
-            input.inputEl.style.color = this.defaults!.color;
-            input.inputEl.style.borderColor = this.defaults!.borderColor;
-            input.inputEl.style.borderWidth = this.defaults!.borderWidth;
-        } else {
-            input.inputEl.style.color = this.defaultsError!.color;
-            input.inputEl.style.borderColor = this.defaultsError!.borderColor;
-            input.inputEl.style.borderWidth = this.defaultsError!.borderWidth;
-        }
-    }
-
     updateErrors(): void {
         //!TODO: IMPLEMENT DEBUG BEFORE RELEASE. MUST DO. DO NOT UPDATE WITHOUT THIS FEATURE.
     }
