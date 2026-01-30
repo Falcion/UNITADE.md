@@ -1,11 +1,11 @@
 import { NestedSetting } from "@settings/utils/types/nested_setting";
-import UnitadeTabGenericBuilder from "@settings-factory/builder-generic";
 import { IUnitadeTab } from "@settings/tabs/tab";
 import UnitadePlugin from "@main";
+import UnitadeTabDeveloperBuilder from "@settings-factory/builder-developer";
 
 export default class UnitadeTabStatus implements IUnitadeTab {
     tabContainer!: HTMLElement;
-    tabBuilder!: UnitadeTabGenericBuilder;
+    tabBuilder!: UnitadeTabDeveloperBuilder;
     tabSettings!: NestedSetting[];
 
     constructor(containerEl: HTMLElement) {
@@ -15,8 +15,13 @@ export default class UnitadeTabStatus implements IUnitadeTab {
     }
 
     display(plugin: UnitadePlugin): void {
-        this.tabBuilder = new UnitadeTabGenericBuilder(this.tabContainer, plugin);
+        this.tabBuilder = new UnitadeTabDeveloperBuilder(this.tabContainer, plugin);
         this.tabSettings = [
+            this.tabBuilder.SETTING_DEBUG_MODE,
+            this.tabBuilder.SETTING_STALE_MODE,
+            this.tabBuilder.SETTING_INPUT_DEBOUNCE_TITLE,
+            this.tabBuilder.SETTING_INPUT_DEBOUNCE,
+            this.tabBuilder.ERRORS_MENU,
         ];
 
         this.tabBuilder.updateDisplays();
@@ -29,8 +34,8 @@ export default class UnitadeTabStatus implements IUnitadeTab {
 
 // developer: {
 //     debug: false,
-//         stale: false,
-//             error_signatures: ''
+//     stale: false,
+//     error_signatures: ''
 // },
 
 // ERRORS: { },
