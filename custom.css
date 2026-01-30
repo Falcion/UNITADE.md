@@ -145,3 +145,97 @@
 	width: 100% !important;
 	max-width: 100% !important;
 }
+
+/* errors menu component */
+.unitade-errors-menu {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.unitade-errors-header {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	margin-bottom: var(--unitade-margin);
+}
+
+.unitade-errors-title {
+	font-weight: 600;
+	font-size: 1.1em;
+}
+
+.unitade-errors-empty {
+	text-align: center;
+}
+
+.unitade-errors-summary {
+	font-weight: 500;
+}
+
+.unitade-errors-section {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+.unitade-errors-section-title {
+	font-weight: 500;
+	margin-top: var(--unitade-margin);
+}
+
+.unitade-errors-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+.unitade-errors-item {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	padding: 8px 10px;
+	border-radius: 6px;
+	background: var(--background-secondary);
+}
+
+.unitade-errors-row {
+	display: flex;
+	align-items: baseline;
+	gap: 8px;
+}
+
+.unitade-errors-key {
+	padding: 2px 6px;
+	border-radius: 4px;
+	background: var(--background-modifier-border);
+	font-size: var(--unitade-font-size);
+	font-family: var(--font-monospace);
+}
+
+.unitade-errors-message {
+	flex: 1;
+	word-wrap: break-word;
+}
+
+.unitade-errors-meta {
+	display: flex;
+	gap: 8px;
+	align-items: center;
+	margin-top: 4px;
+}
+
+.unitade-errors-badge {
+	border: 1px solid currentColor;
+	padding: 1px 6px;
+	border-radius: 999px;
+	font-weight: 500;
+	opacity: 0.8;
+}
+
+.unitade-errors-reason {
+	font-style: italic;
+}

@@ -96,6 +96,7 @@ export default class UnitadePlugin extends Plugin {
     private _settings: ISettings = DEFAULT_SETTINGS;
     private _locale: LocalesModule = new LocalesModule();
     private _observer!: MutationObserver;
+    private _silencedErrors: Record<string, string> = {};
 
     private _statusBar!: HTMLElement;
     public statusBarConfig: StatusBarConfig = new StatusBarConfig(this._locale);
