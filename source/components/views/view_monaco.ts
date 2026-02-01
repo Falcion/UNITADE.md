@@ -1,7 +1,7 @@
 import { TextFileView, TFile, WorkspaceLeaf } from "obsidian";
 import * as monaco from 'monaco-editor';
 import { genEditorSettings } from "../../utils/utils";
-import UNITADE_PLUGIN from "../../main";
+import UnitadePlugin from "../../main";
 
 /**
  * The `UNITADE_VIEW_CODE` class provides a code editor view powered by the Monaco Editor.
@@ -13,7 +13,7 @@ export class UNITADE_VIEW_CODE extends TextFileView {
     value = "";
     monacoEditor!: monaco.editor.IStandaloneCodeEditor;
 
-    constructor(leaf: WorkspaceLeaf, private plugin: UNITADE_PLUGIN) {
+    constructor(leaf: WorkspaceLeaf, private plugin: UnitadePlugin) {
         super(leaf);
     }
 
@@ -115,10 +115,21 @@ export class UNITADE_VIEW_CODE extends TextFileView {
     private addKeyEvents = () => {
         this.containerEl.addEventListener('keydown', this.__keyHandler, true);
 
-        if (this.plugin.settings.code_editor_settings.force_vanilla_paste)
+        // Bind custom paste handler to Ctrl+V (or Cmd+V on Mac)
+        if (this.plugin.settings.code_editor_settings.force_vanilla_paste) {
             this.monacoEditor.addCommand(
-                monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyV, () => this.monacoEditor.trigger('', 'editor.action.clipboardPasteAction', null));
+                monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyV,
+                () => this.__handlePaste()
+            );
+        }
+
+        // Bind custom paste handler to Shift+Insert
+        this.monacoEditor.addCommand(
+            monaco.KeyMod.Shift | monaco.KeyCode.Insert,
+            () => this.__handlePaste()
+        );
     }
+
 
     private addCtrlKeyWheelEvents = () => {
         if (this.plugin.settings.code_editor_settings.enable_zoom)
@@ -126,6 +137,43 @@ export class UNITADE_VIEW_CODE extends TextFileView {
                 capture: this.plugin.settings.code_editor_settings.enable_zoom,
                 passive: !this.plugin.settings.code_editor_settings.enable_zoom,
             });
+    }
+
+    private __handlePaste = async () => {
+        try {
+            this.monacoEditor.focus();
+
+            // Get the current clipboard contents
+            const text = await navigator.clipboard.readText();
+
+            // Get the current selection in the editor
+            const selection = this.monacoEditor.getSelection();
+            if (!selection) {
+                return;
+            }
+
+            // Replace the current selection with the text from the clipboard
+            this.monacoEditor.executeEdits("clipboard", [{
+                range: selection,
+                text: text,
+                forceMoveMarkers: true,
+            }]);
+
+            // Move cursor to end of pasted text
+            const lines = text.split('\n');
+            const endLineNumber = selection.startLineNumber + lines.length - 1;
+            const endColumn = lines.length === 1
+                ? selection.startColumn + text.length
+                : lines[lines.length - 1].length + 1;
+
+            this.monacoEditor.setPosition({
+                lineNumber: endLineNumber,
+                column: endColumn
+            });
+        } catch (error) {
+            console.error('Failed to paste from clipboard:', error);
+            // If clipboard API fails, let Monaco try its default behavior
+        }
     }
 
     private __keyHandler = async (event: KeyboardEvent) => {
@@ -180,10 +228,10 @@ export class UNITADE_VIEW_CODE extends TextFileView {
     }
 
     private __saveFontSize = async () => {
-        await this.plugin.uptSettingsVisuals({
-            code_editor_settings: {
-                font_size: this.monacoEditor.getOption(monaco.editor.EditorOption.fontSize),
-            }
-        });
+        // await this.plugin.uptSettingsVisuals({
+        //     code_editor_settings: {
+        //         ...this.plugin.settings.code_editor.visuals,
+        //         font_size: this.monacoEditor.getOption(monaco.editor.EditorOption.fontSize)
+        //     });
     }
 }
