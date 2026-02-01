@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.2.7](https://github.com/mokkapps/changelog-generator-demo/compare/v3.2.6...v3.2.7) (2026-02-01)
+
+
+### Build system
+
+* **deps-dev:** bump form-data ([a5e88bc](https://github.com/mokkapps/changelog-generator-demo/commits/a5e88bc2271c6ef4cde98c674f557be94a884d95))
+* **deps:** bump actions/setup-node from 4 to 5 ([d3dd1b0](https://github.com/mokkapps/changelog-generator-demo/commits/d3dd1b002434c5133c9347504c89559928e71c7e))
+* **deps:** bump actions/setup-python from 5 to 6 ([9d3c4f2](https://github.com/mokkapps/changelog-generator-demo/commits/9d3c4f2b7f2926694f2da9a363f575301838863a))
+* **deps:** bump actions/stale from 9 to 10 ([df20502](https://github.com/mokkapps/changelog-generator-demo/commits/df2050237071439e99f5f7c30195623268a2684e))
+* **deps:** bump actions/stale from 9 to 10 ([039e0c9](https://github.com/mokkapps/changelog-generator-demo/commits/039e0c98eb39410eaa069750fad70ac3e630f7a0))
+* **deps:** bump the npm_and_yarn group across 1 directory with 3 updates ([d0e67bb](https://github.com/mokkapps/changelog-generator-demo/commits/d0e67bbba699d048bea00d99319a90c07397394a))
+
+
+### Fixes
+
+* **edit-modal:** fix issue with wrong separator in file-edit modal ([1d1b4ce](https://github.com/mokkapps/changelog-generator-demo/commits/1d1b4cee03b3196dabc50a99aebf1d24ae8da36b))
+* **pasting:** fix copy-paste problem, fixes [#167](https://github.com/Falcion/UNITADE.md/issues/167) ([511a6bb](https://github.com/mokkapps/changelog-generator-demo/commits/511a6bbe9c5482b205df09a825c85fb73437138e))
+
 ### [3.2.6](https://github.com/mokkapps/changelog-generator-demo/compare/v3.2.5...v3.2.6) (2025-06-16)
 
 
