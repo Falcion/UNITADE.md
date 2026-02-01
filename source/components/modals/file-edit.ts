@@ -176,7 +176,7 @@ export class TFileEdit extends Modal {
                 ...this.plugin.settings,
             };
 
-            next.extensions += `;${this._extension}`;
+            next.extensions += `>${this._extension}`;
 
             this.plugin.uptSettings(next);
         }
