@@ -149,18 +149,24 @@
 /* errors menu component */
 .unitade-errors-menu {
 	display: flex;
+	/* normalized container for table and other elements */
 	flex-direction: column;
 	gap: 4px;
 }
 
-.unitade-errors-menu-introduction {
-	font-weight: bold;
-	margin-bottom: 8px;
-	opacity: 0.9;
+.unitade-errors-menu-header h1,
+.unitade-errors-menu-header h2,
+.unitade-errors-menu-header h3,
+.unitade-errors-menu-header h4,
+.unitade-errors-menu-header h5,
+.unitade-errors-menu-header h6 {
+	margin-top: 8px;
 }
 
 .unitade-errors-data td,
-.unitade-errors-message tr {
+.unitade-errors-data tr,
+.unitade-errors-type td,
+.unitade-errors-type tr {
 	text-align: left;
 }
 .unitade-errors-message td,
@@ -180,6 +186,8 @@
 .unitade-errors-menu-summary {
 	font-size: var(--unitade-font-size);
 	margin-bottom: var(--unitade-margin);
+	margin-top: 0;
+	padding-top: 0;
 	opacity: 0.8;
 	font-weight: bold;
 }
