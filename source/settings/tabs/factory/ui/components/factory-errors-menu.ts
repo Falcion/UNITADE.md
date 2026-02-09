@@ -1,68 +1,90 @@
 import { IUnitadeTabBuilder } from "@settings-factory/builder";
-import { getThemeObsidian } from "@settings/utils/functions/themes";
-
-/**
- * Factory: Errors Menu
- * Displays a readable list of errors with color coding based on theme variant.
- * Uses existing plugin error system (settings.ERRORS).
- */
-
-export type ErrorsRecord = Record<string, string>;
-
-export interface ErrorsMenuOptions {
-    title?: string;
-    showCount?: boolean;
-}
-
-function toEntries(errors?: ErrorsRecord | Map<string, string> | Array<[string, string]>): Array<[string, string]> {
-    if (!errors) return [];
-    if (Array.isArray(errors)) return errors;
-    if (errors instanceof Map) return Array.from(errors.entries());
-    return Object.entries(errors);
-}
+import { DEFAULT_ERRORS_MENU_OPTIONS, ErrorsMenuOptions } from "@settings/utils/types/errors";
+import { makeHeader } from "@settings-ui/factory-header";
+// import { makeSetting } from "../factory-setting";
 
 export function makeErrorsMenu(
     builder: IUnitadeTabBuilder,
-    options: ErrorsMenuOptions = {}
+    options: ErrorsMenuOptions = DEFAULT_ERRORS_MENU_OPTIONS
 ): HTMLDivElement {
-    const { title = 'Errors', showCount = true } = options;
-    const entries = toEntries(builder.plugin.settings.ERRORS);
-    const theme = getThemeObsidian();
+    function get(): Array<[string, string]> {
+        const errors = builder.plugin.settings.ERRORS;
 
-    const wrapper = builder.containerEl.createDiv({ cls: 'unitade-errors-menu' });
-    wrapper.setAttribute('data-variant', theme);
-
-    // Header
-    const header = wrapper.createDiv({ cls: 'unitade-errors-header' });
-    header.createEl('div', { text: title, cls: 'unitade-errors-title' });
-
-    if (entries.length === 0) {
-        const empty = wrapper.createDiv({ text: 'No errors in current instance' });
-        empty.addClasses(['unitade-addition-text', 'unitade-info', 'unitade-errors-empty']);
-        return wrapper;
+        if (Array.isArray(errors)) return errors;
+        if (errors instanceof Map) return Array.from(errors.entries());
+        return Object.entries(errors);
     }
 
-    // Summary
-    if (showCount) {
-        const summary = header.createDiv({ text: `${entries.length} error${entries.length !== 1 ? 's' : ''} detected` });
-        summary.addClasses(['unitade-addition-text', 'unitade-comment', 'unitade-errors-summary']);
+    const errors = get();
+    const {
+        title,
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        count } = options;
+
+    const container = builder.containerEl.createDiv({
+        cls: 'unitade-errors-menu'
+    });
+
+    if (title) {
+        makeHeader('ERRORS', builder, 'h3', 'left');
+
+        container.createEl('p', {
+            text: 'DISPLAYS ERRORS ONLY BY UNITADE. ALSO DISPLAYS ERRORS ONLY """CATCHED""" BY UNITADE. THIS IS NOT REPLACEMENT FOR DEVELOPER CONSOLE, ONLY HELPS TO QUICKLY IDENTIFY PROBLEMS WITH SETTINGS.',
+            cls: ['setting-item-description', 'unitade-errors-menu-summary']
+        })
     }
 
-    // Errors section
-    const section = wrapper.createDiv({ cls: 'unitade-errors-section' });
-    const list = section.createEl('ul', { cls: 'unitade-errors-list' });
+    const table = container.createEl('table', {
+        cls: 'unitade-errors-table'
+    }) as HTMLTableElement;
 
-    for (const [key, message] of entries) {
-        const li = list.createEl('li', { cls: 'unitade-errors-item' });
-        const line = li.createDiv({ cls: 'unitade-errors-row' });
+    const thead = table.createTHead() as HTMLTableSectionElement;
+    const tbody = table.createTBody() as HTMLTableSectionElement;
 
-        line.createEl('code', { text: key, cls: 'unitade-errors-key' });
+    if (errors.length === 0) {
+        tbody.createEl('tr').createEl('td', {
+            text: 'NO ERRORS. GOOD',
+            cls: 'unitade-errorless'
+        });
 
-        const msg = line.createEl('span', { text: message });
-        msg.addClasses(['unitade-addition-text', 'unitade-attention', 'unitade-errors-message']);
+        return container;
     }
 
-    return wrapper;
+    const header = thead.createEl('tr');
+
+    header.createEl('th', {
+        text: 'PATH',
+        cls: 'unitade-errors-data'
+    });
+
+    header.createEl('th', {
+        text: 'TYPE',
+        cls: 'unitade-errors-data'
+    });
+
+    header.createEl('th', {
+        text: 'MESSAGE',
+        cls: 'unitade-errors-message'
+    });
+
+    for (const [path, message] of errors) {
+        const row = tbody.createEl('tr');
+
+        row.createEl('td', {
+            text: 'WIP',
+            cls: ['unitade-errors-data'],
+        }).setAttribute('data-type', 'WIP');
+        row.createEl('td', {
+            text: path,
+            cls: ['unitade-errors-data']
+        }).setAttribute('data-type', path);
+        row.createEl('td', {
+            text: message,
+            cls: 'unitade-errors-message'
+        });
+    }
+
+    return container;
 }
 
 export default makeErrorsMenu;
