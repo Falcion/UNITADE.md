@@ -11,6 +11,10 @@ export default class UnitadeTabDeveloperBuilder extends UnitadeUnifiedTabBuilder
     private _SETTING_STALE_MODE?: Setting = undefined;
     private _SETTING_INPUT_DEBOUNCE_TITLE?: Setting = undefined;
     private _SETTING_INPUT_DEBOUNCE?: TextAreaComponent = undefined;
+    private _SETTING_FONT_SIZE_MAX_TITLE?: Setting = undefined;
+    private _SETTING_FONT_SIZE_MAX?: TextAreaComponent = undefined;
+    private _SETTING_FONT_SIZE_MIN_TITLE?: Setting = undefined;
+    private _SETTING_FONT_SIZE_MIN?: TextAreaComponent = undefined;
     private _ERRORS_MENU?: HTMLDivElement = undefined;
 
     constructor(containerEl: HTMLElement, plugin: UnitadePlugin) {
@@ -56,7 +60,53 @@ export default class UnitadeTabDeveloperBuilder extends UnitadeUnifiedTabBuilder
                 if (isNaN(num) || num < 0) return { err: Error('Invalid input: not a non-negative number'), res: num };
                 else return { res: num };
             }
-        )
+        );
+    }
+
+    public get SETTING_FONT_SIZE_MAX_TITLE(): Setting {
+        return this._SETTING_FONT_SIZE_MAX_TITLE ??= makeSetting(
+            'MAX FONT SIZE',
+            'MAX FONT SIZE',
+            this
+        );
+    }
+
+    public get SETTING_FONT_SIZE_MAX(): TextAreaComponent {
+        return this._SETTING_FONT_SIZE_MAX ??= makeEntryEval<'SYS_FONTSIZE_MAX', number>(
+            'SYS_FONTSIZE_MAX',
+            '24',
+            this,
+            true,
+            (val) => {
+                const num = Number(val);
+
+                if (isNaN(num) || num < 0) return { err: Error('Invalid input: not a non-negative number'), res: num };
+                else return { res: num };
+            }
+        );
+    }
+
+    public get SETTING_FONT_SIZE_MIN_TITLE(): Setting {
+        return this._SETTING_FONT_SIZE_MIN_TITLE ??= makeSetting(
+            'MIN FONT SIZE',
+            'MIN FONT SIZE',
+            this
+        );
+    }
+
+    public get SETTING_FONT_SIZE_MIN(): TextAreaComponent {
+        return this._SETTING_FONT_SIZE_MIN ??= makeEntryEval<'SYS_FONTSIZE_MIN', number>(
+            'SYS_FONTSIZE_MIN',
+            '12',
+            this,
+            true,
+            (val) => {
+                const num = Number(val);
+
+                if (isNaN(num) || num < 0) return { err: Error('Invalid input: not a non-negative number'), res: num };
+                else return { res: num };
+            }
+        );
     }
 
     public get ERRORS_MENU(): HTMLDivElement {

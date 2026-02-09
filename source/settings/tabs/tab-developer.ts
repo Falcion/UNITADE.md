@@ -21,6 +21,10 @@ export default class UnitadeTabStatus implements IUnitadeTab {
             this.tabBuilder.SETTING_STALE_MODE,
             this.tabBuilder.SETTING_INPUT_DEBOUNCE_TITLE,
             this.tabBuilder.SETTING_INPUT_DEBOUNCE,
+            this.tabBuilder.SETTING_FONT_SIZE_MAX_TITLE,
+            this.tabBuilder.SETTING_FONT_SIZE_MAX,
+            this.tabBuilder.SETTING_FONT_SIZE_MIN_TITLE,
+            this.tabBuilder.SETTING_FONT_SIZE_MIN,
             this.tabBuilder.ERRORS_MENU,
         ];
 
