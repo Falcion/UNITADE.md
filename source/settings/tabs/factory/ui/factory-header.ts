@@ -5,7 +5,8 @@ export function makeHeader(
     name: string,
     builder: IUnitadeTabBuilder,
     level: HeaderLevel,
-    alignment: string
+    alignment: string,
+    cssClasses?: string[] | string,
 ): HTMLHeadingElement {
     const headerEl = builder.containerEl.createEl(level, {
         cls: `unitade-settings-header`,
@@ -13,6 +14,12 @@ export function makeHeader(
     }) as HTMLHeadingElement;
 
     headerEl.setAttribute('data-variant', alignment);
+
+    if (cssClasses) {
+        Array.isArray(cssClasses)
+            ? headerEl.addClasses(cssClasses)
+            : headerEl.addClass(cssClasses);
+    }
 
     return headerEl;
 }
