@@ -143,16 +143,22 @@ Usage of UNITADE plugin is very easy and comfortable for common user, by default
   after completion of it.  
  -->
 
-- [x] Create basic repository infrastructure for this project, including:
-  - [x] basic .MD documentations and dealings stuff (like README, LICENSE and etc.);
-  - [x] scripts and actions within CI/CD for supporting high-quality of this project;
-- [x] Write and publish the demo (pre-release) version of project, including the most basic logic of this one.
-- [x] Write the documentation for this demo-project and:
-  - [x] make it one as archive for technical docs purposes (hyperlinking directive);
-- [x] Refactor and prepare for “advancing” the project's logic and write an entire functionality of it.
-  - [x] Write an advanced .TS script for managing core of this project's functionality (being a template);
-  - [x] Write an advanced infrastructure for project's surroundings and etc.;
-- [x] Refactor and prepare for “advancing” the project's documentation and publish it via the archive.
+- [ ] Rework the settings and make them multi-page, not monolithic
+  - [ ] Redefine settings interface in such manner
+  - [ ] Make codebase and debug more advanced in error-safe terms
+    - [ ] Rework errors display menu
+- [ ] Refactor settings code in more advanced and adaptive system design
+- [ ] Rework module for language translations
+  - [ ] Refactor code
+- [ ] Rework module for settings compatibility
+  - [ ] Refactor code
+- [ ] Add export/import of settings
+- [ ] Add phantom mode for the plugin: expose API, but do not work
+- [ ] Add ability to turn on/off pages of settings with their correspondive features
+- [ ] Add ability to "delete" view-extensions keypair from view registry of an app 
+      (so called "inversive grouped extensions")
+- [ ] Make ALL text input fields validate their input
+- [ ] Convert errors display menu in fully-functional dashboard
 
 <p align="right"><a href="#readme-top" title="Back to the top of README">[^]</a></p>
 
