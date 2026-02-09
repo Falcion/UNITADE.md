@@ -31,11 +31,3 @@ export default class UnitadeTabStatus implements IUnitadeTab {
         this.tabContainer.addEventListener(type, listener, options);
     }
 }
-
-// developer: {
-//     debug: false,
-//     stale: false,
-//     error_signatures: ''
-// },
-
-// ERRORS: { },

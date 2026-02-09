@@ -16,23 +16,19 @@ export function makeErrorsMenu(
     }
 
     const errors = get();
-    const {
-        title,
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        count } = options;
+
+    if (options.title)
+        makeHeader('ERRORS', builder, 'h3', 'left', 'unitade-errors-menu-header')
 
     const container = builder.containerEl.createDiv({
         cls: 'unitade-errors-menu'
     });
 
-    if (title) {
-        makeHeader('ERRORS', builder, 'h3', 'left');
-
+    if (options.title)
         container.createEl('p', {
             text: 'DISPLAYS ERRORS ONLY BY UNITADE. ALSO DISPLAYS ERRORS ONLY """CATCHED""" BY UNITADE. THIS IS NOT REPLACEMENT FOR DEVELOPER CONSOLE, ONLY HELPS TO QUICKLY IDENTIFY PROBLEMS WITH SETTINGS.',
             cls: ['setting-item-description', 'unitade-errors-menu-summary']
         })
-    }
 
     const table = container.createEl('table', {
         cls: 'unitade-errors-table'
@@ -58,11 +54,6 @@ export function makeErrorsMenu(
     });
 
     header.createEl('th', {
-        text: 'TYPE',
-        cls: 'unitade-errors-data'
-    });
-
-    header.createEl('th', {
         text: 'MESSAGE',
         cls: 'unitade-errors-message'
     });
@@ -70,10 +61,6 @@ export function makeErrorsMenu(
     for (const [path, message] of errors) {
         const row = tbody.createEl('tr');
 
-        row.createEl('td', {
-            text: 'WIP',
-            cls: ['unitade-errors-data'],
-        }).setAttribute('data-type', 'WIP');
         row.createEl('td', {
             text: path,
             cls: ['unitade-errors-data']
