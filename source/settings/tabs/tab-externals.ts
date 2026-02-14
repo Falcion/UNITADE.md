@@ -1,36 +1,19 @@
-import { NestedSetting } from "@settings/utils/types/nested_setting";
-import UnitadeTabGenericBuilder from "@settings-factory/builder-generic";
-import { IUnitadeTab } from "@settings/tabs/tab";
+import UnitadeTabExternalsBuilder from "@settings-factory/builder-externals";
 import UnitadePlugin from "@main";
+import UnitadeUnifiedTab from "@settings/tabs/tab-unified";
 
-
-export default class UnitadeTabStatus implements IUnitadeTab {
-    tabContainer!: HTMLElement;
-    tabBuilder!: UnitadeTabGenericBuilder;
-    tabSettings!: NestedSetting[];
-
-    constructor(containerEl: HTMLElement) {
-        this.tabContainer = containerEl.createEl('div', {
-            cls: 'unitade-settings-tab-container'
-        });
-    }
-
-    display(plugin: UnitadePlugin): void {
-        this.tabBuilder = new UnitadeTabGenericBuilder(this.tabContainer, plugin);
+export default class UnitadeTabExternals extends UnitadeUnifiedTab {
+    override tabBuilder!: UnitadeTabExternalsBuilder;
+    override display(plugin: UnitadePlugin): void {
+        this.tabBuilder = new UnitadeTabExternalsBuilder(this.tabContainer, plugin);
         this.tabSettings = [
+            this.tabBuilder.SETTING_CASE_INSENSITIVITY_MODE,
+            this.tabBuilder.SETTING_COMPATIBILITY_MODE,
+            this.tabBuilder.SETTING_SAFE_MODE,
+            this.tabBuilder.SETTING_SAFE_CASE_SENSITIVE_MODE,
+            this.tabBuilder.SETTING_SILENCING_MODE,
         ];
 
         this.tabBuilder.updateDisplays();
     }
-
-    addEventListener(type: keyof HTMLElementEventMap, listener: (this: HTMLElement, ev: Event) => any, options?: boolean | AddEventListenerOptions): void {
-        this.tabContainer.addEventListener(type, listener, options);
-    }
 }
-
-// externals: {
-//     compat: false,
-//         safe: true,
-//             safe_case: true,
-//                 silencing: true
-// },
