@@ -1,22 +1,12 @@
-import { NestedSetting } from "@settings/utils/types/nested_setting";
 import UnitadeTabGenericBuilder from "@settings-factory/builder-generic";
-import { IUnitadeTab } from "@settings/tabs/tab";
 import UnitadePlugin from "@main";
 import { Addons } from "@settings/utils/consts/enums/addons";
 import attachAddon from "@settings-ui/func/attach-addon";
+import UnitadeUnifiedTab from "@settings/tabs/tab-unified";
 
-export default class UnitadeTabGeneric implements IUnitadeTab {
-    tabContainer!: HTMLElement;
-    tabBuilder!: UnitadeTabGenericBuilder;
-    tabSettings!: NestedSetting[];
-
-    constructor(containerEl: HTMLElement) {
-        this.tabContainer = containerEl.createEl('div', {
-            cls: 'unitade-settings-tab-container'
-        });
-    }
-
-    display(plugin: UnitadePlugin): void {
+export default class UnitadeTabGeneric extends UnitadeUnifiedTab {
+    override tabBuilder!: UnitadeTabGenericBuilder;
+    override display(plugin: UnitadePlugin): void {
         this.tabBuilder = new UnitadeTabGenericBuilder(this.tabContainer, plugin);
         this.tabSettings = [
             this.tabBuilder.SETTING_MARKDOWN_OVERCHARGE,
@@ -29,9 +19,5 @@ export default class UnitadeTabGeneric implements IUnitadeTab {
         attachAddon(this.tabBuilder.SETTING_CONFIG_EXTENSIONS_DEFAULT, Addons.WARNING, 'EXTENSIONS WARNING');
 
         this.tabBuilder.updateDisplays();
-    }
-
-    addEventListener(type: keyof HTMLElementEventMap, listener: (this: HTMLElement, ev: Event) => any, options?: boolean | AddEventListenerOptions): void {
-        this.tabContainer.addEventListener(type, listener, options);
     }
 }

@@ -1,22 +1,12 @@
-import { NestedSetting } from "@settings/utils/types/nested_setting";
-import { IUnitadeTab } from "@settings/tabs/tab";
 import { Addons } from "@settings/utils/consts/enums/addons";
 import UnitadePlugin from "@main";
 import attachAddon from "@settings-ui/func/attach-addon";
 import UnitadeTabCodeEditorBuilder from "@settings-factory/builder-code-editor";
+import UnitadeUnifiedTab from "@settings/tabs/tab-unified";
 
-export default class UnitadeTabCodeEditor implements IUnitadeTab {
-    tabContainer!: HTMLElement;
-    tabBuilder!: UnitadeTabCodeEditorBuilder;
-    tabSettings!: NestedSetting[];
-
-    constructor(containerEl: HTMLElement) {
-        this.tabContainer = containerEl.createEl('div', {
-            cls: 'unitade-settings-tab-container'
-        });
-    }
-
-    display(plugin: UnitadePlugin): void {
+export default class UnitadeTabCodeEditor extends UnitadeUnifiedTab {
+    override tabBuilder!: UnitadeTabCodeEditorBuilder;
+    override display(plugin: UnitadePlugin): void {
         this.tabBuilder = new UnitadeTabCodeEditorBuilder(this.tabContainer, plugin);
         this.tabSettings = [
             this.tabBuilder.SETTING_ENABLE_CODE_EDITOR,
@@ -51,9 +41,5 @@ export default class UnitadeTabCodeEditor implements IUnitadeTab {
         attachAddon(this.tabBuilder.SETTING_ENABLE_FORCING_COPY_PASTE, Addons.WARNING, 'CODE EDITOR FORCING VANILLA COPY-PASTE INFO');
 
         this.tabBuilder.updateDisplays();
-    }
-
-    addEventListener(type: keyof HTMLElementEventMap, listener: (this: HTMLElement, ev: Event) => any, options?: boolean | AddEventListenerOptions): void {
-        this.tabContainer.addEventListener(type, listener, options);
     }
 }

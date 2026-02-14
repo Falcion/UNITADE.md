@@ -1,21 +1,12 @@
 import UnitadePlugin from '@main';
-import { IUnitadeTab } from '@settings/tabs/tab';
-import { NestedSetting } from '@settings/utils/types/nested_setting';
 import UnitadeTabAdvancedBuilder from '@settings-factory/builder-advanced';
 import { Addons } from '@settings/utils/consts/enums/addons';
 import attachAddon from '@settings-ui/func/attach-addon';
-export default class UnitadeTabAdvanced implements IUnitadeTab {
-    tabContainer!: HTMLElement;
-    tabBuilder!: UnitadeTabAdvancedBuilder;
-    tabSettings!: NestedSetting[];
+import UnitadeUnifiedTab from '@settings/tabs/tab-unified';
 
-    constructor(containerEl: HTMLElement) {
-        this.tabContainer = containerEl.createEl('div', {
-            cls: 'unitade-settings-tab-container'
-        });
-    }
-
-    display(plugin: UnitadePlugin): void {
+export default class UnitadeTabAdvanced extends UnitadeUnifiedTab {
+    override tabBuilder!: UnitadeTabAdvancedBuilder;
+    override display(plugin: UnitadePlugin): void {
         this.tabBuilder = new UnitadeTabAdvancedBuilder(this.tabContainer, plugin);
         this.tabSettings = [
             this.tabBuilder.SETTING_IGNORE_CONFIG_ENABLE,
@@ -41,9 +32,5 @@ export default class UnitadeTabAdvanced implements IUnitadeTab {
         attachAddon(this.tabBuilder.SETTING_CONFIG_GROUPED_ENABLE, Addons.WARNING, 'GROUPED CONFIG WARNING');
 
         this.tabBuilder.updateDisplays();
-    }
-
-    addEventListener(type: keyof HTMLElementEventMap, listener: (this: HTMLElement, ev: Event) => any, options?: boolean | AddEventListenerOptions): void {
-        this.tabContainer.addEventListener(type, listener, options);
     }
 }
