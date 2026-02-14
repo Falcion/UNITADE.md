@@ -12,6 +12,8 @@
 
 	--unitade-input-height: 48px;
 	--unitade-input-min-height: 36px;
+
+	--default-margin: 0.5em;
 }
 
 /* typography / spacing */
@@ -68,6 +70,7 @@
 	width: 100%;
 	height: var(--unitade-input-height);
 	min-height: var(--unitade-input-min-height);
+	margin-bottom: var(--default-margin);
 }
 
 /* settings tabs */
