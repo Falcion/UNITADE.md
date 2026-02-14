@@ -1,12 +1,12 @@
 import { NestedSetting } from "@settings/utils/types/nested_setting";
-import UnitadeTabGenericBuilder from "@settings-factory/builder-generic";
 import { IUnitadeTab } from "@settings/tabs/tab";
 import UnitadePlugin from "@main";
+import UnitadeTabStatusBuilder from "@settings-factory/builder-status";
 
 
 export default class UnitadeTabStatus implements IUnitadeTab {
     tabContainer!: HTMLElement;
-    tabBuilder!: UnitadeTabGenericBuilder;
+    tabBuilder!: UnitadeTabStatusBuilder;
     tabSettings!: NestedSetting[];
 
     constructor(containerEl: HTMLElement) {
@@ -16,8 +16,17 @@ export default class UnitadeTabStatus implements IUnitadeTab {
     }
 
     display(plugin: UnitadePlugin): void {
-        this.tabBuilder = new UnitadeTabGenericBuilder(this.tabContainer, plugin);
+        this.tabBuilder = new UnitadeTabStatusBuilder(this.tabContainer, plugin);
         this.tabSettings = [
+            this.tabBuilder.SETTING_STATUS_BAR_ENABLE,
+            this.tabBuilder.SETTING_STATUS_BAR_REGISTER_EXTENSIONS_ENABLE,
+            this.tabBuilder.SETTING_STATUS_BAR_REGISTER_EXTENSIONS_MARKDOWN,
+            this.tabBuilder.SETTING_STATUS_BAR_REGISTER_EXTENSIONS_GROUPED,
+            this.tabBuilder.SETTING_STATUS_BAR_REGISTER_EXTENSIONS_CODE,
+            this.tabBuilder.SETTING_STATUS_BAR_REGISTER_VIEWS,
+            this.tabBuilder.SETTING_STATUS_BAR_CURRENT_PROCESSOR,
+            this.tabBuilder.SETTING_STATUS_BAR_CURRENT_DISPLAY,
+            this.tabBuilder.SETTING_STATUS_BAR_CURSOR_POSITION
         ];
 
         this.tabBuilder.updateDisplays();
@@ -27,17 +36,3 @@ export default class UnitadeTabStatus implements IUnitadeTab {
         this.tabContainer.addEventListener(type, listener, options);
     }
 }
-
-// status_bar: {
-//     enable: true,
-//         registered_extensions: {
-//         enable: false,
-//             include_extensions_markdown: false,
-//                 include_extensions_grouped: false,
-//                     include_extensions_code: false
-//     },
-//     registered_views: false,
-//         current_processor: true,
-//             current_display: true,
-//                 cursor_position: true
-// },
