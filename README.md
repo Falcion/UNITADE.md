@@ -143,19 +143,20 @@ Usage of UNITADE plugin is very easy and comfortable for common user, by default
   after completion of it.  
  -->
 
-- [ ] Rework the settings and make them multi-page, not monolithic
-  - [ ] Redefine settings interface in such manner
+- [x] Rework the settings and make them multi-page, not monolithic
+  - [x] Redefine settings interface in such manner
   - [ ] Make codebase and debug more advanced in error-safe terms
-    - [ ] Rework errors display menu
+    - [x] Rework errors display menu
 - [ ] Refactor settings code in more advanced and adaptive system design
 - [ ] Rework module for language translations
   - [ ] Refactor code
 - [ ] Rework module for settings compatibility
   - [ ] Refactor code
 - [ ] Add export/import of settings
+- [ ] Add ability to customize "text" in status bar elements for user preferences
 - [ ] Add phantom mode for the plugin: expose API, but do not work
 - [ ] Add ability to turn on/off pages of settings with their correspondive features
-- [ ] Add ability to "delete" view-extensions keypair from view registry of an app 
+- [ ] Add ability to "delete" view-extensions keypair from view registry of an app
       (so called "inversive grouped extensions")
 - [ ] Make ALL text input fields validate their input
 - [ ] Convert errors display menu in fully-functional dashboard
