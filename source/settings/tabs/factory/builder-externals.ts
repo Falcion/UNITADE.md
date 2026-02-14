@@ -29,7 +29,7 @@ export default class UnitadeTabExternalsBuilder extends UnitadeUnifiedTabBuilder
             'COMPATIBILITY MODE',
             'externals.compat',
             this,
-            () => { this.updateDisplays(); }
+            () => { this.updateState(); }
         );
     }
 
@@ -38,8 +38,7 @@ export default class UnitadeTabExternalsBuilder extends UnitadeUnifiedTabBuilder
             'SAFE MODE',
             'SAFE MODE',
             'externals.safe',
-            this,
-            () => { this.updateDisplays(); }
+            this
         );
     }
 
@@ -48,8 +47,7 @@ export default class UnitadeTabExternalsBuilder extends UnitadeUnifiedTabBuilder
             'SAFE CASE-SENSITIVE MODE',
             'SAFE CASE-SENSITIVE MODE',
             'externals.safe_case',
-            this,
-            () => { this.updateDisplays(); }
+            this
         );
     }
 
@@ -58,13 +56,12 @@ export default class UnitadeTabExternalsBuilder extends UnitadeUnifiedTabBuilder
             'SILENCING',
             'SILENCING',
             'externals.silencing',
-            this,
-            () => { this.updateDisplays(); }
+            this
         );
     }
 
     updateState(): void {
-
+        //!TODO: AFTER REFACTORING COMPAT MODULE, IMPLEMENT THIS FUNCTION PROPERLY. MUST DO. DO NOT UPDATE WITHOUT THIS FEATURE.
     }
 
     updateErrors(): void {
