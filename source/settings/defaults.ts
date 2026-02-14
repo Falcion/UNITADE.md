@@ -71,13 +71,13 @@ export const DEFAULT_SETTINGS: ISettings = {
     },
     status_bar: {
         enable: true,
-        registered_extensions: {
+        register_extensions: {
             enable: false,
-            include_extensions_markdown: false,
-            include_extensions_grouped: false,
-            include_extensions_code: false
+            extensions_markdown: false,
+            extensions_grouped: false,
+            extensions_code: false
         },
-        registered_views: false,
+        register_views: false,
         current_processor: true,
         current_display: true,
         cursor_position: true

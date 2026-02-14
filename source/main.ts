@@ -423,11 +423,11 @@ export default class UnitadePlugin extends Plugin {
 
             const viewType = leaf.getViewState().type;
 
-            if (this.settings.status_bar.registered_extensions.include_extensions_markdown)
+            if (this.settings.status_bar.register_extensions.extensions_markdown)
                 registered_extensions += globalExtensionsByView['markdown'].length;
-            if (this.settings.status_bar.registered_extensions.include_extensions_code)
+            if (this.settings.status_bar.register_extensions.extensions_code)
                 registered_extensions += globalExtensionsByView['codeview'].length;
-            if (this.settings.status_bar.registered_extensions.include_extensions_grouped) {
+            if (this.settings.status_bar.register_extensions.extensions_grouped) {
                 const views = Object.keys(globalExtensionsByView).filter(view => (view !== 'markdown' && view !== 'codeview'));
 
                 for (const view in views)
@@ -589,9 +589,9 @@ export default class UnitadePlugin extends Plugin {
 
             if (this.settings.status_bar.current_processor)
                 text += data[0];
-            if (this.settings.status_bar.registered_extensions.enable)
+            if (this.settings.status_bar.register_extensions.enable)
                 text += (data[1].split(',')[0] + '');
-            if (this.settings.status_bar.registered_views)
+            if (this.settings.status_bar.register_views)
                 text += data[1].split(',')[1];
             if (this.settings.status_bar.cursor_position)
                 text += data[2];

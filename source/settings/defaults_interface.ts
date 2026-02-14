@@ -410,14 +410,14 @@ export interface ISettingsStatusBar {
      * can configure counting between different registering extensions categories. 
      * @param {boolean} enable 
      * Enable counting registered extensions
-     * @param {boolean} include_extensions_markdown
+     * @param {boolean} extensions_markdown
      * Enables counting registered extensions as markdown
-     * @param {boolean} include_extensions_grouped
+     * @param {boolean} extensions_grouped
      * Enables counting registered extensions in grouped extensions setting
-     * @param {boolean} include_extensions_code
+     * @param {boolean} extensions_code
      * Enables counting registered extensions as code
      */
-    registered_extensions: {
+    register_extensions: {
         /** 
          * Enable counting registered extensions 
          * @default false
@@ -427,23 +427,23 @@ export interface ISettingsStatusBar {
          * Enables counting registered extensions as markdown 
          * @default false
          */
-        include_extensions_markdown: boolean,
+        extensions_markdown: boolean,
         /** 
          * Enables counting registered extensions in grouped extensions setting 
          * @default false
          */
-        include_extensions_grouped: boolean,
+        extensions_grouped: boolean,
         /** 
          * Enables counting registered extensions as code 
          * @default false
          */
-        include_extensions_code: boolean,
+        extensions_code: boolean,
     },
     /** 
      * Enables display of registered views information 
      * @default false
      */
-    registered_views: boolean,
+    register_views: boolean,
     /** 
      * Enables display of what model/markdown-processor works on currently opened file 
      * @default true
