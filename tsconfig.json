@@ -21,7 +21,9 @@
 			"@main": ["./source/main.ts"],
 			"@settings/*": ["./source/settings/*"],
 			"@settings-ui/*": ["./source/settings/tabs/factory/ui/*"],
-			"@settings-factory/*": ["./source/settings/tabs/factory/*"]
+			"@settings-factory/*": ["./source/settings/tabs/factory/*"],
+			"@compat/main": ["source/compat/main.ts"],
+			"@compat/*": ["source/compat/*"]
 		}
 	},
 	"exclude": ["node_modules", "out", "git", "venv", "scripts/**"],
