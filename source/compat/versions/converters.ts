@@ -133,7 +133,7 @@ export const CONVERTERS: IVersionConverter[] = [
             /**
              * Use heuristic detection based on presence of old fields and absence of new fields to identify pre-4.* versions, since explicit version identifiers were not consistently used pre-4.*
              */
-            const flagNamings = (
+            const heuristic = (
                 data.code_editor_settings !== undefined ||
                 data.is_ignore !== undefined ||
                 data.is_grouped !== undefined ||
@@ -145,7 +145,7 @@ export const CONVERTERS: IVersionConverter[] = [
             );
 
             return (
-                flagNamings &&
+                heuristic &&
                 /** 
                  * ensure it's post-3.2.4 versioning by checking feature
                  * of advanced silencing signatures
