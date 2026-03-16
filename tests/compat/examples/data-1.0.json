@@ -1,0 +1,6 @@
+{
+	"extensions": "txt,js,data",
+	"is_forced_on": false,
+	"is_dynamic_on": true,
+	"force_extensions": "js,data"
+}

@@ -1,0 +1,19 @@
+{
+	"markdown_overcharge": false,
+	"extensions": "txt; cfg; data;",
+	"is_onload": false,
+	"is_onload_unsafe": true,
+	"forced_extensions": "md; ;",
+	"is_ignore": true,
+	"ignore_extensions": "reg",
+	"ignore_masks": "\\.(txt|md)$;",
+	"is_grouped": true,
+	"grouped_extensions": "md: json,meta;",
+	"mobile_settings": {
+		"enable": false,
+		"extensions": "txt",
+		"stable": true
+	},
+	"stable": true,
+	"errors": {}
+}

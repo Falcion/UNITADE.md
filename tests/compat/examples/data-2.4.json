@@ -1,0 +1,23 @@
+{
+	"markdown_overcharge": false,
+	"extensions": "txt; cfg; data; ini;markdown;mdown;",
+	"is_onload": false,
+	"is_onload_unsafe": true,
+	"forced_extensions": "",
+	"is_ignore": false,
+	"ignore_extensions": "",
+	"ignore_masks": "",
+	"is_grouped": false,
+	"grouped_extensions": "codeview: js,py;md:txt;",
+	"mobile_settings": {
+		"enable": true,
+		"extensions": "txt; cfg;",
+		"stable": true
+	},
+	"barefiling": true,
+	"stable": true,
+	"errors": {
+		"": "Error from UNITADE plugin: Error: Attempting to register an existing view type \"\""
+	},
+	"debug_mode": false
+}

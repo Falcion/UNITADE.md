@@ -1,0 +1,89 @@
+{
+	"ERRORS": {},
+	"SYS_MANIFEST_VERSION": "",
+	"SYS_FONTSIZE_MAX": 32,
+	"SYS_FONTSIZE_MIN": 5,
+	"markdown_overcharge": false,
+	"default": {
+		"stable": true,
+		"extensions": "txt> cfg> data> ini"
+	},
+	"mobile": {
+		"enable": false,
+		"stable": true,
+		"extensions": "txt"
+	},
+	"ignore": {
+		"enable": false,
+		"stable": true,
+		"masks": "file_\\d{3}",
+		"extensions": "logs>data>"
+	},
+	"grouped": {
+		"enable": false,
+		"stable": true,
+		"patterns": "codeview: js,py>md:txt>"
+	},
+	"forced_extensions": "> >db>",
+	"is_onload": false,
+	"is_onload_unsafe": false,
+	"is_case_insensitive": false,
+	"developer": {
+		"debug": false,
+		"stale": false,
+		"error_signatures": "",
+		"input_debouncing": 1000
+	},
+	"barefiling": false,
+	"externals": {
+		"compat": false,
+		"safe": true,
+		"safe_case": true,
+		"silencing": true
+	},
+	"status_bar": {
+		"enable": true,
+		"register_extensions": {
+			"enable": false,
+			"extensions_markdown": false,
+			"extensions_grouped": false,
+			"extensions_code": false
+		},
+		"register_views": false,
+		"current_processor": true,
+		"current_display": true,
+		"cursor_position": true
+	},
+	"forced_view": {
+		"enable": false,
+		"extensions": "",
+		"mode": "live-preview",
+		"advanced": {
+			"enable": false,
+			"groups": ""
+		}
+	},
+	"code_editor": {
+		"enable": true,
+		"enable_default_extensions": true,
+		"extensions": "",
+		"visuals": {
+			"folding": true,
+			"line_numbering": true,
+			"words_wrapping": true,
+			"minimapping": true,
+			"theme": "auto",
+			"font_size": 14,
+			"font_family": "'Cascadia Code', 'Fira Code', Consolas, 'Courier New', monospace",
+			"font_ligatures": true
+		},
+		"validations": {
+			"syntax": true,
+			"semantic": true
+		},
+		"externals": {
+			"enable_zooming": false,
+			"enable_vanilla_pasting": true
+		}
+	}
+}

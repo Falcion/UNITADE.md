@@ -1,0 +1,23 @@
+{
+	"markdown_overcharge": false,
+	"extensions": "txt; cfg; data; ini",
+	"is_onload": true,
+	"is_onload_unsafe": false,
+	"forced_extensions": "; ;db;",
+	"is_ignore": true,
+	"ignore_extensions": "logs;data;",
+	"ignore_masks": "file_\\d{3}",
+	"is_grouped": true,
+	"grouped_extensions": "codeview: js,py;md:txt;",
+	"mobile_settings": {
+		"enable": false,
+		"extensions": "txt",
+		"stable": true
+	},
+	"stable": true,
+	"errors": {
+		"": "Error from UNITADE plugin: Error: Attempting to register an existing view type \"\"",
+		"db": "Error from UNITADE plugin: Error: Attempting to register an existing view type \"db\""
+	},
+	"debug_mode": false
+}
