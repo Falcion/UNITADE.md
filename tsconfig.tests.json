@@ -16,16 +16,8 @@
 		"strict": true,
 		"sourceMap": false,
 		"allowJs": true,
-		"types": ["obsidian-typings", "monaco-editor", "./source/types/workers.d.ts"],
-		"paths": {
-			"@main": ["./source/main.ts"],
-			"@settings/*": ["./source/settings/*"],
-			"@settings-ui/*": ["./source/settings/tabs/factory/ui/*"],
-			"@settings-factory/*": ["./source/settings/tabs/factory/*"],
-			"@compat/main": ["./source/compat/main.ts"],
-			"@compat/*": ["./source/compat/*"]
-		}
+		"types": ["mocha", "chai"]
 	},
 	"exclude": ["node_modules", "out", "git", "venv", "scripts/**"],
-	"include": ["**/*.ts", "**/*.d.ts"]
+	"include": ["tests/**/*.spec.ts"]
 }

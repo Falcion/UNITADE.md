@@ -99,7 +99,10 @@ export const CONVERTERS: IVersionConverter[] = [
         detect: (data: any) => {
             return (
                 data.version === undefined &&
-                data.barefiling !== undefined
+                data.barefiling !== undefined &&
+                data.manifest_version === undefined &&
+                data.SYS_MANIFEST_VERSION === undefined &&
+                data.code_editor_settings === undefined
             );
         },
         convert: (data: any) => ({
@@ -146,14 +149,6 @@ export const CONVERTERS: IVersionConverter[] = [
 
             return (
                 heuristic &&
-                /** 
-                 * ensure it's post-3.2.4 versioning by checking feature
-                 * of advanced silencing signatures
-                 */
-                (
-                    data.advanced_silencing_errors === undefined ||
-                    data.advanced_silencing_errors?.signatures === undefined
-                ) &&
                 /** versions of 3.*-generation use old naming for manifest version */
                 (
                     data.manifest_version !== undefined &&
