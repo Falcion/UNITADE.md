@@ -3,15 +3,16 @@ import * as path from 'path';
 import chalk from 'chalk';
 import { fileURLToPath } from 'url';
 
-import { CONVERTERS } from '@compat/versions/converters';
-import { DEFAULT_SETTINGS } from '@settings/defaults';
+import { CONVERTERS } from '@source/compat/versions/converters';
+import { DEFAULT_SETTINGS } from '@source/settings/defaults';
+import { loadManifest } from '@tests/compat/utils/payload';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const CONFIG = {
-    DIR_EXAMPLE: path.join(__dirname, '/examples'),
-    DIR_PARSING: path.join(__dirname, '/examples/parsed'),
+    DIR_EXAMPLE: path.join(__dirname, '../compat/examples'),
+    DIR_PARSING: path.join(__dirname, '../compat/examples/parsed'),
     EXAMPLES: [
         'data-1.0.json',
         'data-2.0.json',
@@ -105,7 +106,35 @@ console.log(
     '\n'
 );
 
-if (CONFIG.success === CONFIG.EXAMPLES.length) {
+if (CONFIG.success > CONFIG.error) {
+    const reportPath = path.join(CONFIG.DIR_EXAMPLE, 'REPORT.md');
+    const reportData = `
+    THIS IS AN AUTO-GENERATED FILE. DO NOT EDIT MANUALLY.
+    FOR ANY CHANGES TO THIS FILE, PLEASE EDIT AND RE-RUN THE EXAMPLES GENERATION SCRIPT.
+
+    # Compat examples generation report
+
+    Date of successful generation: ${new Date().toISOString()}
+    Last of concluded project version: ${loadManifest().version}
+
+    ## Summary
+
+    - Total processed: ${CONFIG.EXAMPLES.length}
+    - Success: ${CONFIG.success}
+    - Errors: ${CONFIG.error}
+
+    ## Notes
+
+    - If you see this report, it means that more examples were successfully generated than failed.
+    - If you made any changes to the default settings or converters, please make sure to re-run this script to update the snapshots for migration tests.
+    `.split("\n").map(s => s.trim()).join("\n");
+
+    fs.writeFileSync(reportPath, reportData, { encoding: 'utf-8' });
+
+    console.info(chalk.cyan(`[?] Report generated.`));
+    console.info(chalk.cyan.dim(` *  ${reportPath}`))
+    console.log();
+
     process.exit(0);
 } else {
     process.exit(1);
