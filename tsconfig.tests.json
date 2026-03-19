@@ -15,7 +15,7 @@
 		"esModuleInterop": true,
 		"sourceMap": false,
 		"allowJs": true,
-		"types": ["mocha", "chai"],
+		"types": ["jest", "chai"],
 		"paths": {
 			"@tests/*": ["./tests/*"],
 			"@tests-compat/*": ["./tests/compat/*"],
