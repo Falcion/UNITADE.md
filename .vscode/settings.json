@@ -1,4 +1,14 @@
 {
 	"files.autoSave": "onFocusChange",
-	"editor.formatOnSave": true
+	"files.exclude": {
+		"**/.git": true,
+		"**/.svn": true,
+		"**/.hg": true,
+		"**/.DS_Store": true,
+		"**/Thumbs.db": true,
+		"**/node_modules": true
+	},
+	"editor.formatOnSave": true,
+	"swap-tsconfig.exclude": ["**/node_modules/**"],
+	"swap-tsconfig.include": ["tsconfig.json", "tsconfig.tests.json"]
 }
