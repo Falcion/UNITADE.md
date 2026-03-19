@@ -101,11 +101,12 @@ export default class modCompat {
         )
             info.current = String(data.version) || String(data.SYS_MANIFEST_VERSION) || String(data.manifest_version);
 
-        for (const converter of this.converters)
-            if (converter.detect(data)) {
-                info.current = converter.version;
-                break;
-            }
+        if (!info.current)
+            for (const converter of this.converters)
+                if (converter.detect(data)) {
+                    info.current = converter.version;
+                    break;
+                }
 
         return info;
     }
