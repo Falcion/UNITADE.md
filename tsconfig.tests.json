@@ -13,11 +13,18 @@
 		"outDir": "out",
 		"incremental": true,
 		"esModuleInterop": true,
-		"strict": true,
 		"sourceMap": false,
 		"allowJs": true,
-		"types": ["mocha", "chai"]
+		"types": ["mocha", "chai"],
+		"paths": {
+			"@tests/*": ["./tests/*"],
+			"@tests-compat/*": ["./tests/compat/*"],
+			"@source/*": ["./source/*"]
+		},
+		"strict": true,
+		"strictPropertyInitialization": true,
+		"strictNullChecks": true
 	},
 	"exclude": ["node_modules", "out", "git", "venv", "scripts/**"],
-	"include": ["tests/**/*.spec.ts"]
+	"include": ["tests/**/*.ts"]
 }
