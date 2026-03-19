@@ -1,22 +1,27 @@
 {
-	"type": "module",
 	"scripts": {
-		"test:compat": "node --import tsx ./node_modules/mocha/bin/mocha.js --config compat/.mocharc.json compat/**/*.spec.ts",
-		"test:compat:unit": "node --import tsx ./node_modules/mocha/bin/mocha.js --config compat/.mocharc.json compat/compat.spec.ts",
-		"test:compat:integration": "node --import tsx ./node_modules/mocha/bin/mocha.js --config compat/.mocharc.json compat/integration.spec.ts",
-		"test:watch": "node --import tsx ./node_modules/mocha/bin/mocha.js --config compat/.mocharc.json --watch compat/**/*.spec.ts",
-		"test:coverage": "npx nyc node --import tsx ./node_modules/mocha/bin/mocha.js --config compat/.mocharc.json compat/**/*.spec.ts",
-		"test:generate-parsed": "tsx compat/gen.ts"
+		"test": "npx jest",
+		"test:compat": "npx jest ^compat/.*.spec.ts$",
+		"test:compat:unit": "npx jest ^compat/compat.spec.ts$",
+		"test:compat:integration": "npx jest ^compat/.*integration.spec.ts$",
+		"test:compat-gen": "npx tsx scripts/compat.ts"
 	},
 	"dependencies": {
 		"chai": "^6.2.2",
 		"chalk": "^5.6.2",
-		"mocha": "^11.7.5",
+		"jest": "^30.3.0",
+		"ts-node": "^10.9.2",
 		"tsx": "^4.20.6"
 	},
 	"devDependencies": {
+		"@babel/core": "^7.29.0",
+		"@babel/preset-env": "^7.29.2",
+		"@babel/preset-typescript": "^7.28.5",
+		"@jest/globals": "^30.3.0",
 		"@types/chai": "^5.2.3",
 		"@types/chalk": "^0.4.31",
-		"@types/mocha": "^10.0.10"
+		"@types/jest": "^30.0.0",
+		"@types/node": "^25.5.0",
+		"babel-jest": "^30.3.0"
 	}
 }
