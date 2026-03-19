@@ -11,6 +11,7 @@
 		"target": "es2022",
 		"lib": ["es2022", "dom", "dom.iterable"],
 		"outDir": "out",
+		"rootDir": "./",
 		"incremental": true,
 		"esModuleInterop": true,
 		"sourceMap": false,
