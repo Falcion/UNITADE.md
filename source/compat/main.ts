@@ -2,7 +2,7 @@ import { PluginManifest } from 'obsidian';
 import UnitadePlugin from '@main';
 import { DEFAULT_SETTINGS } from '@settings/defaults';
 import { ISettings } from '@settings/defaults_interface';
-import { IVersionConverter } from './versions/converters_interface';
+import { IVersionConverter } from '@compat/versions/converters_interface';
 import { CONVERTERS } from '@compat/versions/converters';
 import ICompatResult from '@compat/utils/types/compat_result';
 import { VersionInfo } from '@compat/utils/types/version';

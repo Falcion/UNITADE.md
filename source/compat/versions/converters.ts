@@ -1,6 +1,6 @@
 import { DEFAULT_SETTINGS } from "@settings/defaults";
-import { IVersionConverter } from "./converters_interface";
-import replaceDelimiter from "../utils/functions/replace_delim";
+import { IVersionConverter } from "@compat/versions/converters_interface";
+import replaceDelimiter from "@compat/utils/functions/replace_delim";
 
 export const CONVERTERS: IVersionConverter[] = [
     /**
