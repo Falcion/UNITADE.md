@@ -60,23 +60,19 @@ export class UNITADE_VIEW_CODE extends TextFileView {
     }
 
     async onUnloadFile(file: TFile) {
-        this.containerEl.removeEventListener('keydown', this.__keyHandler, true);
-        this.containerEl.removeEventListener('wheel', this.__mousewheelHandler);
+        this.containerEl.removeEventListener('keydown', this.keyboardHandler, true);
+        this.containerEl.removeEventListener('wheel', this.mouseWheelHandler);
 
         await super.onUnloadFile(file);
-
-        await this.__saveFontSize();
 
         this.monacoEditor.dispose();
     }
 
     async onClose() {
-        this.containerEl.removeEventListener('keydown', this.__keyHandler, true);
-        this.containerEl.removeEventListener('wheel', this.__mousewheelHandler);
+        this.containerEl.removeEventListener('keydown', this.keyboardHandler, true);
+        this.containerEl.removeEventListener('wheel', this.mouseWheelHandler);
 
         await super.onClose();
-
-        await this.__saveFontSize();
     }
 
     onResize() {
@@ -113,46 +109,43 @@ export class UNITADE_VIEW_CODE extends TextFileView {
     }
 
     private addKeyEvents = () => {
-        this.containerEl.addEventListener('keydown', this.__keyHandler, true);
+        this.containerEl.addEventListener('keydown', this.keyboardHandler, true);
 
         // Bind custom paste handler to Ctrl+V (or Cmd+V on Mac)
         if (this.plugin.settings.code_editor_settings.force_vanilla_paste) {
             this.monacoEditor.addCommand(
                 monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyV,
-                () => this.__handlePaste()
+                () => this.customHandlePaste()
             );
         }
 
         // Bind custom paste handler to Shift+Insert
         this.monacoEditor.addCommand(
             monaco.KeyMod.Shift | monaco.KeyCode.Insert,
-            () => this.__handlePaste()
+            () => this.customHandlePaste()
         );
     }
 
 
     private addCtrlKeyWheelEvents = () => {
         if (this.plugin.settings.code_editor_settings.enable_zoom)
-            this.containerEl.addEventListener('wheel', this.__mousewheelHandler, {
+            this.containerEl.addEventListener('wheel', this.mouseWheelHandler, {
                 capture: this.plugin.settings.code_editor_settings.enable_zoom,
                 passive: !this.plugin.settings.code_editor_settings.enable_zoom,
             });
     }
 
-    private __handlePaste = async () => {
+    private customHandlePaste = async () => {
         try {
             this.monacoEditor.focus();
 
-            // Get the current clipboard contents
             const text = await navigator.clipboard.readText();
 
-            // Get the current selection in the editor
             const selection = this.monacoEditor.getSelection();
             if (!selection) {
                 return;
             }
 
-            // Replace the current selection with the text from the clipboard
             this.monacoEditor.executeEdits("clipboard", [{
                 range: selection,
                 text: text,
@@ -172,12 +165,18 @@ export class UNITADE_VIEW_CODE extends TextFileView {
             });
         } catch (error) {
             console.error('Failed to paste from clipboard:', error);
-            // If clipboard API fails, let Monaco try its default behavior
+
+            // If custom handle fails, try to call for standard API callback
+            navigator.clipboard.readText().then((clipboard) => {
+                this.monacoEditor.trigger('', 'paste', { text: clipboard });
+            })
         }
     }
 
-    private __keyHandler = async (event: KeyboardEvent) => {
+    private keyboardHandler = async (event: KeyboardEvent) => {
         if (this.getViewType() !== 'codeview') return;
+
+        const modEnabled = event.ctrlKey || event.metaKey;
 
         const KEYMAP = new Map<string, string>([
             ['f', 'actions.find'],
@@ -189,11 +188,40 @@ export class UNITADE_VIEW_CODE extends TextFileView {
             ['d', 'editor.action.copyLinesDownAction'],
         ]);
 
-        if (event.ctrlKey) {
+        if (modEnabled) {
             const trigger_name = KEYMAP.get(event.key);
 
-            if (trigger_name)
-                this.monacoEditor.trigger('', trigger_name, null);
+            if (trigger_name) {
+                event.preventDefault();
+                event.stopPropagation();
+
+                // We don't need to use "Paste" trigger since we
+                // have {handlePaste}
+
+                if (trigger_name === 'copy') {
+                    const selection = this.monacoEditor.getSelection();
+                    const model = this.monacoEditor.getModel();
+
+                    if (selection && model)
+                        navigator.clipboard.writeText(model.getValueInRange(selection));
+
+                }
+                else if (trigger_name === 'cut') {
+                    const selection = this.monacoEditor.getSelection();
+                    const model = this.monacoEditor.getModel();
+                    if (selection && model) {
+                        navigator.clipboard.writeText(model.getValueInRange(selection));
+
+                        this.monacoEditor.executeEdits('cut', [{
+                            range: selection,
+                            text: '',
+                            forceMoveMarkers: true
+                        }]);
+                    }
+                }
+                else
+                    this.monacoEditor.trigger('', trigger_name, null);
+            }
         }
 
         if (event.altKey) {
@@ -215,8 +243,10 @@ export class UNITADE_VIEW_CODE extends TextFileView {
         }
     }
 
-    private __mousewheelHandler = async (event: WheelEvent) => {
-        if (event.ctrlKey) {
+    private mouseWheelHandler = async (event: WheelEvent) => {
+        const modEnabled = event.ctrlKey || event.metaKey;
+
+        if (modEnabled) {
             const delta = event.deltaY > 0 ? 1 : -1;
 
             this.monacoEditor!.updateOptions({
@@ -225,13 +255,5 @@ export class UNITADE_VIEW_CODE extends TextFileView {
 
             event.stopPropagation();
         }
-    }
-
-    private __saveFontSize = async () => {
-        // await this.plugin.uptSettingsVisuals({
-        //     code_editor_settings: {
-        //         ...this.plugin.settings.code_editor.visuals,
-        //         font_size: this.monacoEditor.getOption(monaco.editor.EditorOption.fontSize)
-        //     });
     }
 }
