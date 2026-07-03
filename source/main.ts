@@ -37,8 +37,6 @@ import UNITADE_SETTINGS_TAB, {
     DEFAULT_SETTINGS,
 } from './settings';
 
-import UnitadeViewSource from './components/views/-----view_source';
-
 import CodeMirror from './../lib/codemirror';
 
 import {
@@ -66,7 +64,6 @@ import {
 import { TFilesRename } from './components/modals/files-rename';
 import CONSTANTS from './utils/constants';
 import LocalesModule from './locales/core';
-import { UnitadeViewCode } from './components/views/----view_code';
 import { ContextEditor } from './components/contexts/contextEditor';
 import { FenceEditModal } from './components/modals/codeblock-edit';
 import { ContextEditCodeblocks } from './components/contextEditCodeblock';
@@ -76,7 +73,8 @@ import { PromptUserInput } from './components/modals/prompt-user-input';
 
 import './_exportMonaco';
 import { DEFAULT_SIGNATURES } from './externals/errors/signatures';
-import IUnitadeStatusBarPayload from '@typings/components/status/bar_config';
+import { UNITADE_VIEW_CODE } from './components/views/view_monaco';
+import UNITADE_VIEW from './components/views/view_codemirror';
 
 declare module "obsidian" {
     interface Workspace {
@@ -587,8 +585,8 @@ export default class UNITADE_PLUGIN extends Plugin {
 
     //#region Status bar update
     public updateStatusBar(): void {
-        if (this.settings.status_bar.enable) {
-            const data: string[] = new StatusBarParser(this._locale, this.statusBarConfig).generateText();
+        if (this.settings.status_bar.enabled) {
+            const data: string[] = new StatusBarParser(this._locale, this.StatusBarInfo).generateText();
 
             let text: string = '';
 
@@ -781,7 +779,7 @@ export default class UNITADE_PLUGIN extends Plugin {
         if (this.app.viewRegistry.viewByType['codeview'] === undefined ||
 
             this.app.viewRegistry.viewByType['codeview'] === null)
-            this.registerView('codeview', leaf => new UnitadeViewCode(leaf, this));
+            this.registerView('codeview', leaf => new UNITADE_VIEW_CODE(leaf, this));
 
         if (this.settings.is_grouped) {
             const data: { [key: string]: string[] } = parsegroup(this.settings.grouped_extensions);
@@ -821,7 +819,7 @@ export default class UNITADE_PLUGIN extends Plugin {
         for (const extension of forced_extensions) {
             try {
                 this.registerView(extension, (leaf: WorkspaceLeaf) => {
-                    return new UnitadeViewSource(leaf, extension);
+                    return new UNITADE_VIEW(leaf, extension);
                 });
             } catch (err: any) {
                 this.settings.errors[extension] = `${this.locale.getLocaleItem('ERROR_COMMON_MESSAGE')[0]!} ${err}`;
@@ -978,7 +976,4 @@ export default class UNITADE_PLUGIN extends Plugin {
                 }
     }
     //#endregion
-    public updateStatusBarInfo(data: Partial<IUnitadeStatusBarPayload>): void {
-        //TODO: update status bar
-    }
 }

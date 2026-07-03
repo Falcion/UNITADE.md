@@ -35,7 +35,7 @@ export class UNITADE_VIEW_CODE extends TextFileView {
         this.addCtrlKeyWheelEvents();
         this.addKeyEvents();
 
-        this.plugin.statusBarConfig.update({
+        this.plugin.StatusBarInfo.update({
             cursor_columns: this.monacoEditor.getPosition() ? this.monacoEditor.getPosition()!.column : 0,
             cursor_lines: this.monacoEditor.getPosition() ? this.monacoEditor.getPosition()!.lineNumber : 0,
             processor: this.monacoEditor.getModel() ? this.monacoEditor.getModel()!.id : this.plugin.locale.getLocaleItem('STATUS_BAR')[0]!,
@@ -48,7 +48,7 @@ export class UNITADE_VIEW_CODE extends TextFileView {
             const cursor = this.monacoEditor.getPosition();
 
             if (cursor)
-                this.plugin.statusBarConfig.update({
+                this.plugin.StatusBarInfo.update({
                     cursor_columns: cursor.column,
                     cursor_lines: cursor.lineNumber
                 });
