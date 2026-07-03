@@ -32,9 +32,15 @@ import {
 import CodeMirror from '../../../lib/codemirror';
 
 export default class UNITADE_VIEW extends TextFileView {
-    private _codemirror: CodeMirror.Editor;
-
+    private _editor: CodeMirror.Editor;
     private _extension: string = '';
+
+    public get editor(): CodeMirror.Editor {
+        return this._editor;
+    }
+    public get extension(): string {
+        return this._extension;
+    }
 
     constructor(leaf: WorkspaceLeaf, extension: string) {
         super(leaf);
@@ -42,15 +48,14 @@ export default class UNITADE_VIEW extends TextFileView {
         this._extension = extension;
 
 
-        this._codemirror = CodeMirror(this.contentEl, {
+        this._editor = CodeMirror(this.contentEl, {
             theme: 'obsidian',
         });
-
-        this._codemirror.on('changes', this.onChange);
+        this._editor.on('changes', this.onChange);
     }
 
     onResize(): void {
-        this._codemirror.refresh();
+        this._editor.refresh();
     }
 
     onChange = async () => {
@@ -58,19 +63,29 @@ export default class UNITADE_VIEW extends TextFileView {
     }
 
     getViewData(): string {
-        return this._codemirror.getValue();
+        return this._editor.getValue();
     }
 
     setViewData(data: string, clear: boolean): void {
         if (clear)
-            this._codemirror.swapDoc(CodeMirror.Doc(data, `text/x-${this._extension}`));
+            this._editor.swapDoc(CodeMirror.Doc(data, `text/x-${this._extension}`));
         else
-            this._codemirror.setValue(data);
+            this._editor.setValue(data);
     }
 
     clear(): void {
-        this._codemirror.setValue('');
-        this._codemirror.clearHistory();
+        this._editor.setValue('');
+        this._editor.clearHistory();
+    }
+
+    async onOpen(): Promise<void> {
+        super.onOpen();
+    }
+
+    async onClose(): Promise<void> {
+        super.onClose();
+
+        this.clear();
     }
 
     getDisplayText(): string {
