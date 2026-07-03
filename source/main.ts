@@ -37,7 +37,7 @@ import UNITADE_SETTINGS_TAB, {
     DEFAULT_SETTINGS,
 } from './settings';
 
-import UNITADE_VIEW from './components/views/view_codemirror';
+import UnitadeViewSource from './components/views/-----view_source';
 
 import CodeMirror from './../lib/codemirror';
 
@@ -66,7 +66,7 @@ import {
 import { TFilesRename } from './components/modals/files-rename';
 import CONSTANTS from './utils/constants';
 import LocalesModule from './locales/core';
-import { UNITADE_VIEW_CODE } from './components/views/view_monaco';
+import { UnitadeViewCode } from './components/views/----view_code';
 import { ContextEditor } from './components/contexts/contextEditor';
 import { FenceEditModal } from './components/modals/codeblock-edit';
 import { ContextEditCodeblocks } from './components/contextEditCodeblock';
@@ -76,6 +76,7 @@ import { PromptUserInput } from './components/modals/prompt-user-input';
 
 import './_exportMonaco';
 import { DEFAULT_SIGNATURES } from './externals/errors/signatures';
+import IUnitadeStatusBarPayload from '@typings/components/status/bar_config';
 
 declare module "obsidian" {
     interface Workspace {
@@ -100,7 +101,8 @@ export default class UNITADE_PLUGIN extends Plugin {
     private _observer!: MutationObserver;
 
     private _statusBar!: HTMLElement;
-    public statusBarConfig: StatusBarConfig = new StatusBarConfig(this._locale);
+
+    public StatusBarInfo: StatusBarConfig = new StatusBarConfig(this._locale);
 
     public hover: {
         linkText: string;
@@ -389,7 +391,7 @@ export default class UNITADE_PLUGIN extends Plugin {
             if (this.settings.debug_mode && this.settings.status_bar.cursor_position)
                 console.debug('[UNITADE] CHECKED CURSOR POSITION OF EDITOR-CHANGE EVENT:', editor.getCursor());
 
-            this.statusBarConfig.update({
+            this.StatusBarInfo.update({
                 cursor_columns: editor.getCursor().ch,
                 cursor_lines: editor.getCursor().line,
             });
@@ -449,7 +451,7 @@ export default class UNITADE_PLUGIN extends Plugin {
             if (this.settings.debug_mode && this.settings.status_bar.cursor_position)
                 console.debug('[UNITADE] CHECKED CURSOR POSITION OF LEAF-CHANGE EVENT:', cursor);
 
-            this.statusBarConfig.update({
+            this.StatusBarInfo.update({
                 cursor_columns: cursor.ch,
                 cursor_lines: cursor.line,
                 display: viewType,
@@ -585,7 +587,7 @@ export default class UNITADE_PLUGIN extends Plugin {
 
     //#region Status bar update
     public updateStatusBar(): void {
-        if (this.settings.status_bar.enabled) {
+        if (this.settings.status_bar.enable) {
             const data: string[] = new StatusBarParser(this._locale, this.statusBarConfig).generateText();
 
             let text: string = '';
@@ -779,7 +781,7 @@ export default class UNITADE_PLUGIN extends Plugin {
         if (this.app.viewRegistry.viewByType['codeview'] === undefined ||
 
             this.app.viewRegistry.viewByType['codeview'] === null)
-            this.registerView('codeview', leaf => new UNITADE_VIEW_CODE(leaf, this));
+            this.registerView('codeview', leaf => new UnitadeViewCode(leaf, this));
 
         if (this.settings.is_grouped) {
             const data: { [key: string]: string[] } = parsegroup(this.settings.grouped_extensions);
@@ -819,7 +821,7 @@ export default class UNITADE_PLUGIN extends Plugin {
         for (const extension of forced_extensions) {
             try {
                 this.registerView(extension, (leaf: WorkspaceLeaf) => {
-                    return new UNITADE_VIEW(leaf, extension);
+                    return new UnitadeViewSource(leaf, extension);
                 });
             } catch (err: any) {
                 this.settings.errors[extension] = `${this.locale.getLocaleItem('ERROR_COMMON_MESSAGE')[0]!} ${err}`;
@@ -976,4 +978,7 @@ export default class UNITADE_PLUGIN extends Plugin {
                 }
     }
     //#endregion
+    public updateStatusBarInfo(data: Partial<IUnitadeStatusBarPayload>): void {
+        //TODO: update status bar
+    }
 }
