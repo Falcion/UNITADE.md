@@ -5,7 +5,6 @@ import process from "process";
 import builtins from "builtin-modules";
 import glsl from "esbuild-plugin-glsl";
 import fs from 'fs';
-import path from 'node:path';
 
 const banner =
     `/*
@@ -37,46 +36,20 @@ let manifest = {
     }
 }
 
-// const workerPlugin = {
-//     name: 'monaco-workers',
-//     setup(build) {
-//         build.onResolve({ filter: /\.worker\.js$/ }, async (args) => {
-//             return {
-//                 path: path.resolve(args.resolveDir, args.path),
-//                 namespace: 'monaco-worker',
-//             };
-//         });
+import * as dotenv from 'dotenv'
 
-//         build.onLoad({ filter: /.*/, namespace: 'monaco-worker' }, async (args) => {
-//             // Bundle worker code into a self-contained script
-//             const result = await esbuild.build({
-//                 entryPoints: [args.path],
-//                 bundle: true,
-//                 format: 'iife',
-//                 write: false,
-//                 target: 'es6',
-//             });
-
-//             const code = result.outputFiles[0].text;
-//             return {
-//                 contents: `export default ${JSON.stringify(code)};`,
-//                 loader: 'js',
-//             };
-//         });
-//     }
-// };
+dotenv.config();
 
 let autotest = {
     name: 'autotest',
     setup(build) {
         build.onEnd(() => {
-            const PUT_YOUR_PATH_HERE_IF_ENABLED = '';
-            const ENABLED = false;
+            const args = process.argv.splice(2);
 
-            if (ENABLED) {
-                fs.copyFileSync('out/manifest.json', PUT_YOUR_PATH_HERE_IF_ENABLED);
-                fs.copyFileSync('out/main.js', PUT_YOUR_PATH_HERE_IF_ENABLED);
-                fs.copyFileSync('out/styles.css', PUT_YOUR_PATH_HERE_IF_ENABLED);
+            if (args.includes('--autotest')) {
+                fs.copyFileSync('out/manifest.json', process.env.TESTING_PATH);
+                fs.copyFileSync('out/main.js', process.env.TESTING_PATH);
+                fs.copyFileSync('out/styles.css', process.env.TESTING_PATH);
             }
         });
     }
@@ -97,7 +70,6 @@ const context = await esbuild.context({
         glsl({
             minify: true,
         }),
-        // workerPlugin,
         {
             name: 'worker-plugin',
             setup(build) {
@@ -132,6 +104,8 @@ const context = await esbuild.context({
         "@lezer/common",
         "@lezer/highlight",
         "@lezer/lr",
+        "./mode",
+        "./lib",
         ...builtins],
     format: "cjs",
     target: "es6",

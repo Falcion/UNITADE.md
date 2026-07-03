@@ -7,22 +7,21 @@
 		"resolveJsonModule": true,
 		"allowSyntheticDefaultImports": true,
 		"skipLibCheck": true,
-		"downlevelIteration": true,
 		"target": "ES2023",
 		"lib": ["es2022", "dom", "dom.iterable"],
 		"outDir": "out",
-		"baseUrl": "./",
 		"incremental": true,
-		"moduleResolution": "node",
 		"esModuleInterop": true,
 		"strict": true,
 		"sourceMap": false,
 		"allowJs": true,
 		"types": ["obsidian-typings", "monaco-editor", "./source/types/workers.d.ts"],
 		"paths": {
-			"monaco-editor/esm/vs/*": ["./src/types/monaco-workers.d.ts"]
+			"monaco-editor/esm/vs/*": ["./src/types/workers.d.ts"],
+			"codemirror/mode/*": ["./mode/*"],
+			"codemirror/lib/*": ["./lib/*"]
 		}
 	},
 	"exclude": ["node_modules", "out", "git", "venv"],
-	"include": ["**/*.ts", "**/*.d.ts", "build/meta_url_transformer.js"]
+	"include": ["**/*.ts", "**/*.d.ts"]
 }
