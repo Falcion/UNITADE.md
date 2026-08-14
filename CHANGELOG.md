@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.2.8](https://github.com/mokkapps/changelog-generator-demo/compare/v3.2.7...v3.2.8) (2026-08-14)
+
+
+### Features
+
+* **settings:** change default value "SILENCE_ERRORS" to true ([a093755](https://github.com/mokkapps/changelog-generator-demo/commits/a09375531855208147c34430260c23cd91305ee8))
+
+
+### Fixes
+
+* **view:** filter empty extensions when registering forced_extensions and ignore_masks ([35e6128](https://github.com/mokkapps/changelog-generator-demo/commits/35e61284984f6c146cebba7f0ccca6b12d0c6d04)), closes [#129](https://github.com/Falcion/UNITADE.md/issues/129) [#166](https://github.com/Falcion/UNITADE.md/issues/166) [#173](https://github.com/Falcion/UNITADE.md/issues/173)
+
 ### [3.2.7](https://github.com/mokkapps/changelog-generator-demo/compare/v3.2.6...v3.2.7) (2026-02-01)
 
 
