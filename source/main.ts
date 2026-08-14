@@ -560,13 +560,10 @@ export default class UNITADE_PLUGIN extends Plugin {
         try {
             this.registerExtensions(['.md'], 'markdown');
         } catch (err: any) {
-            if (!this.settings.silence_errors) {
-                new Notification(this.locale.getLocaleItem('ERROR_COMMON_MESSAGE')[0]!, { body: err });
-
-                console.error(err);
-            } else {
-                console.warn(`[UNITADE-ERROR]: ERROR IS SILENCED, ERROR: ${err}`);
-            }
+            //TODO: Add a more advanced notification system in 3.3* or post-3.2.8*
+            //* Previous iteration of code:
+            //* new Notification(this.locale.getLocaleItem('ERROR_COMMON_MESSAGE')[0]!, { body: _msg });
+            console.warn(`[UNITADE-ERROR]: ERROR IS SILENCED, ERROR: ${err}`);
 
             this.settings.errors['markdown_override'] = formatString(this.locale.getLocaleItem('ERROR_REGISTRY_EXTENSION')[3]!, err);
         }
