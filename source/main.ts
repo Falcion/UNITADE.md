@@ -270,7 +270,10 @@ export default class UNITADE_PLUGIN extends Plugin {
             if (isTFolder(file)) return;
 
             if (this.settings.is_ignore) {
-                for (const mask of this.settings.ignore_masks.split('>')) {
+                const ignore_masks = this.settings.ignore_masks
+                    ? this.settings.ignore_masks.split('>').map(s => s.trim()).filter(s => s.length > 0)
+                    : [];
+                for (const mask of ignore_masks) {
                     const _mask = mask.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
                     try {
@@ -814,9 +817,12 @@ export default class UNITADE_PLUGIN extends Plugin {
 
         /** FORCED EXTENSIONS */
 
-        const forced_extensions = this.settings.forced_extensions.split('>').map(s => s.trim());
+        const forced_extensions = this.settings.forced_extensions
+            ? this.settings.forced_extensions.split('>').map(s => s.trim()).filter(s => s.length > 0)
+            : [];
 
         for (const extension of forced_extensions) {
+            if (!extension) continue;
             try {
                 this.registerView(extension, (leaf: WorkspaceLeaf) => {
                     return new UNITADE_VIEW(leaf, extension);
