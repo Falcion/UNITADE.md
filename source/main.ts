@@ -270,7 +270,10 @@ export default class UNITADE_PLUGIN extends Plugin {
             if (isTFolder(file)) return;
 
             if (this.settings.is_ignore) {
-                for (const mask of this.settings.ignore_masks.split('>')) {
+                const ignore_masks = this.settings.ignore_masks
+                    ? this.settings.ignore_masks.split('>').map(s => s.trim()).filter(s => s.length > 0)
+                    : [];
+                for (const mask of ignore_masks) {
                     const _mask = mask.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
                     try {
@@ -279,11 +282,8 @@ export default class UNITADE_PLUGIN extends Plugin {
                             return;
                         }
                     } catch (error) {
-                        if (!this.settings.silence_errors) {
-                            console.error(error);
-                        } else {
-                            console.warn(`[UNITADE-ERROR]: ERROR IS SILENCED, ERROR: ${error}`);
-                        }
+                        //TODO: add more advanced notification system in 3.3* or post-3.2.8*
+                        console.warn(`[UNITADE-ERROR]: ERROR IS SILENCED, ERROR: ${error}`);
                     }
                 }
             }
@@ -560,13 +560,10 @@ export default class UNITADE_PLUGIN extends Plugin {
         try {
             this.registerExtensions(['.md'], 'markdown');
         } catch (err: any) {
-            if (!this.settings.silence_errors) {
-                new Notification(this.locale.getLocaleItem('ERROR_COMMON_MESSAGE')[0]!, { body: err });
-
-                console.error(err);
-            } else {
-                console.warn(`[UNITADE-ERROR]: ERROR IS SILENCED, ERROR: ${err}`);
-            }
+            //TODO: Add a more advanced notification system in 3.3* or post-3.2.8*
+            //* Previous iteration of code:
+            //* new Notification(this.locale.getLocaleItem('ERROR_COMMON_MESSAGE')[0]!, { body: _msg });
+            console.warn(`[UNITADE-ERROR]: ERROR IS SILENCED, ERROR: ${err}`);
 
             this.settings.errors['markdown_override'] = formatString(this.locale.getLocaleItem('ERROR_REGISTRY_EXTENSION')[3]!, err);
         }
@@ -814,9 +811,12 @@ export default class UNITADE_PLUGIN extends Plugin {
 
         /** FORCED EXTENSIONS */
 
-        const forced_extensions = this.settings.forced_extensions.split('>').map(s => s.trim());
+        const forced_extensions = this.settings.forced_extensions
+            ? this.settings.forced_extensions.split('>').map(s => s.trim()).filter(s => s.length > 0)
+            : [];
 
         for (const extension of forced_extensions) {
+            if (!extension) continue;
             try {
                 this.registerView(extension, (leaf: WorkspaceLeaf) => {
                     return new UNITADE_VIEW(leaf, extension);
@@ -871,13 +871,10 @@ export default class UNITADE_PLUGIN extends Plugin {
                 _msg = formatString(this.locale.getLocaleItem('ERROR_REGISTRY_EXTENSION')[1]!, filetype, view, err);
             }
 
-            if (!this.settings.silence_errors) {
-                new Notification(this.locale.getLocaleItem('ERROR_COMMON_MESSAGE')[0]!, { body: _msg });
-
-                console.error(_msg);
-            } else {
-                console.warn(`[UNITADE-ERROR]: ERROR IS SILENCED, ERROR: ${_msg}`);
-            }
+            //TODO: Add a more advanced notification system in 3.3* or post-3.2.8*
+            //* Previous iteration of code:
+            //* new Notification(this.locale.getLocaleItem('ERROR_COMMON_MESSAGE')[0]!, { body: _msg });
+            console.warn(`[UNITADE-ERROR]: ERROR IS SILENCED, ERROR: ${_msg}`);
 
             this._settings.errors[filetype] = _msg;
         }
@@ -965,13 +962,10 @@ export default class UNITADE_PLUGIN extends Plugin {
 
                         this.settings.errors[extension] = _msg;
 
-                        if (!this.settings.silence_errors) {
-                            new Notification(this.locale.getLocaleItem('ERROR_COMMON_MESSAGE')[0]!, { body: _msg });
-
-                            console.error(_msg);
-                        } else {
-                            console.warn(`[UNITADE-ERROR]: ERROR IS SILENCED, ERROR: ${_msg}`);
-                        }
+                        //TODO: Add a more advanced notification system in 3.3* or post-3.2.8*
+                        //* Previous iteration of code:
+                        //* new Notification(this.locale.getLocaleItem('ERROR_COMMON_MESSAGE')[0]!, { body: _msg });
+                        console.warn(`[UNITADE-ERROR]: ERROR IS SILENCED, ERROR: ${_msg}`);
                     }
                 }
     }

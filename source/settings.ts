@@ -132,7 +132,7 @@ export const DEFAULT_SETTINGS: UNITADE_SETTINGS = {
     errors: {},
 
     debug_mode: false,
-    silence_errors: false,
+    silence_errors: true,
     manifest_version: '',
 
     compatibility_module: true,
