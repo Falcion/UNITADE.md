@@ -37,8 +37,6 @@ import UNITADE_SETTINGS_TAB, {
     DEFAULT_SETTINGS,
 } from './settings';
 
-import UNITADE_VIEW from './components/views/view_codemirror';
-
 import CodeMirror from './../lib/codemirror';
 
 import {
@@ -66,7 +64,6 @@ import {
 import { TFilesRename } from './components/modals/files-rename';
 import CONSTANTS from './utils/constants';
 import LocalesModule from './locales/core';
-import { UNITADE_VIEW_CODE } from './components/views/view_monaco';
 import { ContextEditor } from './components/contexts/contextEditor';
 import { FenceEditModal } from './components/modals/codeblock-edit';
 import { ContextEditCodeblocks } from './components/contextEditCodeblock';
@@ -76,6 +73,8 @@ import { PromptUserInput } from './components/modals/prompt-user-input';
 
 import './_exportMonaco';
 import { DEFAULT_SIGNATURES } from './externals/errors/signatures';
+import { UNITADE_VIEW_CODE } from './components/views/view_monaco';
+import UNITADE_VIEW from './components/views/view_codemirror';
 
 declare module "obsidian" {
     interface Workspace {
@@ -100,7 +99,8 @@ export default class UNITADE_PLUGIN extends Plugin {
     private _observer!: MutationObserver;
 
     private _statusBar!: HTMLElement;
-    public statusBarConfig: StatusBarConfig = new StatusBarConfig(this._locale);
+
+    public StatusBarInfo: StatusBarConfig = new StatusBarConfig(this._locale);
 
     public hover: {
         linkText: string;
@@ -389,7 +389,7 @@ export default class UNITADE_PLUGIN extends Plugin {
             if (this.settings.debug_mode && this.settings.status_bar.cursor_position)
                 console.debug('[UNITADE] CHECKED CURSOR POSITION OF EDITOR-CHANGE EVENT:', editor.getCursor());
 
-            this.statusBarConfig.update({
+            this.StatusBarInfo.update({
                 cursor_columns: editor.getCursor().ch,
                 cursor_lines: editor.getCursor().line,
             });
@@ -449,7 +449,7 @@ export default class UNITADE_PLUGIN extends Plugin {
             if (this.settings.debug_mode && this.settings.status_bar.cursor_position)
                 console.debug('[UNITADE] CHECKED CURSOR POSITION OF LEAF-CHANGE EVENT:', cursor);
 
-            this.statusBarConfig.update({
+            this.StatusBarInfo.update({
                 cursor_columns: cursor.ch,
                 cursor_lines: cursor.line,
                 display: viewType,
@@ -583,7 +583,7 @@ export default class UNITADE_PLUGIN extends Plugin {
     //#region Status bar update
     public updateStatusBar(): void {
         if (this.settings.status_bar.enabled) {
-            const data: string[] = new StatusBarParser(this._locale, this.statusBarConfig).generateText();
+            const data: string[] = new StatusBarParser(this._locale, this.StatusBarInfo).generateText();
 
             let text: string = '';
 
